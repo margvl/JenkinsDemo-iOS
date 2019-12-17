@@ -10,9 +10,6 @@ pipeline {
       }
     }
 
-    stage('Dependecies') {
-    }
-
     stage('Tests') {
       steps {
         sh 'fastlane test'
