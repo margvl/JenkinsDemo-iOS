@@ -455,7 +455,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "JenkinsDemo/JenkinsDemo-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo/Resources/JenkinsDemo-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -473,7 +473,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "JenkinsDemo/JenkinsDemo-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo/Resources/JenkinsDemo-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -535,7 +535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "JenkinsDemo-Staging.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo-Staging-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -553,7 +553,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "JenkinsDemo-Staging.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo-Staging-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
