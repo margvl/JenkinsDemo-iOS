@@ -18,7 +18,8 @@ pipeline {
   post {
     always {
     
-
+      def props = readJSON file: 'ci.configuration.json'
+      sh 'echo ${pros.hello}'
     
       // Processing test results
       junit '../test_output/report.junit'
