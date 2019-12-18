@@ -26,7 +26,7 @@ lane :test do
         scheme: "#{schemeName}",
         device: "iPhone 8",
         clean: true,
-        output_directory: "./#{reportsPath}/scan",
+        output_directory: "./test_output/scan",
         output_types: "html,junit"
     )
 end
