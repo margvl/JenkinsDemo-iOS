@@ -1,7 +1,5 @@
 fastlane_version "2.66.2"
 
-platform :ios do
-
 desc "Run test coverage"
 lane :coverage do
     slather(
@@ -29,6 +27,4 @@ lane :test do
         output_directory: "./test_output/scan",
         output_types: "html,junit"
     )
-end
-
 end
