@@ -20,12 +20,6 @@
 		14DC8BA523A97AE20078ED7E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8B8723A97AC30078ED7E /* LaunchScreen.storyboard */; };
 		14DC8BA623A97AE20078ED7E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8B8523A97AC30078ED7E /* Assets.xcassets */; };
 		14DC8BA723A97AE20078ED7E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8B8223A97AC20078ED7E /* Main.storyboard */; };
-		14DC8BB323A984C80078ED7E /* Jenkinsfile in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8BAF23A984C70078ED7E /* Jenkinsfile */; };
-		14DC8BB423A984C80078ED7E /* Jenkinsfile in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8BAF23A984C70078ED7E /* Jenkinsfile */; };
-		14DC8BB523A984C80078ED7E /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8BB123A984C70078ED7E /* Fastfile */; };
-		14DC8BB623A984C80078ED7E /* Fastfile in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8BB123A984C70078ED7E /* Fastfile */; };
-		14DC8BB723A984C80078ED7E /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8BB223A984C70078ED7E /* Gemfile */; };
-		14DC8BB823A984C80078ED7E /* Gemfile in Resources */ = {isa = PBXBuildFile; fileRef = 14DC8BB223A984C70078ED7E /* Gemfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,9 +46,12 @@
 		14DC8B9523A97AC30078ED7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14DC8BAB23A97AE20078ED7E /* JenkinsDemo-Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JenkinsDemo-Staging.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14DC8BAC23A97AE20078ED7E /* JenkinsDemo-Staging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JenkinsDemo-Staging-Info.plist"; path = "/Users/maga/Desktop/Projects/Personal/JenkinsDemo/JenkinsDemo-Staging-Info.plist"; sourceTree = "<absolute>"; };
-		14DC8BAF23A984C70078ED7E /* Jenkinsfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Jenkinsfile; sourceTree = "<group>"; };
-		14DC8BB123A984C70078ED7E /* Fastfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
-		14DC8BB223A984C70078ED7E /* Gemfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
+		14F1EE7D23AACA5A001AEBF8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		14F1EE7F23AACA5A001AEBF8 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
+		14F1EE8023AACA5A001AEBF8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		14F1EE8123AACA5A001AEBF8 /* report.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = report.xml; sourceTree = "<group>"; };
+		14F1EE8223AACA5A001AEBF8 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; };
+		14F1EE8323AACA5B001AEBF8 /* Jenkinsfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Jenkinsfile; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +82,7 @@
 		14DC8B7023A97AC20078ED7E = {
 			isa = PBXGroup;
 			children = (
+				14F1EE7C23AACA44001AEBF8 /* CI */,
 				14DC8B7B23A97AC20078ED7E /* JenkinsDemo */,
 				14DC8B9223A97AC30078ED7E /* JenkinsDemoTests */,
 				14DC8B7A23A97AC20078ED7E /* Products */,
@@ -106,7 +104,6 @@
 			isa = PBXGroup;
 			children = (
 				14DC8BAE23A97B1E0078ED7E /* Resources */,
-				14DC8BAD23A97B1B0078ED7E /* CI */,
 				14DC8B7C23A97AC20078ED7E /* AppDelegate.swift */,
 				14DC8B7E23A97AC20078ED7E /* SceneDelegate.swift */,
 				14DC8B8023A97AC20078ED7E /* ViewController.swift */,
@@ -125,16 +122,6 @@
 			path = JenkinsDemoTests;
 			sourceTree = "<group>";
 		};
-		14DC8BAD23A97B1B0078ED7E /* CI */ = {
-			isa = PBXGroup;
-			children = (
-				14DC8BB023A984C70078ED7E /* fastlane */,
-				14DC8BB223A984C70078ED7E /* Gemfile */,
-				14DC8BAF23A984C70078ED7E /* Jenkinsfile */,
-			);
-			path = CI;
-			sourceTree = "<group>";
-		};
 		14DC8BAE23A97B1E0078ED7E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -144,13 +131,26 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		14DC8BB023A984C70078ED7E /* fastlane */ = {
+		14F1EE7C23AACA44001AEBF8 /* CI */ = {
 			isa = PBXGroup;
 			children = (
-				14DC8BB123A984C70078ED7E /* Fastfile */,
+				14F1EE7E23AACA5A001AEBF8 /* fastlane */,
+				14F1EE8223AACA5A001AEBF8 /* Gemfile */,
+				14F1EE8323AACA5B001AEBF8 /* Jenkinsfile */,
+				14F1EE7D23AACA5A001AEBF8 /* README.md */,
+			);
+			path = CI;
+			sourceTree = "<group>";
+		};
+		14F1EE7E23AACA5A001AEBF8 /* fastlane */ = {
+			isa = PBXGroup;
+			children = (
+				14F1EE7F23AACA5A001AEBF8 /* Fastfile */,
+				14F1EE8023AACA5A001AEBF8 /* README.md */,
+				14F1EE8123AACA5A001AEBF8 /* report.xml */,
 			);
 			path = fastlane;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -251,10 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14DC8BB723A984C80078ED7E /* Gemfile in Resources */,
-				14DC8BB523A984C80078ED7E /* Fastfile in Resources */,
 				14DC8B8923A97AC30078ED7E /* LaunchScreen.storyboard in Resources */,
-				14DC8BB323A984C80078ED7E /* Jenkinsfile in Resources */,
 				14DC8B8623A97AC30078ED7E /* Assets.xcassets in Resources */,
 				14DC8B8423A97AC20078ED7E /* Main.storyboard in Resources */,
 			);
@@ -271,10 +268,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14DC8BB823A984C80078ED7E /* Gemfile in Resources */,
-				14DC8BB623A984C80078ED7E /* Fastfile in Resources */,
 				14DC8BA523A97AE20078ED7E /* LaunchScreen.storyboard in Resources */,
-				14DC8BB423A984C80078ED7E /* Jenkinsfile in Resources */,
 				14DC8BA623A97AE20078ED7E /* Assets.xcassets in Resources */,
 				14DC8BA723A97AE20078ED7E /* Main.storyboard in Resources */,
 			);
