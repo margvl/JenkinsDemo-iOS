@@ -1,4 +1,34 @@
 fastlane_version "2.66.2"
 
 platform :ios do
+
+desc "Run test coverage"
+lane :coverage do
+    slather(
+        proj: "#{projectName}.xcodeproj",
+        # workspace: "#{projectName}.xcworkspace",
+        scheme: "#{schemeName}",
+        input_format: "auto",
+        source_directory: "./#{projectName}/",
+        output_directory: "./#{reportsPath}/slather/",
+        html: true,
+        jenkins: true
+    )
+end
+
+desc "Runs all the tests"
+lane :test do
+    ENV['FASTLANE_EXPLICIT_OPEN_SIMULATOR'] = 'true'
+    scan(
+        project: "#{projectName}.xcodeproj",
+        #workspace: "#{projectName}.xcworkspace",
+        configuration: "Debug",
+        scheme: "#{schemeName}",
+        device: "iPhone 8",
+        clean: true,
+        output_directory: "./#{reportsPath}/scan",
+        output_types: "html,junit"
+    )
+end
+
 end
