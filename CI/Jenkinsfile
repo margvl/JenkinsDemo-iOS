@@ -6,12 +6,11 @@ pipeline {
 
   options {
     applyConsoleStyling()
-    def config = readJSON file: 'ci.configuration.json'
+    def config = readJSON file: 'config.json'
     sh 'echo ${config}'
   }
 
   stages {
-    stage
     stage('Tests') {
       steps {
         executeTests()
