@@ -24,7 +24,7 @@ lane :test do
         device: "iPhone 8",
         clean: true,
         prelaunch_simulator: true,
-        output_directory: "./test_output/scan",
+        output_directory: "build/results/scan",
         output_types: "html,junit"
     )
 end

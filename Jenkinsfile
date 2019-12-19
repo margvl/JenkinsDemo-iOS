@@ -23,7 +23,7 @@ pipeline {
 
     
       // Processing test results
-      junit 'test_output/report.junit'
+      junit 'build/results/scan/report.junit'
       
       // Cleanup
       sh 'rm -rf build'
