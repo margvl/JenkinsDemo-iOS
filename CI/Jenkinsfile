@@ -1,15 +1,12 @@
 #!groovy
 
+def config = readJson file: 'config.json'
 
 pipeline {
   agent any
 
   options {
     ansiColor("xterm")
-  }
-  
-  environment {
-    config = readJson file: 'config.json'
   }
 
   stages {
@@ -21,7 +18,7 @@ pipeline {
   
     stage('Tests') {
       steps {
-        executeTests()
+        sh 'bundle exec fastlane test'
       }
     }
   }
@@ -46,8 +43,4 @@ pipeline {
       sh 'echo "failure :("'
     }
   }
-}
-
-void executeTests() {
-    sh 'bundle exec fastlane test'
 }
