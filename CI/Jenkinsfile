@@ -6,10 +6,15 @@ pipeline {
 
   options {
     ansiColor("xterm")
-    def config = readJSON text: '{"hello":"world"}'
   }
 
   stages {
+    stage('SetUp') {
+        steps {
+            def config = readJSON text: '{"hello":"world"}'
+        }
+    }
+  
     stage('Tests') {
       steps {
         executeTests()
