@@ -11,7 +11,9 @@ pipeline {
   stages {
     stage('SetUp') {
         steps {
-            def config = readJson file: 'config.json'
+            scripts {
+                def config = readJson file: 'config.json'
+            }
         }
     }
   
