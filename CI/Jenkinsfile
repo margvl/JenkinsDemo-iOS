@@ -1,9 +1,11 @@
 #!groovy
 
-def config = readJSON file: 'config.json'
-
 pipeline {
   agent any
+
+  environment {
+    FILENAME = readJSON file: 'config.json'
+  }
 
   options {
     ansiColor("xterm")
@@ -12,7 +14,8 @@ pipeline {
   stages {
     stage('SetUp') {
         steps {
-            echo '${config}'
+            sh 'echo "We are ing SetUp stage"'
+            sh 'echo ${FILENAME}'
         }
     }
   
