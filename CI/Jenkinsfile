@@ -1,6 +1,6 @@
 #!groovy
 
-def config = readJson file: 'config.json'
+def config = readJSON file: 'config.json'
 
 pipeline {
   agent any
