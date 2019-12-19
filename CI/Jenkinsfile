@@ -5,8 +5,8 @@ pipeline {
   agent any
 
   options {
-    applyConsoleStyling()
-    def config = readJSON file: 'config.json', text: ''
+    ansiColor("xterm")
+    def config = readJSON file: 'config.json'
     sh 'echo ${config}'
   }
 
@@ -42,8 +42,4 @@ pipeline {
 
 void executeTests() {
     sh 'bundle exec fastlane test'
-}
-
-void applyConsoleStyling() {
-    ansiColor("xterm")
 }
