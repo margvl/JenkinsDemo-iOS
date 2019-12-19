@@ -18,6 +18,8 @@ pipeline {
   post {
     always {
     
+      sh 'echo $PWD'
+    
       def props = readJSON file: 'ci.configuration.json'
       sh 'echo ${pros.hello}'
     
