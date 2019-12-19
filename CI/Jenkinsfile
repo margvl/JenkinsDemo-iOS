@@ -6,7 +6,7 @@ pipeline {
 
   options {
     applyConsoleStyling()
-    def config = readJSON file: 'config.json'
+    def config = readJSON file: 'config.json', text: ''
     sh 'echo ${config}'
   }
 
