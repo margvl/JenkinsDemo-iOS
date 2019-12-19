@@ -1,3 +1,17 @@
 {
-	"hello": "world"
+    "buildMachine": "any",
+    "configuration": {
+        
+    },
+    "stages": {
+        "testsCoverage": {
+            "isEnabled": true,
+            "title": "coverage"
+        },
+        "tests": {
+            "isEnabled": true,
+            "title": "tests"
+        }
+    }
+
 }

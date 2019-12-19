@@ -1,16 +1,20 @@
 #!groovy
 
+
 pipeline {
   agent any
 
   options {
-    ansiColor("xterm")
+    applyConsoleStyling()
+    def config = readJSON file: 'ci.configuration.json'
+    sh 'echo ${config}'
   }
 
   stages {
+    stage
     stage('Tests') {
       steps {
-        sh 'bundle exec fastlane test'
+        executeTests()
       }
     }
   }
@@ -19,8 +23,6 @@ pipeline {
     always {
     
       sh 'echo $PWD'
-    
-
     
       // Processing test results
       junit 'build/results/scan/report.junit'
@@ -37,4 +39,12 @@ pipeline {
       sh 'echo "failure :("'
     }
   }
+}
+
+void executeTests() {
+    sh 'bundle exec fastlane test'
+}
+
+void applyConsoleStyling() {
+    ansiColor("xterm")
 }

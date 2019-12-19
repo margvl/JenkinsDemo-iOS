@@ -52,6 +52,7 @@
 		14F1EE8123AACA5A001AEBF8 /* report.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = report.xml; sourceTree = "<group>"; };
 		14F1EE8223AACA5A001AEBF8 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; };
 		14F1EE8323AACA5B001AEBF8 /* Jenkinsfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Jenkinsfile; sourceTree = SOURCE_ROOT; };
+		14FE1F3A23ABEF1500C0A7C3 /* ci.configuration.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ci.configuration.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +83,7 @@
 		14DC8B7023A97AC20078ED7E = {
 			isa = PBXGroup;
 			children = (
+				14FE1F3A23ABEF1500C0A7C3 /* ci.configuration.json */,
 				14F1EE7C23AACA44001AEBF8 /* CI */,
 				14DC8B7B23A97AC20078ED7E /* JenkinsDemo */,
 				14DC8B9223A97AC30078ED7E /* JenkinsDemoTests */,
