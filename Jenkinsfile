@@ -20,8 +20,7 @@ pipeline {
     
       sh 'echo $PWD'
     
-      def props = readJSON file: 'ci.configuration.json'
-      sh 'echo ${pros.hello}'
+
     
       // Processing test results
       junit '../test_output/report.junit'
