@@ -7,11 +7,15 @@ pipeline {
   options {
     ansiColor("xterm")
   }
+  
+  environment {
+    config = readJson file: 'config.json'
+  }
 
   stages {
     stage('SetUp') {
         steps {
-            config = readJson file: 'config.json'
+            echo '${config}'
         }
     }
   
