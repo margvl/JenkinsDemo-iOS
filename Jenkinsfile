@@ -16,13 +16,13 @@ pipeline {
         stage('SetUp') {
             steps {
                 sh 'echo "Will print projectName:"'
-                sh 'echo ${projectName}'
+                sh 'echo ${enviroment}'
             }
         }
 
         stage('Tests') {
             steps {
-                sh 'bundle exec fastlane coverage projectName:${enviroment.projectName} sourcePath:${environment.sourcePath} reportPath:${environment.reportPath}'
+                sh 'bundle exec fastlane coverage projectName:${enviroment.projectName} sourcePath:${enviroment.sourcePath} reportPath:${enviroment.reportPath}'
 
                 sh 'bundle exec fastlane test'
             }
