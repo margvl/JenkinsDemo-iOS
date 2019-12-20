@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         def config = readJSON file: 'config.json'
-        def projectName = ${config.environment.projectName}
+        def projectName = "${config.environment.projectName}"
     }
 
     options {
