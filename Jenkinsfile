@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         def config = readJSON file: 'config.json'
-        def projectName = "${config.environment.projectName}"
+        def enviroment = "${config.environment}"
     }
 
     options {
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh 'bundle exec fastlane coverage projectName:projectName sourcePath:$config.environment.sourcePath reportPath:$config.environment.reportPath'
+                sh 'bundle exec fastlane coverage projectName:${enviroment.projectName} sourcePath:${environment.sourcePath} reportPath:${environment.reportPath}'
 
                 sh 'bundle exec fastlane test'
             }
