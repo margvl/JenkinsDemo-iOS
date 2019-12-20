@@ -25,7 +25,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh 'bundle exec fastlane coverage projectName:${projectName} sourcePath:${sourcePath} reportPath:${reportPath}'
+                sh 'bundle exec fastlane coverage projectName:${environment["projectName"]} sourcePath:${sourcePath} reportPath:${reportPath}'
                 sh 'bundle exec fastlane test'
             }
         }
