@@ -1,5 +1,9 @@
 #!groovy
 
+def projectName
+def sourcePath
+def reportPath
+
 pipeline {
     agent any
 
