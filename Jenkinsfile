@@ -15,18 +15,16 @@ pipeline {
     stages {
         stage('SetUp') {
             steps {
-                sh 'echo "Will print projectName:"'
-                sh 'echo ${environment}'
-            }
-        }
-
-        stage('Tests') {
-            steps {
                 script {
                     projectName = "${config.environment.projectName}"
                     sourcePath = "${config.environment.sourcePath}"
                     reportPath = "${config.environment.reportPath}"
                 }
+            }
+        }
+
+        stage('Tests') {
+            steps {
                 sh 'echo "ProjectName: ${projectName} SourcePath: ${sourcePath} ReportPath: ${reportPath}"'
                 sh 'echo "Will start coverage step..."'
                 sh 'bundle exec fastlane coverage projectName:${projectName} sourcePath:${sourcePath} reportPath:${reportPath}'
