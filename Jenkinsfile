@@ -19,8 +19,17 @@ pipeline {
     }
   
     stage('Tests') {
-      steps {
-        sh 'bundle exec fastlane test'
+      stages {
+        stage('Coverage') {
+            steps {
+                sh 'echo ${config}'
+            }
+        }
+        stage('Tests') {
+            steps {
+                sh 'bundle exec fastlane test'
+            }
+        }
       }
     }
   }
