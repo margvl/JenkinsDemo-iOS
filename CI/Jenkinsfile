@@ -12,12 +12,10 @@ pipeline {
   options {
     ansiColor("xterm")
   }
-
+  
   stages {
     stage('SetUp') {
         steps {
-            sh 'printenv'
-            sh 'cd CI'
             sh 'echo "We are ing SetUp stage"'
             sh 'echo ${config}'
             sh 'echo $PWD'
@@ -26,7 +24,9 @@ pipeline {
   
     stage('Tests') {
       steps {
-        sh 'bundle exec fastlane test'
+        dir('CI') {
+            sh 'bundle exec fastlane test'
+        }
       }
     }
   }
