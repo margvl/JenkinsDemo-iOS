@@ -16,6 +16,7 @@ pipeline {
   stages {
     stage('SetUp') {
         steps {
+            sh 'printenv'
             sh 'cd CI'
             sh 'echo "We are ing SetUp stage"'
             sh 'echo ${config}'
