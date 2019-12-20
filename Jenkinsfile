@@ -19,8 +19,9 @@ pipeline {
         }
 
         stage('Tests') {
+            def projectName = config.environment.projectName
+
             steps {
-                projectName = config.environment.projectName
                 sh 'bundle exec fastlane coverage projectName:projectName sourcePath:$config.environment.sourcePath reportPath:$config.environment.reportPath'
 
                 sh 'bundle exec fastlane test'
