@@ -15,16 +15,17 @@ pipeline {
     stages {
         stage('SetUp') {
             steps {
-                script {
-                    def projectName = "JenkinsDemo"
-                    def sourcePath = ""
-                    def reportPath = ""
-                }
+                sh 'echo "SetUp"'
             }
         }
 
         stage('Tests') {
             steps {
+                script {
+                    def projectName = "JenkinsDemo"
+                    def sourcePath = ""
+                    def reportPath = ""
+                }
                 sh 'echo "ProjectName: ${projectName} SourcePath: ${sourcePath} ReportPath: ${reportPath}"'
                 sh 'echo "Will start coverage step..."'
                 sh 'bundle exec fastlane coverage projectName:${projectName} sourcePath:${sourcePath} reportPath:${reportPath}'
