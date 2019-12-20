@@ -5,6 +5,7 @@ pipeline {
 
     environment {
         def config = readJSON file: 'config.json'
+        def environment = config.environment
     }
 
     options {
@@ -14,7 +15,7 @@ pipeline {
     stages {
         stage('SetUp') {
             steps {
-                sh 'echo ${config}'
+                sh 'echo ${environment}'
             }
         }
 
