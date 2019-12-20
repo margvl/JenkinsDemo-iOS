@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        config = readJSON file: 'config.json'
+        def config = readJSON file: 'config.json'
     }
 
     options {
