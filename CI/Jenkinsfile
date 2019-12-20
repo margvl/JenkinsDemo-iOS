@@ -11,12 +11,12 @@ pipeline {
 
   options {
     ansiColor("xterm")
-    sh 'cd ${rootPath}'
   }
 
   stages {
     stage('SetUp') {
         steps {
+            sh 'cd ${rootPath}'
             sh 'echo "We are ing SetUp stage"'
             sh 'echo ${config}'
             sh 'echo $PWD'
