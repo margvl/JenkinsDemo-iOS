@@ -22,8 +22,9 @@ pipeline {
             steps {
                 script {
                     def projectName = config.environment.projectName
+                    sh 'bundle exec fastlane coverage projectName:projectName sourcePath:$config.environment.sourcePath reportPath:$config.environment.reportPath'
                 }
-                sh 'bundle exec fastlane coverage projectName:projectName sourcePath:$config.environment.sourcePath reportPath:$config.environment.reportPath'
+
                 sh 'bundle exec fastlane test'
             }
         }
