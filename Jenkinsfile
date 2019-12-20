@@ -22,9 +22,9 @@ pipeline {
         stage('Tests') {
             steps {
                 script {
-                    def projectName = "JenkinsDemo"
-                    def sourcePath = ""
-                    def reportPath = ""
+                    projectName = 'JenkinsDemo'
+                    sourcePath = ''
+                    reportPath = ''
                 }
                 sh 'echo "ProjectName: ${projectName} SourcePath: ${sourcePath} ReportPath: ${reportPath}"'
                 sh 'echo "Will start coverage step..."'
