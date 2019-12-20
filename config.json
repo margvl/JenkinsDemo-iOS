@@ -1,7 +1,8 @@
 {
-    "buildMachine": "any",
-    "configuration": {
-        
+    "environment": {
+        "projectName": "JenkinsDemo",
+        "sourcePath": "./JenkinsDemo/",
+        "reportPath": "./build/results/"
     },
     "stages": {
         "testsCoverage": {
@@ -10,7 +11,8 @@
         },
         "tests": {
             "isEnabled": true,
-            "title": "tests"
+            "title": "tests",
+            "device": "iPhone 8"
         }
     }
 }
