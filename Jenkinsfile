@@ -5,9 +5,9 @@ pipeline {
 
     environment {
         config = readJSON file: 'config.json'
-        projectName = config['environment']['projectName']
-        sourcePath = config['environment']['sourcePath']
-        reportPath = config['environment']['reportPath']
+        projectName = $config['environment']['projectName']
+        sourcePath = $config['environment']['sourcePath']
+        reportPath = $config['environment']['reportPath']
     }
 
     options {
