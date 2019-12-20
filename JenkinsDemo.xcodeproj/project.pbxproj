@@ -46,13 +46,13 @@
 		14DC8B9523A97AC30078ED7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14DC8BAB23A97AE20078ED7E /* JenkinsDemo-Staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JenkinsDemo-Staging.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14DC8BAC23A97AE20078ED7E /* JenkinsDemo-Staging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JenkinsDemo-Staging-Info.plist"; path = "/Users/maga/Desktop/Projects/Personal/JenkinsDemo/JenkinsDemo-Staging-Info.plist"; sourceTree = "<absolute>"; };
-		14FE1F3C23AC146200C0A7C3 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
-		14FE1F3E23AC146200C0A7C3 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
-		14FE1F3F23AC146200C0A7C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		14FE1F4023AC146200C0A7C3 /* report.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = report.xml; sourceTree = "<group>"; };
-		14FE1F4123AC146200C0A7C3 /* Jenkinsfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Jenkinsfile; sourceTree = "<group>"; };
-		14FE1F4223AC146200C0A7C3 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
-		14FE1F4323AC146200C0A7C3 /* Gemfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile.lock; sourceTree = "<group>"; };
+		14FE1F6723AD413B00C0A7C3 /* Gemfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile.lock; sourceTree = "<group>"; };
+		14FE1F6823AD413B00C0A7C3 /* Jenkinsfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Jenkinsfile; sourceTree = "<group>"; };
+		14FE1F6923AD413B00C0A7C3 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		14FE1F6B23AD413B00C0A7C3 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
+		14FE1F6C23AD413B00C0A7C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		14FE1F6D23AD413B00C0A7C3 /* report.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = report.xml; sourceTree = "<group>"; };
+		14FE1F6E23AD413B00C0A7C3 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +83,7 @@
 		14DC8B7023A97AC20078ED7E = {
 			isa = PBXGroup;
 			children = (
-				14FE1F3B23AC146200C0A7C3 /* CI */,
+				14FE1F6623AD410C00C0A7C3 /* CI */,
 				14DC8B7B23A97AC20078ED7E /* JenkinsDemo */,
 				14DC8B9223A97AC30078ED7E /* JenkinsDemoTests */,
 				14DC8B7A23A97AC20078ED7E /* Products */,
@@ -132,24 +132,24 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		14FE1F3B23AC146200C0A7C3 /* CI */ = {
+		14FE1F6623AD410C00C0A7C3 /* CI */ = {
 			isa = PBXGroup;
 			children = (
-				14FE1F3C23AC146200C0A7C3 /* config.json */,
-				14FE1F3D23AC146200C0A7C3 /* fastlane */,
-				14FE1F4123AC146200C0A7C3 /* Jenkinsfile */,
-				14FE1F4223AC146200C0A7C3 /* Gemfile */,
-				14FE1F4323AC146200C0A7C3 /* Gemfile.lock */,
+				14FE1F6923AD413B00C0A7C3 /* config.json */,
+				14FE1F6A23AD413B00C0A7C3 /* fastlane */,
+				14FE1F6E23AD413B00C0A7C3 /* Gemfile */,
+				14FE1F6723AD413B00C0A7C3 /* Gemfile.lock */,
+				14FE1F6823AD413B00C0A7C3 /* Jenkinsfile */,
 			);
-			path = CI;
+			name = CI;
 			sourceTree = "<group>";
 		};
-		14FE1F3D23AC146200C0A7C3 /* fastlane */ = {
+		14FE1F6A23AD413B00C0A7C3 /* fastlane */ = {
 			isa = PBXGroup;
 			children = (
-				14FE1F3E23AC146200C0A7C3 /* Fastfile */,
-				14FE1F3F23AC146200C0A7C3 /* README.md */,
-				14FE1F4023AC146200C0A7C3 /* report.xml */,
+				14FE1F6B23AD413B00C0A7C3 /* Fastfile */,
+				14FE1F6C23AD413B00C0A7C3 /* README.md */,
+				14FE1F6D23AD413B00C0A7C3 /* report.xml */,
 			);
 			path = fastlane;
 			sourceTree = "<group>";
