@@ -16,9 +16,9 @@ pipeline {
         stage('SetUp') {
             steps {
                 script {
-                    def projectName = config.environment.projectName
-                    def sourcePath = config.environment.sourcePath
-                    def reportPath = config.environment.reportPath
+                    def projectName = "JenkinsDemo"
+                    def sourcePath = ""
+                    def reportPath = ""
                 }
             }
         }
