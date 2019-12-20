@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         def config = readJSON file: 'config.json'
-        def environment = config.environment
+        def environment = readJSON text: "$config.environment"
     }
 
     options {
