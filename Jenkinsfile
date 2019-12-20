@@ -5,9 +5,6 @@ pipeline {
 
     environment {
         config = readJSON file: 'config.json'
-        projectName = $config['environment']['projectName']
-        sourcePath = $config['environment']['sourcePath']
-        reportPath = $config['environment']['reportPath']
     }
 
     options {
@@ -23,7 +20,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh 'bundle exec fastlane coverage projectName:$projectName sourcePath:$sourcePath reportPath:$reportPath'
+                sh 'bundle exec fastlane coverage projectName:$config["environment"]["projectName"] sourcePath:$config["environment"]["sourcePath"] reportPath:$config["environment"]["reportPath"]'
                 sh 'bundle exec fastlane test'
             }
         }
