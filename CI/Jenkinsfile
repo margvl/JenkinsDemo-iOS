@@ -16,7 +16,7 @@ pipeline {
   stages {
     stage('SetUp') {
         steps {
-            sh 'cd ${rootPath}'
+            sh 'cd CI'
             sh 'echo "We are ing SetUp stage"'
             sh 'echo ${config}'
             sh 'echo $PWD'
