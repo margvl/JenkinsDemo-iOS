@@ -1,5 +1,7 @@
 #!groovy
 
+def rootPath = "./CI"
+
 pipeline {
   agent any
 
@@ -9,6 +11,7 @@ pipeline {
 
   options {
     ansiColor("xterm")
+    sh 'cd ${rootPath}'
   }
 
   stages {
