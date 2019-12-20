@@ -6,7 +6,7 @@ pipeline {
     environment {
         def config = readJSON file: 'config.json'
         def enviroment = "${config.environment}"
-        def projectName = "${enviroment.projectName}"
+        def projectName = "${config.enviroment.projectName}"
     }
 
     options {
@@ -17,7 +17,7 @@ pipeline {
         stage('SetUp') {
             steps {
                 sh 'echo "Will print projectName:"'
-                sh 'echo ${enviroment}'
+                sh 'echo ${projectName}'
             }
         }
 
