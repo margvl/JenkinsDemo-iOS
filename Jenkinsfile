@@ -1,12 +1,10 @@
 #!groovy
 
-def rootPath = "./CI"
-
 pipeline {
   agent any
 
   environment {
-    config = readJSON file: 'CI/config.json'
+    config = readJSON file: 'config.json'
   }
 
   options {
@@ -16,17 +14,13 @@ pipeline {
   stages {
     stage('SetUp') {
         steps {
-            sh 'echo "We are ing SetUp stage"'
             sh 'echo ${config}'
-            sh 'echo $PWD'
         }
     }
   
     stage('Tests') {
       steps {
-        dir('CI') {
-            sh 'bundle exec fastlane test'
-        }
+        sh 'bundle exec fastlane test'
       }
     }
   }
