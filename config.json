@@ -2,7 +2,8 @@
     "environment": {
         "projectName": "JenkinsDemo",
         "sourcePath": "./JenkinsDemo/",
-        "reportPath": "./build/results/"
+        "reportPath": "./build/report/",
+        "outputPath": "./build/output/"
     },
     "stages": {
         "testsCoverage": {
