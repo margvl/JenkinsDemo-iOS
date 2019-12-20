@@ -4,7 +4,7 @@ pipeline {
   agent any
 
   environment {
-    FILENAME = readJSON file: 'CI/config.json'
+    config = readJSON file: 'CI/config.json'
   }
 
   options {
@@ -15,7 +15,8 @@ pipeline {
     stage('SetUp') {
         steps {
             sh 'echo "We are ing SetUp stage"'
-            sh 'echo ${FILENAME}'
+            sh 'echo ${config}'
+            sh 'echo $PWD'
         }
     }
   
