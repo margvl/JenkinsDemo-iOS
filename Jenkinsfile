@@ -20,7 +20,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                sh 'bundle exec fastlane coverage projectName:$config["environment"]["projectName"] sourcePath:$config["environment"]["sourcePath"] reportPath:$config["environment"]["reportPath"]'
+                sh 'bundle exec fastlane coverage projectName:$config.environment.projectName sourcePath:$config.environment.sourcePath reportPath:$config.environment.reportPath'
                 sh 'bundle exec fastlane test'
             }
         }
