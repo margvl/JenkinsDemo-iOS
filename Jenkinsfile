@@ -48,9 +48,10 @@ pipeline {
 }
 
 def executeTestsStage() {
-    String projectName = "JenkinsDemo"
     String sourcePath = ""
     String reportPath = ""
+    
+    sh 'projectName="JenkinsDemo"'
     
     sh 'echo "ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"'
     sh 'echo "Will start coverage step..."'
