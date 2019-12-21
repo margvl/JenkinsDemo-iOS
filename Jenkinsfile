@@ -21,7 +21,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                executeTestsStage()
+                executeTestsStage(config)
             }
         }
     }
@@ -47,10 +47,10 @@ pipeline {
     }
 }
 
-def executeTestsStage() {
-    String projectName = "JenkinsDemo"
-    String sourcePath = ""
-    String reportPath = ""
+def executeTestsStage(config) {
+    String projectName = ${config.environment.projectName}
+    String sourcePath = ${config.environment.sourcePath}
+    String reportPath = ${config.environment.reportPath}
     
     sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
     sh "echo Will start coverage step..."
