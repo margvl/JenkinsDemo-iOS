@@ -47,10 +47,10 @@ pipeline {
 }
 
 void executeTestsStage(def config) {
-    def config = readJSON file: 'config.json'
-    String projectName = "${config.environment.projectName}"
-    String sourcePath = "${config.environment.sourcePath}"
-    String reportPath = "${config.environment.reportPath}"
+    def myConfig = readJSON file: 'config.json'
+    String projectName = "${myConfig.environment.projectName}"
+    String sourcePath = "${myConfig.environment.sourcePath}"
+    String reportPath = "${myConfig.environment.reportPath}"
     
     sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
     sh "echo Will start coverage step..."
