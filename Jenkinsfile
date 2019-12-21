@@ -29,7 +29,7 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { "$isTestStageEnabled" == true } }
+            when { expression { "$isTestStageEnabled" == "true" } }
             steps {
                 executeTestStage(projectName, sourcePath, reportPath)
 
