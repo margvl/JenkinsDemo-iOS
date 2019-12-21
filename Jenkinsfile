@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh "echo SetUp"
                 sh "echo ${config}"
-                sh "echo ${config.stages.test.isEnabled}"
+                sh "echo ${config.stages.test}"
                 sh "echo ${isEnabled}"
             }
         }
