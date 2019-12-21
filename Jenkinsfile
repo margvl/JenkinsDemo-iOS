@@ -9,7 +9,8 @@ pipeline {
     
     environment {
         def config = readJSON file: 'config.json'
-        def myStages = "${config.stages.test.isEnabled}"
+        def isTestStageEnabled = "${config.stages.test.isEnabled}"
+        def isTestCoverageStageEnabled = "${config.stages.test.coverage.isEnabled}"
     }
 
     stages {
@@ -22,8 +23,15 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { "$myStages" == true } }
-            steps { executeTestStage() }
+            when { expression { "$isTestStageEnabled" == true } }
+            steps {
+                executeTestStage()
+                stages {
+                    stage('Coverage') {
+                        when { expression { "$isTestCoverageStageEnabled" == true } }
+                    }
+                }
+            }
             post {
                 always {
                     // Processing test results
