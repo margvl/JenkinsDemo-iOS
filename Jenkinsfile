@@ -27,7 +27,7 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { isTestStageEnabled == true } }
+            when { expression { isTestStageEnabled > 0 } }
             steps {
                 executeTestStage(config)
             }
@@ -39,7 +39,7 @@ pipeline {
         }
         
         stage('Coverage') {
-            when { expression { isTestCoverageStageEnabled = true } }
+            when { expression { isTestCoverageStageEnabled > 0 } }
             steps {
                 executeTestCoverageStage(config)
             }
