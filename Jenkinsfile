@@ -31,7 +31,7 @@ pipeline {
         stage('Test') {
             when { expression { "$isTestStageEnabled" == "true" } }
             steps {
-                executeTestStage(projectName, sourcePath, reportPath)
+                executeTestStage(projectName, sourcePath, reportPath, config)
 
             }
             post {
@@ -54,7 +54,7 @@ pipeline {
     }
 }
 
-void executeTestStage(String projectName, String sourcePath, String reportPath) {
+void executeTestStage(String projectName, String sourcePath, String reportPath, def config) {
     sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
     sh "bundle exec fastlane test"
 }
