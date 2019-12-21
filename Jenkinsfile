@@ -1,13 +1,8 @@
 #!groovy
 
-def config
-
 pipeline {
     agent any
 
-    environment {
-        config = readJSON file: 'config.json'
-    }
 
     options {
         ansiColor("xterm")
@@ -49,6 +44,7 @@ pipeline {
 }
 
 def executeTestsStage() {
+    def config = readJSON file: 'config.json'
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
