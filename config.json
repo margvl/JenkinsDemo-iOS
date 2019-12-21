@@ -11,7 +11,7 @@
             "title": "coverage"
         },
         "tests": {
-            "isEnabled": true,
+            "isEnabled": false,
             "title": "tests",
             "device": "iPhone 8"
         }
