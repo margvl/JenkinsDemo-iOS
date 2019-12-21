@@ -45,7 +45,7 @@ pipeline {
     }
 }
 
-def executeTestsStage(def config) {
+void executeTestsStage(def config) {
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
