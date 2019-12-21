@@ -20,7 +20,7 @@ pipeline {
         }
 
         stage($title) {
-            when { expression { config.stages.test.isEnabled } }
+            when { expression { config.stages.test.isEnabled == true } }
             steps { executeTestsStage(config) }
         }
     }
