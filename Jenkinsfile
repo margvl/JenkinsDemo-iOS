@@ -9,6 +9,7 @@ pipeline {
     
     environment {
         def config = readJSON file: 'config.json'
+        def title = "${config.stages.test.title}"
     }
 
     stages {
@@ -18,7 +19,7 @@ pipeline {
             }
         }
 
-        stage("${config.stages.test.title}") {
+        stage("${title}") {
             when { expression { config.stages.test.isEnabled } }
             steps { executeTestsStage() }
         }
