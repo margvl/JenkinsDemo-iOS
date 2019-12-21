@@ -16,7 +16,7 @@ pipeline {
         stage('SetUp') {
             steps {
                 sh "echo SetUp"
-                sh "echo ${config.stages.test.isEnabled}"
+                sh "echo \"${config["stages"]["test"]["isEnabled"]}\""
             }
         }
 
