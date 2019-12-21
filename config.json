@@ -1,17 +1,17 @@
 {
-    "myStages": {
-        "testCoverage": {
-            "isEnabled": "true",
-        },
-        "test": {
-            "isEnabled": "false",
-            "device": "iPhone 8"
-        }
-    },
     "environment": {
         "projectName": "JenkinsDemo",
         "sourcePath": "./JenkinsDemo/",
         "reportPath": "./build/report/",
         "outputPath": "./build/output/"
     },
+    "stages": {
+        "testCoverage": {
+            "isEnabled": "true"
+        },
+        "test": {
+            "isEnabled": "false",
+            "device": "iPhone 8"
+        }
+    }
 }
