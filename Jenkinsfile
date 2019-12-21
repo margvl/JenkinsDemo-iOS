@@ -20,7 +20,7 @@ pipeline {
         }
 
         stage('Tests') {
-            steps { executeTestsStage("echo $config") }
+            steps { executeTestsStage("${config}") }
         }
     }
 
