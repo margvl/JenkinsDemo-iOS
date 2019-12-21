@@ -18,7 +18,10 @@ pipeline {
             }
         }
 
-        executeTests()
+        stage('Tests') {
+            when { config.stages.tests.isEnabled }
+            steps { executeTestsStage() }
+        }
     }
 
     post {
@@ -39,12 +42,6 @@ pipeline {
         failure {
             sh 'echo "failure :("'
         }
-    }
-}
-
-void executeTests() {
-    stage('Tests') {
-        steps { executeTestsStage() }
     }
 }
 
