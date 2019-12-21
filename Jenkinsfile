@@ -21,8 +21,7 @@ pipeline {
         }
 
         stage($title) {
-            when { expression { config.stages.test.isEnabled == true } }
-            steps { executeTestsStage(config) }
+            steps { executeTestsStage() }
         }
     }
 
@@ -48,6 +47,7 @@ pipeline {
 }
 
 void executeTestsStage(def config) {
+    def config = readJSON file: 'config.json'
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
