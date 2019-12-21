@@ -22,7 +22,7 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { myStages } }
+            when { expression { "$myStages" } }
             steps { executeTestStage() }
         }
     }
