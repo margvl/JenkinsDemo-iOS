@@ -7,6 +7,10 @@ pipeline {
     options {
         ansiColor("xterm")
     }
+    
+    environment {
+        def config = readJSON file: 'config.json'
+    }
 
     stages {
         stage('SetUp') {
@@ -16,9 +20,7 @@ pipeline {
         }
 
         stage('Tests') {
-            steps {
-                executeTestsStage()
-            }
+            steps { executeTestsStage("$config") }
         }
     }
 
@@ -43,8 +45,7 @@ pipeline {
     }
 }
 
-def executeTestsStage() {
-    def config = readJSON file: 'config.json'
+def executeTestsStage(def config) {
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
