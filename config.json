@@ -5,7 +5,7 @@
         "reportPath": "./build/report/",
         "outputPath": "./build/output/"
     },
-    "stages": {
+    "myStages": {
         "testCoverage": {
             "isEnabled": "true",
         },
