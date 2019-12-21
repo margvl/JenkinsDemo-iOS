@@ -48,9 +48,9 @@ pipeline {
 }
 
 def executeTestsStage(config) {
-    String projectName = ${config.environment.projectName}
-    String sourcePath = ${config.environment.sourcePath}
-    String reportPath = ${config.environment.reportPath}
+    String projectName = "${config.environment.projectName}"
+    String sourcePath = "${config.environment.sourcePath}"
+    String reportPath = "${config.environment.reportPath}"
     
     sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
     sh "echo Will start coverage step..."
