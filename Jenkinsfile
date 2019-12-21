@@ -48,12 +48,12 @@ pipeline {
 }
 
 def executeTestsStage() {
-    def projectName = 'JenkinsDemo'
-    def sourcePath = ''
-    def reportPath = ''
+    String projectName = "JenkinsDemo"
+    String sourcePath = ""
+    String reportPath = ""
     
-    sh 'echo "ProjectName: ${projectName} SourcePath: ${sourcePath} ReportPath: ${reportPath}"'
+    sh 'echo "ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"'
     sh 'echo "Will start coverage step..."'
-    sh 'bundle exec fastlane coverage projectName:${projectName} sourcePath:${sourcePath} reportPath:${reportPath}'
+    sh 'bundle exec fastlane coverage projectName:$projectName sourcePath:$sourcePath reportPath:$reportPath'
     sh 'bundle exec fastlane test'
 }
