@@ -22,6 +22,7 @@ pipeline {
         }
 
         stage('Test') {
+            when { myStages }
             steps { executeTestStage() }
         }
     }
