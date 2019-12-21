@@ -19,7 +19,7 @@ pipeline {
             }
         }
 
-        stage("${title}") {
+        stage(title) {
             when { expression { config.stages.test.isEnabled } }
             steps { executeTestsStage() }
         }
