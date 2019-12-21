@@ -1,30 +1,27 @@
 fastlane_version "2.66.2"
 
+desc "Runs all the tests"
+lane :test do |options|
+    scan(
+        project: "#{options[:projectName]}.xcodeproj",
+        workspace: "#{options[:projectName]}.xcworkspace",
+        devices: ["iPhone 8"],
+        clean: true,
+        prelaunch_simulator: true,
+        output_directory: "#{options[:reportPath]}/scan/",
+        output_types: "html,junit"
+    )
+end
+
 desc "Run test coverage"
 lane :coverage do |options|
     slather(
         proj: "#{options[:projectName]}.xcodeproj",
         workspace: "#{options[:projectName]}.xcworkspace",
-        #scheme: options[:scheme],
         input_format: "auto",
         source_directory: options[:sourcePath],
         output_directory: "#{options[:reportPath]}/slather/",
         html: true,
         jenkins: true
-    )
-end
-
-desc "Runs all the tests"
-lane :test do
-    scan(
-        project: "JenkinsDemo.xcodeproj",
-        #workspace: "#{projectName}.xcworkspace",
-        configuration: "Debug",
-        scheme: "JenkinsDemo",
-        device: "iPhone 8",
-        clean: true,
-        prelaunch_simulator: true,
-        output_directory: "build/results/scan",
-        output_types: "html,junit"
     )
 end

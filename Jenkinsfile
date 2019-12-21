@@ -22,23 +22,26 @@ pipeline {
     stages {
         stage('SetUp') {
             steps {
-                sh "echo SetUp"
-                sh "echo ${isTestStageEnabled}"
-                sh "echo ${isTestCoverageStageEnabled}"
+                sh "bundle install"
             }
         }
 
         stage('Test') {
-            when { expression { "$isTestStageEnabled" == "true" } }
+            when { expression { isTestStageEnabled == true } }
             steps {
-                executeTestStage(sourcePath, reportPath, config)
-
+                executeTestStage(config)
             }
             post {
                 always {
-                    // Processing test results
-                    junit 'build/results/scan/report.junit'
+                    junit "$reportPath/scan/report.junit"
                 }
+            }
+        }
+        
+        stage('Coverage') {
+            when { expression { isTestCoverageStageEnabled = true } }
+            steps {
+                executeTestCoverageStage(config)
             }
         }
     }
@@ -54,16 +57,19 @@ pipeline {
     }
 }
 
-void executeTestStage(String sourcePath, String reportPath, def config) {
-    println("Printing config:")
-    println(config)
-    println(config.getClass())
+void executeTestStage(def json) {
+    def config = readJSON text: json
     String projectName = "${config.environment.projectName}"
-    sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
-    sh "bundle exec fastlane test"
+    String reportPath = "${config.environment.reportPath}"
+
+    sh "bundle exec fastlane test projectName:$projectName reportPath:$reportPath"
 }
 
-void executeTestCoverageStage(String projectName, String sourcePath, String reportPath) {
-    sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
+void executeTestCoverageStage(def json) {
+    def config = readJSON text: json
+    String projectName = "${config.environment.projectName}"
+    String sourcePath = "${config.environment.sourcePath}"
+    String reportPath = "${config.environment.reportPath}"
+
     sh "bundle exec fastlane coverage projectName:$projectName sourcePath:$sourcePath reportPath:$reportPath"
 }
