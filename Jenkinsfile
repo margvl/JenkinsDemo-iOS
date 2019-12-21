@@ -9,18 +9,19 @@ pipeline {
     
     environment {
         def config = readJSON file: 'config.json'
-        def title = "${config.stages.test.title}"
+        def isEnabled = "${config.stages.test.isEnabled}"
     }
 
     stages {
         stage('SetUp') {
             steps {
                 sh "echo SetUp"
-                sh "echo ${config['stages']['test']['isEnabled']}"
+                sh "echo ${config.stages.test.isEnabled}"
+                sh "echo ${isEnabled}"
             }
         }
 
-        stage($title) {
+        stage('Test') {
             steps { executeTestsStage() }
         }
     }
