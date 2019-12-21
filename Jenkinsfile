@@ -21,7 +21,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                executeTestsStage(config)
+                executeTestsStage($config)
             }
         }
     }
