@@ -1,11 +1,12 @@
 #!groovy
 
+def config
+
 pipeline {
     agent any
 
     environment {
-        def config = readJSON file: 'config.json'
-        def environment = "${config.environment}"
+        config = readJSON file: 'config.json'
     }
 
     options {
@@ -21,7 +22,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                executeTestsStage("${config}")
+                executeTestsStage()
             }
         }
     }
@@ -47,7 +48,7 @@ pipeline {
     }
 }
 
-def executeTestsStage(def config) {
+def executeTestsStage() {
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
