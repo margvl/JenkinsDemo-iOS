@@ -18,8 +18,8 @@ pipeline {
             }
         }
 
-        stage('Tests') {
-            when { expression { config.stages.tests.isEnabled } }
+        stage("${config.stages.test.title}") {
+            when { expression { config.stages.test.isEnabled } }
             steps { executeTestsStage() }
         }
     }
