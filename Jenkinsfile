@@ -57,6 +57,7 @@ pipeline {
 void executeTestStage(String sourcePath, String reportPath, def config) {
     println("Printing config:")
     println(config)
+    println(config.getClass())
     String projectName = "${config.environment.projectName}"
     sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
     sh "bundle exec fastlane test"
