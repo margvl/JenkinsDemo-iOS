@@ -24,20 +24,16 @@ pipeline {
         stage('Test') {
             when { expression { "$myStages" == true } }
             steps { executeTestStage() }
+            post {
+                always {
+                    // Processing test results
+                    junit 'build/results/scan/report.junit'
+                }
+            }
         }
     }
 
     post {
-        always {
-            sh 'echo $PWD'
-
-            // Processing test results
-            junit 'build/results/scan/report.junit'
-
-            // Cleanup
-            sh 'rm -rf build'
-        }
-
         success {
             sh 'echo "success :)"'
         }
