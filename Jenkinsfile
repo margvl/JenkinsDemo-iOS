@@ -3,7 +3,6 @@
 pipeline {
     agent any
 
-
     options {
         ansiColor("xterm")
     }
@@ -19,9 +18,7 @@ pipeline {
             }
         }
 
-        stage('Tests') {
-            steps { executeTestsStage($config) }
-        }
+        executeTests()
     }
 
     post {
@@ -45,7 +42,14 @@ pipeline {
     }
 }
 
-void executeTestsStage(def config) {
+void executeTests() {
+    stage('Tests') {
+        steps { executeTestsStage() }
+    }
+}
+
+void executeTestsStage() {
+    def config = readJSON file: 'config.json'
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
