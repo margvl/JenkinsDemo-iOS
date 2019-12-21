@@ -32,14 +32,7 @@ pipeline {
             when { expression { "$isTestStageEnabled" == true } }
             steps {
                 executeTestStage(projectName, sourcePath, reportPath)
-                stages {
-                    stage('Coverage') {
-                        when { expression { "$isTestCoverageStageEnabled" == true } }
-                        steps {
-                            executeTestCoverageStage(projectName, sourcePath, reportPath)
-                        }
-                    }
-                }
+
             }
             post {
                 always {
