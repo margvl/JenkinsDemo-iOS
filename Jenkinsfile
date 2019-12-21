@@ -9,7 +9,7 @@ pipeline {
     
     environment {
         def config = readJSON file: 'config.json'
-        def myStages = "${config.stages}"
+        def myStages = "${config.stages.test.isEnabled}"
     }
 
     stages {
