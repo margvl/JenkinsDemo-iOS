@@ -15,7 +15,8 @@ pipeline {
     stages {
         stage('SetUp') {
             steps {
-                sh 'echo "SetUp"'
+                sh "echo SetUp"
+                sh "echo $config.stages.test.isEnabled"
             }
         }
 
