@@ -49,6 +49,7 @@ pipeline {
 }
 
 void executeTestStage() {
+    def config = readJSON file: 'config.json'
     String projectName = "${config.environment.projectName}"
     String sourcePath = "${config.environment.sourcePath}"
     String reportPath = "${config.environment.reportPath}"
