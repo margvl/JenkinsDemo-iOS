@@ -25,15 +25,7 @@ pipeline {
 
         stage('Tests') {
             steps {
-                script {
-                    projectName = 'JenkinsDemo'
-                    sourcePath = ''
-                    reportPath = ''
-                }
-                sh 'echo "ProjectName: ${projectName} SourcePath: ${sourcePath} ReportPath: ${reportPath}"'
-                sh 'echo "Will start coverage step..."'
-                sh 'bundle exec fastlane coverage projectName:${projectName} sourcePath:${sourcePath} reportPath:${reportPath}'
-                sh 'bundle exec fastlane test'
+                executeTestsStage()
             }
         }
     }
@@ -57,4 +49,15 @@ pipeline {
             sh 'echo "failure :("'
         }
     }
+}
+
+def executeTestsStage() {
+    def projectName = 'JenkinsDemo'
+    def sourcePath = ''
+    def reportPath = ''
+    
+    sh 'echo "ProjectName: ${projectName} SourcePath: ${sourcePath} ReportPath: ${reportPath}"'
+    sh 'echo "Will start coverage step..."'
+    sh 'bundle exec fastlane coverage projectName:${projectName} sourcePath:${sourcePath} reportPath:${reportPath}'
+    sh 'bundle exec fastlane test'
 }
