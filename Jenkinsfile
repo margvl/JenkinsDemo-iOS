@@ -9,6 +9,12 @@ pipeline {
     
     environment {
         def config = readJSON file: 'config.json'
+
+        def projectName = "${config.environment.projectName}"
+        def sourcePath = "${config.environment.sourcePath}"
+        def reportPath = "./build/report/"
+        def outputPath = "./build/output/"
+        
         def isTestStageEnabled = "${config.stages.test.isEnabled}"
         def isTestCoverageStageEnabled = "${config.stages.test.coverage.isEnabled}"
     }
@@ -17,18 +23,21 @@ pipeline {
         stage('SetUp') {
             steps {
                 sh "echo SetUp"
-                sh "echo ${config}"
-                sh "echo ${myStages}"
+                sh "echo ${isTestStageEnabled}"
+                sh "echo ${isTestCoverageStageEnabled}"
             }
         }
 
         stage('Test') {
             when { expression { "$isTestStageEnabled" == true } }
             steps {
-                executeTestStage()
+                executeTestStage(projectName, sourcePath, reportPath)
                 stages {
                     stage('Coverage') {
                         when { expression { "$isTestCoverageStageEnabled" == true } }
+                        steps {
+                            executeTestCoverageStage(projectName, sourcePath, reportPath)
+                        }
                     }
                 }
             }
@@ -52,14 +61,12 @@ pipeline {
     }
 }
 
-void executeTestStage() {
-    def config = readJSON file: 'config.json'
-    String projectName = "${config.environment.projectName}"
-    String sourcePath = "${config.environment.sourcePath}"
-    String reportPath = "${config.environment.reportPath}"
-    
+void executeTestStage(String projectName, String sourcePath, String reportPath) {
     sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
-    sh "echo Will start coverage step..."
-    sh "bundle exec fastlane coverage projectName:$projectName sourcePath:$sourcePath reportPath:$reportPath"
     sh "bundle exec fastlane test"
+}
+
+void executeTestCoverageStage(String projectName, String sourcePath, String reportPath) {
+    sh "echo ProjectName: $projectName SourcePath: $sourcePath ReportPath: $reportPath"
+    sh "bundle exec fastlane coverage projectName:$projectName sourcePath:$sourcePath reportPath:$reportPath"
 }

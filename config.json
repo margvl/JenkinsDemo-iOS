@@ -1,9 +1,7 @@
 {
     "environment": {
         "projectName": "JenkinsDemo",
-        "sourcePath": "./JenkinsDemo/",
-        "reportPath": "./build/report/",
-        "outputPath": "./build/output/"
+        "sourcePath": "./JenkinsDemo/"
     },
     "stages": {
         "test": {
