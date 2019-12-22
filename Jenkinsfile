@@ -22,6 +22,8 @@ pipeline {
 
     options {
         ansiColor('xterm')
+        buildDiscarder(logRotator(numToKeepStr: '15'))
+        disableConcurrentBuilds()
     }
     
     environment {
@@ -75,7 +77,7 @@ TestStageConfiguration getTestStageConfiguration() {
 void executeTestStage() {
     TestStageConfiguration configuration = getTestStageConfiguration()
     sh "bundle exec fastlane test" +
-            " projectName:${configuration.projectName}" +
+            " projectName:${configuration.projectName}.xcodeproj" +
             " device:${configuration.device}" +
             " reportPath:${configuration.reportPath}"
 }
