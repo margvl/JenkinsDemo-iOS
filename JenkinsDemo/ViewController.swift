@@ -18,26 +18,9 @@ class ViewController: UIViewController {
 
 
 //
-// stage('Test') {
-//     steps {
-//         executeTestStage()
-//     }
-//     post {
-//         always {
-//             junit '${configuration.testStage.reportPath}/scan/*.junit'
-//         }
-//     }
-// }
 
-// void executeTestStage() {
-//    TestStage stage = configuration.testStage
-//    println("TestStage3: " + stage.getClass())
-//
-//    sh 'bundle exec fastlane test'
-//            + ' projectName:${stage.projectName}'
-//            + ' devices:${stage.devices}'
-//            + ' reportPath:${stage.reportPath}'
-//}
+
+
 
 //
 // void executeTestCoverageStage(def json) {
@@ -50,23 +33,7 @@ class ViewController: UIViewController {
 // }
 //
 
-//environment {
-//    ProjectConfiguration configuration = getProjectConfiguration('config.json')
-//}
 
-//ProjectConfiguration getProjectConfiguration(String configPath) {
-//    def config = readJSON file: configPath
-//    def environment = config.environment
-//    def stages = config.stages
-//    def test = stages.test
-//
-//    TestStage testStage = new TestStage(
-//            test.isEnabled,
-//            environment.projectName,
-//            test.devices,
-//            environment.reportPath)
-//
-//    println("TestStage1: " + testStage.getClass())
-//    return new ProjectConfiguration(testStage)
-//}
+
+
 
