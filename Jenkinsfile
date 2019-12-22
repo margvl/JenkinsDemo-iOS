@@ -12,7 +12,12 @@ class TestStage {
     String[] devices
     String reportPath
     
-    TestStage(isEnabled, projectName, devices, reportPath) {
+    TestStage(
+            Boolean isEnabled,
+            String projectName,
+            String[] devices,
+            String reportPath) {
+            
         this.isEnabled = isEnabled
         this.projectName = projectName
         this.devices = devices
@@ -73,6 +78,7 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
             test.devices,
             environment.reportPath)
 
+    println("TestStage: " + testStage.getClass())
     return new ProjectConfiguration(testStage)
 }
 
