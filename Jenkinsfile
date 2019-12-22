@@ -1,14 +1,18 @@
 #!groovy
 
 class Configuration {
-    TestStage test
+    TestStage testStage
     
     Configuration() {
         def config = readJSON file: 'config.json'
-    
-        environment = new Environment(
-                config.environment.projectName,
-                config.environment.sourcePath)
+        def environment = config.environment
+        def testStage = config.stages.test
+        
+        this.testStage = new TestStage(
+                testStage.isEnabled,
+                environment.projectName,
+                testStage.devices,
+                environment.reportPath)
     }
 }
 
@@ -75,7 +79,7 @@ pipeline {
     }
 }
 
-Environment getConfiguration() {
+Configuration getConfiguration() {
     return new Configuration()
 }
 
