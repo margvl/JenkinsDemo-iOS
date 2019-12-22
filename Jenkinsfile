@@ -9,7 +9,8 @@ pipeline {
     
     environment {
         def config = readJSON file: 'config.json'
-
+        println("Type")
+        println(config.getClass())
         def projectName = "${config.environment.projectName}"
         def sourcePath = "${config.environment.sourcePath}"
         def reportPath = "./build/report/"
