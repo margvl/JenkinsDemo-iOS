@@ -30,17 +30,17 @@ pipeline {
     }
     
     environment {
-        ProjectConfiguration configuration = getProjectConfiguration('config.json')
+        ProjectConfiguration configuration = getProjectConfiguration("config.json")
     }
 
     stages {
-        stage('SetUp') {
+        stage("SetUp") {
             steps {
                 sh "bundle install"
             }
         }
 
-        stage('Test') {
+        stage("Test") {
             steps {
                 executeTestStage(configuration.testStage)
             }
@@ -54,11 +54,11 @@ pipeline {
 
     post {
         success {
-            sh 'echo "success :)"'
+            sh "echo success :)"
         }
 
         failure {
-            sh 'echo "failure :("'
+            sh "echo failure :("
         }
     }
 }
@@ -68,14 +68,6 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     def environment = config.environment
     def stages = config.stages
     def test = stages.test
-
-    println("Config: " + config.getClass())
-    println("Environment: " + environment.getClass())
-    println("ProjectName: " + environment.projectName.getClass())
-    println("ReportPath: " + environment.reportPath.getClass())
-    println("Stages: " + stages.getClass())
-    println("Test: " + test.getClass())
-    println("IsEnabled2: " + test.isEnabled.getClass())
 
     TestStage testStage = new TestStage(
             test.isEnabled,
@@ -87,8 +79,8 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
 }
 
 void executeTestStage(TestStage stage) {
-    println("Printing stage class:")
-    println(configuration.getClass())
+    println("TestStage: " + stage.getClass())
+    
     sh "bundle exec fastlane test"
             + " projectName:${stage.projectName}"
             + " devices:${stage.devices}"
