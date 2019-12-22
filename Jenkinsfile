@@ -77,8 +77,8 @@ TestStageConfiguration getTestStageConfiguration() {
 void executeTestStage() {
     TestStageConfiguration configuration = getTestStageConfiguration()
     sh "bundle exec fastlane test" +
-            " projectName:${configuration.projectName}.xcodeproj" +
-            " device:${configuration.device}" +
-            " reportPath:${configuration.reportPath}"
+            " projectName:\"${configuration.projectName}.xcodeproj\"" +
+            " device:\"${configuration.device}\"" +
+            " reportPath:\"${configuration.reportPath}\""
 }
 
