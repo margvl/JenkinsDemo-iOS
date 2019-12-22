@@ -63,7 +63,7 @@ TestStageConfiguration getTestStageConfiguration() {
     def stages = config.stages
     def test = stages.test
 
-    TestStage testStage = new TestStage(
+    TestStageConfiguration testStage = new TestStageConfiguration(
             test.isEnabled,
             environment.projectName,
             test.devices,
@@ -73,12 +73,10 @@ TestStageConfiguration getTestStageConfiguration() {
 }
 
 void executeTestStage() {
-    ProjectConfiguration configuration = getTestStageConfiguration()
-    TestStage stage = configuration.testStage
-
+    TestStageConfiguration configuration = getTestStageConfiguration()
     sh 'bundle exec fastlane test'
-            + ' projectName:"${stage.projectName}"'
-            + ' devices:"${stage.devices}"'
-            + ' reportPath:"${stage.reportPath}"'
+            + ' projectName:"${configuration.projectName}"'
+            + ' devices:"${configuration.devices}"'
+            + ' reportPath:"${configuration.reportPath}"'
 }
 
