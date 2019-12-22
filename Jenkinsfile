@@ -3,8 +3,13 @@
 class Configuration {
     TestStage testStage
     
-    Configuration() {
-        def config = readJSON file: 'config.json'
+    Configuration(String configPath) {
+    
+        File file = new File(configPath)
+        def slurper = new JsonSlurper()
+        def config = slurper.parse(file)
+    
+    
         def environment = config.environment
         def testStage = config.stages.test
         
@@ -17,7 +22,7 @@ class Configuration {
 }
 
 class TestStage {
-    boolean isEnabled
+    Boolean isEnabled
     String projectName
     String[] devices
     String reportPath
@@ -38,7 +43,7 @@ pipeline {
     }
     
     environment {
-        Configuration configuration = getConfiguration()
+        Configuration configuration = getConfiguration("config.json")
     }
 
     stages {
@@ -55,7 +60,7 @@ pipeline {
             }
             post {
                 always {
-                    junit "$reportPath/scan/report.junit"
+                    junit "${configuration.testStage.reportPath}/scan/*.junit"
                 }
             }
         }
@@ -79,8 +84,8 @@ pipeline {
     }
 }
 
-Configuration getConfiguration() {
-    return new Configuration()
+Configuration getConfiguration(String configPath) {
+    return new Configuration(configPath)
 }
 
 void executeTestStage(TestStage stage) {
