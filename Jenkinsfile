@@ -1,3 +1,29 @@
+class ProjectConfiguration {
+    TestStage testStage
+
+    ProjectConfiguration(TestStage testStage) {
+        this.testStage = testStage
+    }
+}
+
+class TestStage {
+    Boolean isEnabled
+    String projectName
+    String[] devices
+    String reportPath
+
+    TestStage(
+            Boolean isEnabled,
+            String projectName,
+            String[] devices,
+            String reportPath) {
+
+        this.isEnabled = isEnabled
+        this.projectName = projectName
+        this.devices = devices
+        this.reportPath = reportPath
+    }
+}
 
 pipeline {
     agent any
