@@ -54,7 +54,7 @@ pipeline {
             }
             post {
                 always {
-                    junit "${configuration.testStage.reportPath}/scan/*.junit"
+                    junit "${configuration.environment.reportPath}/scan/*.junit"
                 }
             }
         }
