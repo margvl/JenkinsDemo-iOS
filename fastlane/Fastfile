@@ -4,7 +4,7 @@ desc "Runs all the tests"
 lane :test do |options|
     scan(
         project: options[:projectName],
-        workspace: null,
+        workspace: options[:workspaceName"],
         device: options[:device],
         clean: true,
         prelaunch_simulator: true,
@@ -17,7 +17,7 @@ desc "Run test coverage"
 lane :coverage do |options|
     slather(
         proj: "#{options[:projectName]}.xcodeproj",
-        workspace: "#{options[:projectName]}.xcworkspace",
+        workspace: "#{options[:workspaceName]}.xcworkspace",
         input_format: "auto",
         source_directory: options[:sourcePath],
         output_directory: "#{options[:reportPath]}/slather/",

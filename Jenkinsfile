@@ -1,17 +1,20 @@
 class TestStageConfiguration {
     Boolean isEnabled
     String projectName
+    String workspaceName
     String device
     String reportPath
 
     TestStageConfiguration(
             Boolean isEnabled,
             String projectName,
+            String workspaceName,
             String device,
             String reportPath) {
 
         this.isEnabled = isEnabled
         this.projectName = projectName
+        this.workspaceName = workspaceName
         this.device = device
         this.reportPath = reportPath
     }
@@ -68,6 +71,7 @@ TestStageConfiguration getTestStageConfiguration() {
     TestStageConfiguration testStage = new TestStageConfiguration(
             test.isEnabled,
             environment.projectName,
+            environment.workspaceName,
             test.device,
             environment.reportPath)
 
@@ -78,6 +82,7 @@ void executeTestStage() {
     TestStageConfiguration configuration = getTestStageConfiguration()
     sh "bundle exec fastlane test" +
             " projectName:\"${configuration.projectName}.xcodeproj\"" +
+            " workspaceName:\"${configuration.workspaceName}\"" +
             " device:\"${configuration.device}\"" +
             " reportPath:\"${configuration.reportPath}\""
 }
