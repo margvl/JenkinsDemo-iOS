@@ -1,18 +1,10 @@
 #!groovy
 
-class JenkinsConfiguration {
+class ProjectConfiguration {
     TestStage testStage
     
-    JenkinsConfiguration() {
-        def config = readJSON file: 'config.json'
-        def environment = config.environment
-        def testStage = config.stages.test
-        
-        this.testStage = new TestStage(
-                testStage.isEnabled,
-                environment.projectName,
-                testStage.devices,
-                environment.reportPath)
+    ProjectConfiguration(Test testStage) {
+        this.testStage = testStage
     }
 }
 
@@ -38,7 +30,7 @@ pipeline {
     }
     
     environment {
-        JenkinsConfiguration configuration = getJenkinsConfiguration()
+        ProjectConfiguration configuration = getProjectConfiguration('config.json')
     }
 
     stages {
@@ -71,8 +63,18 @@ pipeline {
     }
 }
 
-JenkinsConfiguration getJenkinsConfiguration() {
-    return new JenkinsConfiguration()
+ProjectConfiguration getProjectConfiguration(String configPath) {
+    def config = readJSON file: configPath
+    def environment = config.environment
+    def test = config.stages.test
+
+    TestStage testStage = new TestStage(
+            test.isEnabled,
+            environment.projectName,
+            test.devices,
+            environment.reportPath)
+
+    return new ProjectConfiguration(testStage)
 }
 
 void executeTestStage(TestStage stage) {
