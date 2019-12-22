@@ -14,7 +14,7 @@ class TestStage {
     String reportPath
     
     TestStage(enabled, projectName, reportPath) {
-        this.enabed = enabled
+        this.enabled = enabled
         this.projectName = projectName
         this.reportPath = reportPath
     }
