@@ -45,7 +45,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                executeTestStage(configuration.testStage)
+                executeTestStage(${configuration.testStage})
             }
             post {
                 always {
