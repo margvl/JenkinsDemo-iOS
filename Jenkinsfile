@@ -38,7 +38,7 @@ pipeline {
     }
     
     environment {
-        HashMap configuration = readJSON file: configPath
+        HashMap configuration = readJSON file: 'config.json'
     }
 
     stages {
