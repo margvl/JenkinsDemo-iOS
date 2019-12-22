@@ -1,17 +1,10 @@
 #!groovy
 
-import groovy.json.JsonSlurper
-
 class Configuration {
     TestStage testStage
     
-    Configuration(String configPath) {
-    
-        File file = new File(configPath)
-        def slurper = new JsonSlurper()
-        def config = slurper.parse(file)
-    
-    
+    Configuration(configPath) {
+        def config = readJSON file: configPath
         def environment = config.environment
         def testStage = config.stages.test
         
