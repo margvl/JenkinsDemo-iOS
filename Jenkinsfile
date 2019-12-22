@@ -9,12 +9,12 @@ class ProjectConfiguration {
 }
 
 class TestStage {
-    String isEnabled
+    String enabled
     String projectName
     String reportPath
     
-    TestStage(isEnabled, projectName, reportPath) {
-        this.isEnabed = isEnabled
+    TestStage(enabled, projectName, reportPath) {
+        this.enabed = enabled
         this.projectName = projectName
         this.reportPath = reportPath
     }
@@ -66,7 +66,7 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     def environment = config.environment
     def stages = config.stages
     def test = stages.test
-    def isEnabled = test.isEnabled
+    def enabled = test.isEnabled
 
     println("Config: " + config.getClass())
     println("Environment: " + environment.getClass())
@@ -76,7 +76,6 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     println("Test: " + test.getClass())
     println("IsEnabled1: " + isEnabled.getClass())
     println("IsEnabled2: " + test.isEnabled.getClass())
-    println("Devices: " + test.devices.getClass())
 
     TestStage testStage = new TestStage(
             test.isEnabled,
