@@ -1,10 +1,10 @@
 #!groovy
 
-class Config {
+class JenkinsConfiguration {
     TestStage testStage
     
-    Config() {
-        HashMap config = readJSON file: 'config.json'
+    JenkinsConfiguration() {
+        def config = readJSON file: 'config.json'
         def environment = config.environment
         def testStage = config.stages.test
         
@@ -38,7 +38,7 @@ pipeline {
     }
     
     environment {
-        Configuration configuration = getConfiguration()
+        JenkinsConfiguration configuration = getJenkinsConfiguration()
     }
 
     stages {
@@ -71,8 +71,8 @@ pipeline {
     }
 }
 
-Configuration getConfiguration() {
-    return new Configuration()
+JenkinsConfiguration getJenkinsConfiguration() {
+    return new JenkinsConfiguration()
 }
 
 void executeTestStage(TestStage stage) {
