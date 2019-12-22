@@ -75,7 +75,7 @@ Configuration getConfiguration(String configPath) {
     return new Configuration(configPath)
 }
 
-void executeTestStage(HashMap configuration) {
+void executeTestStage(configuration) {
     println("Printing configuration class:")
     println(configuration.getClass())
     sh "bundle exec fastlane test"
