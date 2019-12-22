@@ -1,10 +1,10 @@
 #!groovy
-/*
+
 class Configuration {
     TestStage testStage
     
     Configuration(configPath) {
-        HashMap config = readJSON file: configPath
+        HashMap config = readJSON file: 'config.json'
         def environment = config.environment
         def testStage = config.stages.test
         
@@ -29,7 +29,7 @@ class TestStage {
         this.reportPath = reportPath
     }
 }
-*/
+
 pipeline {
     agent any
 
