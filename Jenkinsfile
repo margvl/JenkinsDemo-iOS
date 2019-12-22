@@ -25,6 +25,8 @@ class TestStage {
     }
 }
 
+ProjectConfiguration configuration
+
 pipeline {
     agent any
 
@@ -33,7 +35,7 @@ pipeline {
     }
     
     environment {
-        ProjectConfiguration configuration = getProjectConfiguration('config.json')
+        configuration = getProjectConfiguration('config.json')
     }
 
     stages {
@@ -45,8 +47,7 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'echo TestStage2: "${configuration.testStage.getClass()}"'
-                executeTestStage(configuration.testStage)
+                executeTestStage()
             }
             post {
                 always {
@@ -83,8 +84,9 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     return new ProjectConfiguration(testStage)
 }
 
-void executeTestStage(TestStage stage) {
-    println("TestStage: " + stage.getClass())
+void executeTestStage() {
+    TestStage stage = configuration.testStage
+    println("TestStage3: " + stage.getClass())
     
     sh 'bundle exec fastlane test'
             + ' projectName:${stage.projectName}'
