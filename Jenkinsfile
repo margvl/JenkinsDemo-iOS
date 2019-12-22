@@ -1,5 +1,19 @@
 #!groovy
 
+def configPath = 'config.json'
+
+class Environment {
+    String projectName
+    String sourcePath
+    String reportPath = "./build/report/"
+    String outputPath = "./build/output/"
+    
+    Environment(projectName, sourcePath) {
+        this.projectName = projectName
+        this.sourcePath = sourcePath
+    }
+}
+
 pipeline {
     agent any
 
@@ -8,8 +22,10 @@ pipeline {
     }
     
     environment {
-        def config = readJSON file: 'config.json'
-        sh "echo ${config.getClass()}"
+        def config = readJSON file: configPath
+        Environment environment = new Environment(config.environment.projectName, config.environment.sourcePath)
+        
+        
         def projectName = "${config.environment.projectName}"
         def sourcePath = "${config.environment.sourcePath}"
         def reportPath = "./build/report/"
@@ -29,7 +45,7 @@ pipeline {
         stage('Test') {
             when { expression { isTestStageEnabled > 0 } }
             steps {
-                executeTestStage(config)
+                sh "echo ${environment.projectName}"
             }
             post {
                 always {
@@ -41,7 +57,7 @@ pipeline {
         stage('Coverage') {
             when { expression { isTestCoverageStageEnabled > 0 } }
             steps {
-                executeTestCoverageStage(config)
+                sh "echo ${environment.sourcePath}"
             }
         }
     }
