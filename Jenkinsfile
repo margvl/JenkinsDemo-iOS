@@ -68,7 +68,7 @@ TestStageConfiguration getTestStageConfiguration() {
     TestStageConfiguration testStage = new TestStageConfiguration(
             test.isEnabled,
             environment.projectName,
-            test.devices,
+            test.device,
             environment.reportPath)
 
     return testStage
