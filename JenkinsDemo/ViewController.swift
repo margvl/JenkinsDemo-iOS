@@ -46,4 +46,25 @@ class ViewController: UIViewController {
 //
 //     sh "bundle exec fastlane coverage projectName:$projectName sourcePath:$sourcePath reportPath:$reportPath"
 // }
+//
+
+//environment {
+//    ProjectConfiguration configuration = getProjectConfiguration('config.json')
+//}
+
+//ProjectConfiguration getProjectConfiguration(String configPath) {
+//    def config = readJSON file: configPath
+//    def environment = config.environment
+//    def stages = config.stages
+//    def test = stages.test
+//
+//    TestStage testStage = new TestStage(
+//            test.isEnabled,
+//            environment.projectName,
+//            test.devices,
+//            environment.reportPath)
+//
+//    println("TestStage1: " + testStage.getClass())
+//    return new ProjectConfiguration(testStage)
+//}
 
