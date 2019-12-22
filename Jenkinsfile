@@ -1,18 +1,18 @@
 class TestStageConfiguration {
     Boolean isEnabled
     String projectName
-    String[] devices
+    String device
     String reportPath
 
     TestStageConfiguration(
             Boolean isEnabled,
             String projectName,
-            String[] devices,
+            String device,
             String reportPath) {
 
         this.isEnabled = isEnabled
         this.projectName = projectName
-        this.devices = devices
+        this.device = device
         this.reportPath = reportPath
     }
 }
@@ -76,7 +76,7 @@ void executeTestStage() {
     TestStageConfiguration configuration = getTestStageConfiguration()
     sh "bundle exec fastlane test" +
             " projectName:${configuration.projectName}" +
-            " devices:${configuration.devices}" +
+            " device:${configuration.device}" +
             " reportPath:${configuration.reportPath}"
 }
 
