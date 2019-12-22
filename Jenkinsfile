@@ -74,7 +74,7 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     println("ReportPath: " + environment.reportPath.getClass())
     println("Stages: " + stages.getClass())
     println("Test: " + test.getClass())
-    println("IsEnabled1: " + isEnabled.getClass())
+    println("IsEnabled1: " + enabled.getClass())
     println("IsEnabled2: " + test.isEnabled.getClass())
 
     TestStage testStage = new TestStage(
