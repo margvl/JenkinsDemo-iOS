@@ -1,7 +1,5 @@
 #!groovy
 
-def configPath = 'config.json'
-
 class Environment {
     String projectName
     String sourcePath
@@ -22,7 +20,7 @@ pipeline {
     }
     
     environment {
-        def config = readJSON file: configPath
+        def config = readJSON file: 'config.json'
         Environment environment = getEnvironment()
         
         
@@ -74,7 +72,7 @@ pipeline {
 }
 
 Environment getEnvironment() {
-    def config = readJSON file: configPath
+    def config = readJSON file: 'config.json'
     return new Environment(config.environment.projectName, config.environment.sourcePath)
 }
 
