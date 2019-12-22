@@ -82,7 +82,7 @@ Environment getConfiguration() {
 void executeTestStage(TestStage stage) {
     sh "bundle exec fastlane test"
             + " projectName:${stage.projectName}"
-            + " devices:${stage.devices}
+            + " devices:${stage.devices}"
             + " reportPath:${stage.reportPath}"
 }
 
