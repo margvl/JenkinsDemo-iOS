@@ -4,7 +4,7 @@ desc "Runs all the tests"
 lane :test do |options|
     scan(
         project: options[:projectName],
-        workspace: options[:workspaceName"],
+        workspace: options[:workspaceName],
         device: options[:device],
         clean: true,
         prelaunch_simulator: true,
