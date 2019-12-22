@@ -69,12 +69,12 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     def test = config.stages.test
 
     println("Config: " + config.getClass())
-    println("Environment" + environment.getClass())
-    println("ProjectName" + environment.projectName.getClass())
-    println("ReportPath" + environment.reportPath.getClass())
-    println("Test" + test.getClass())
-    println("IsEnabled" + test.isEnabled.getGlass())
-    println("Devices" + test.devices.getGlass())
+    println("Environment: " + environment.getClass())
+    println("ProjectName: " + environment.projectName.getClass())
+    println("ReportPath: " + environment.reportPath.getClass())
+    println("Test: " + test.getClass())
+    println("IsEnabled: " + test.isEnabled.getGlass())
+    println("Devices: " + test.devices.getGlass())
 
     TestStage testStage = new TestStage(
             test.isEnabled,

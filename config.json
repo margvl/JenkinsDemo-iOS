@@ -7,11 +7,11 @@
     },
     "stages": {
         "test": {
-            "isEnabled": "true",
+            "isEnabled": "enabled",
             "devices": ["iPhone 8"]
         },
         "testCoverage": {
-            "isEnabled": "true"
+            "isEnabled": "enabled"
         }
     }
 }
