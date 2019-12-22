@@ -47,11 +47,6 @@ pipeline {
             steps {
                 executeTestStage(configuration.testStage)
             }
-            post {
-                always {
-                    junit "${configuration.testStage.reportPath}/scan/*.junit"
-                }
-            }
         }
     }
 
