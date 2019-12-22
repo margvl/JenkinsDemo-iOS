@@ -49,7 +49,6 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { configuration.stages.test.isEnabled } }
             steps {
                 executeTestStage(configuration)
             }
@@ -57,13 +56,6 @@ pipeline {
                 always {
                     junit "${configuration.testStage.reportPath}/scan/*.junit"
                 }
-            }
-        }
-        
-        stage('Coverage') {
-            when { expression { isTestCoverageStageEnabled > 0 } }
-            steps {
-                sh "echo ${environment.sourcePath}"
             }
         }
     }
