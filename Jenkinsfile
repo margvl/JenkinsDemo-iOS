@@ -49,9 +49,9 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { configuration.testStage.isEnabled } }
+            when { expression { configuration.stages.test.isEnabled } }
             steps {
-                executeTestStage(configuration.testStage)
+                executeTestStage(configuration)
             }
             post {
                 always {
@@ -83,11 +83,11 @@ Configuration getConfiguration(String configPath) {
     return new Configuration(configPath)
 }
 
-void executeTestStage(TestStage stage) {
+void executeTestStage(HashMap configuration) {
     sh "bundle exec fastlane test"
-            + " projectName:${stage.projectName}"
-            + " devices:${stage.devices}"
-            + " reportPath:${stage.reportPath}"
+            + " projectName:${configuration.environment.projectName}"
+            + " devices:${configuration.stages.test.devices}"
+            + " reportPath:${configuration.environment.reportPath}"
 }
 
 void executeTestCoverageStage(def json) {
