@@ -23,7 +23,7 @@ pipeline {
     
     environment {
         def config = readJSON file: configPath
-        Environment environment = new Environment(config.environment.projectName, config.environment.sourcePath)
+        Environment environment = getEnvironment()
         
         
         def projectName = "${config.environment.projectName}"
@@ -71,6 +71,11 @@ pipeline {
             sh 'echo "failure :("'
         }
     }
+}
+
+Environment getEnvironment() {
+    def config = readJSON file: configPath
+    return new Environment(config.environment.projectName, config.environment.sourcePath)
 }
 
 void executeTestStage(def json) {
