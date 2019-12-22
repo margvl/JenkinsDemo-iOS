@@ -1,18 +1,10 @@
-class ProjectConfiguration {
-    TestStage testStage
-
-    ProjectConfiguration(TestStage testStage) {
-        this.testStage = testStage
-    }
-}
-
-class TestStage {
+class TestStageConfiguration {
     Boolean isEnabled
     String projectName
     String[] devices
     String reportPath
 
-    TestStage(
+    TestStageConfiguration(
             Boolean isEnabled,
             String projectName,
             String[] devices,
@@ -25,8 +17,6 @@ class TestStage {
     }
 }
 
-def configPath = 'config.json'
-
 pipeline {
     agent any
 
@@ -35,7 +25,7 @@ pipeline {
     }
     
     environment {
-        ProjectConfiguration configuration = getProjectConfiguration()
+        TestStageConfiguration testStage = getTestStageConfiguration()
     }
     
     stages {
@@ -50,7 +40,7 @@ pipeline {
             }
             post {
                 always {
-                    junit '"${configuration.testStage.reportPath}"/scan/*.junit'
+                    junit '"${testStage.reportPath}"/scan/*.junit'
                 }
             }
         }
@@ -67,8 +57,8 @@ pipeline {
     }
 }
 
-ProjectConfiguration getProjectConfiguration() {
-    def config = readJSON file: configPath
+TestStageConfiguration getTestStageConfiguration() {
+    def config = readJSON file: 'config.json'
     def environment = config.environment
     def stages = config.stages
     def test = stages.test
@@ -79,11 +69,11 @@ ProjectConfiguration getProjectConfiguration() {
             test.devices,
             environment.reportPath)
 
-    return new ProjectConfiguration(testStage)
+    return testStage
 }
 
 void executeTestStage() {
-    ProjectConfiguration configuration = getProjectConfiguration()
+    ProjectConfiguration configuration = getTestStageConfiguration()
     TestStage stage = configuration.testStage
 
     sh 'bundle exec fastlane test'
