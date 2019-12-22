@@ -45,7 +45,8 @@ pipeline {
 
         stage('Test') {
             steps {
-                executeTestStage(${configuration.testStage})
+                sh 'echo TestStage2: "${configuration.testStage.getClass()}"'
+                executeTestStage(configuration.testStage)
             }
             post {
                 always {
@@ -78,7 +79,7 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
             test.devices,
             environment.reportPath)
 
-    println("TestStage: " + testStage.getClass())
+    println("TestStage1: " + testStage.getClass())
     return new ProjectConfiguration(testStage)
 }
 
