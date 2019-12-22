@@ -66,14 +66,18 @@ pipeline {
 ProjectConfiguration getProjectConfiguration(String configPath) {
     def config = readJSON file: configPath
     def environment = config.environment
-    def test = config.stages.test
+    def stages = config.stages
+    def test = stages.test
+    def isEnabled = test.isEnabled
 
     println("Config: " + config.getClass())
     println("Environment: " + environment.getClass())
     println("ProjectName: " + environment.projectName.getClass())
     println("ReportPath: " + environment.reportPath.getClass())
+    println("Stages: " + stages.getClass())
     println("Test: " + test.getClass())
-    println("IsEnabled: " + test.isEnabled.getGlass())
+    println("IsEnabled1: " + isEnabled.getGlass())
+    println("IsEnabled2: " + test.isEnabled.getGlass())
     println("Devices: " + test.devices.getGlass())
 
     TestStage testStage = new TestStage(
