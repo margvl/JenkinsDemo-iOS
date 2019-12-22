@@ -38,7 +38,7 @@ pipeline {
     }
     
     environment {
-        HashMap configuration = readJSON file: 'config.json'
+        Configuration configuration = getConfiguration('config.json')
     }
 
     stages {
@@ -50,11 +50,11 @@ pipeline {
 
         stage('Test') {
             steps {
-                executeTestStage(configuration)
+                executeTestStage(configuration.testStage)
             }
             post {
                 always {
-                    junit "${configuration.environment.reportPath}/scan/*.junit"
+                    junit "${configuration.testStage.reportPath}/scan/*.junit"
                 }
             }
         }
@@ -75,13 +75,13 @@ Configuration getConfiguration(String configPath) {
     return new Configuration(configPath)
 }
 
-void executeTestStage(configuration) {
-    println("Printing configuration class:")
+void executeTestStage(TestStage stage) {
+    println("Printing stage class:")
     println(configuration.getClass())
     sh "bundle exec fastlane test"
-            + " projectName:${configuration.environment.projectName}"
-            + " devices:${configuration.stages.test.devices}"
-            + " reportPath:${configuration.environment.reportPath}"
+            + " projectName:${stage.projectName}"
+            + " devices:${stage.devices}"
+            + " reportPath:${stage.reportPath}"
 }
 
 void executeTestCoverageStage(def json) {
