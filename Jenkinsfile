@@ -71,7 +71,7 @@ TestStageConfiguration getTestStageConfiguration() {
     TestStageConfiguration testStage = new TestStageConfiguration(
             test.isEnabled,
             environment.projectName,
-            (environment.workspaceName.getClass() == JSONNull) ? null : environment.workspaceName,
+            (environment.workspaceName.getClass() == String) ? environment.workspaceName : null,
             test.device,
             environment.reportPath)
 
