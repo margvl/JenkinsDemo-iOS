@@ -7,10 +7,10 @@
     },
     "stages": {
         "test": {
-            "isEnabled": "enabled"
+            "isEnabled": true
         },
         "testCoverage": {
-            "isEnabled": "enabled"
+            "isEnabled": true
         }
     }
 }
