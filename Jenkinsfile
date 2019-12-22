@@ -9,7 +9,7 @@ class ProjectConfiguration {
 }
 
 class TestStage {
-    Boolean isEnabled
+    String isEnabled
     String projectName
     String[] devices
     String reportPath
