@@ -80,10 +80,10 @@ Environment getConfiguration() {
 }
 
 void executeTestStage(TestStage stage) {
-    sh "bundle exec fastlane test
-            projectName:${stage.projectName}
-            devices:${stage.devices}
-            reportPath:${stage.reportPath}"
+    sh "bundle exec fastlane test"
+            + " projectName:${stage.projectName}"
+            + " devices:${stage.devices}
+            + " reportPath:${stage.reportPath}"
 }
 
 void executeTestCoverageStage(def json) {
