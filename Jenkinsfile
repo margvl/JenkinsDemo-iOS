@@ -29,34 +29,39 @@ pipeline {
     agent any
 
     options {
-        ansiColor("xterm")
+        ansiColor('xterm')
     }
     
     environment {
-        ProjectConfiguration configuration = getProjectConfiguration("config.json")
+        ProjectConfiguration configuration = getProjectConfiguration('config.json')
     }
 
     stages {
-        stage("SetUp") {
+        stage('SetUp') {
             steps {
-                sh "bundle install"
+                sh 'bundle install'
             }
         }
 
-        stage("Test") {
+        stage('Test') {
             steps {
                 executeTestStage(configuration.testStage)
+            }
+            post {
+                always {
+                    junit '${configuration.testStage.reportPath}/scan/*.junit'
+                }
             }
         }
     }
 
     post {
         success {
-            sh "echo success :)"
+            sh 'echo success :)'
         }
 
         failure {
-            sh "echo failure :("
+            sh 'echo failure :('
         }
     }
 }
@@ -80,10 +85,10 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
 void executeTestStage(TestStage stage) {
     println("TestStage: " + stage.getClass())
     
-    sh "bundle exec fastlane test"
-            + " projectName:${stage.projectName}"
-            + " devices:${stage.devices}"
-            + " reportPath:${stage.reportPath}"
+    sh 'bundle exec fastlane test'
+            + ' projectName:${stage.projectName}'
+            + ' devices:${stage.devices}'
+            + ' reportPath:${stage.reportPath}'
 }
 
 void executeTestCoverageStage(def json) {
