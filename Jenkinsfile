@@ -4,6 +4,7 @@ class ProjectConfiguration {
     TestStage testStage
     
     ProjectConfiguration(TestStage testStage) {
+        println("TestStage: " + testStage.getClass())
         this.testStage = testStage
     }
 }
