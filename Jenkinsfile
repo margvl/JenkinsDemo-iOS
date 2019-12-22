@@ -11,13 +11,11 @@ class ProjectConfiguration {
 class TestStage {
     String isEnabled
     String projectName
-    String[] devices
     String reportPath
     
-    TestStage(isEnabled, projectName, devices, reportPath) {
+    TestStage(isEnabled, projectName, reportPath) {
         this.isEnabed = isEnabled
         this.projectName = projectName
-        this.devices = devices
         this.reportPath = reportPath
     }
 }
@@ -83,7 +81,6 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
     TestStage testStage = new TestStage(
             test.isEnabled,
             environment.projectName,
-            test.devices,
             environment.reportPath)
 
     return new ProjectConfiguration(testStage)
