@@ -1,9 +1,9 @@
 #!groovy
 
-class Configuration {
+class Config {
     TestStage testStage
     
-    Configuration(configPath) {
+    Config() {
         HashMap config = readJSON file: 'config.json'
         def environment = config.environment
         def testStage = config.stages.test
@@ -38,7 +38,7 @@ pipeline {
     }
     
     environment {
-        Configuration configuration = getConfiguration('config.json')
+        Configuration configuration = getConfiguration()
     }
 
     stages {
@@ -71,8 +71,8 @@ pipeline {
     }
 }
 
-Configuration getConfiguration(String configPath) {
-    return new Configuration(configPath)
+Configuration getConfiguration() {
+    return new Configuration()
 }
 
 void executeTestStage(TestStage stage) {
