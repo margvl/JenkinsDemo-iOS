@@ -82,6 +82,7 @@ ProjectConfiguration getProjectConfiguration(String configPath) {
 }
 
 void executeTestStage() {
+    ProjectConfiguration configuration = getProjectConfiguration('config.json')
     TestStage stage = configuration.testStage
     println("TestStage3: " + stage.getClass())
 
