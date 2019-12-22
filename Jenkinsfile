@@ -76,6 +76,8 @@ Configuration getConfiguration(String configPath) {
 }
 
 void executeTestStage(HashMap configuration) {
+    println("Printing configuration class:")
+    println(configuration.getClass())
     sh "bundle exec fastlane test"
             + " projectName:${configuration.environment.projectName}"
             + " devices:${configuration.stages.test.devices}"
