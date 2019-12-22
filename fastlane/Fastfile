@@ -5,7 +5,7 @@ lane :test do |options|
     scan(
         project: "#{options[:projectName]}.xcodeproj",
         workspace: "#{options[:projectName]}.xcworkspace",
-        devices: ["iPhone 8"],
+        devices: options[:devices],
         clean: true,
         prelaunch_simulator: true,
         output_directory: "#{options[:reportPath]}/scan/",

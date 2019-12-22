@@ -1,14 +1,28 @@
 #!groovy
 
-class Environment {
-    String projectName
-    String sourcePath
-    String reportPath = "./build/report/"
-    String outputPath = "./build/output/"
+class Configuration {
+    TestStage test
     
-    Environment(projectName, sourcePath) {
+    Configuration() {
+        def config = readJSON file: 'config.json'
+    
+        environment = new Environment(
+                config.environment.projectName,
+                config.environment.sourcePath)
+    }
+}
+
+class TestStage {
+    boolean isEnabled
+    String projectName
+    String[] devices
+    String reportPath
+    
+    TestStage(isEnabled, projectName, devices, reportPath) {
+        this.isEnabed = isEnabled
         this.projectName = projectName
-        this.sourcePath = sourcePath
+        this.devices = devices
+        this.reportPath = reportPath
     }
 }
 
@@ -20,17 +34,7 @@ pipeline {
     }
     
     environment {
-        def config = readJSON file: 'config.json'
-        Environment environment = getEnvironment()
-        
-        
-        def projectName = "${config.environment.projectName}"
-        def sourcePath = "${config.environment.sourcePath}"
-        def reportPath = "./build/report/"
-        def outputPath = "./build/output/"
-        
-        def isTestStageEnabled = "${config.stages.test.isEnabled}"
-        def isTestCoverageStageEnabled = "${config.stages.test.coverage.isEnabled}"
+        Configuration configuration = getConfiguration()
     }
 
     stages {
@@ -41,9 +45,9 @@ pipeline {
         }
 
         stage('Test') {
-            when { expression { isTestStageEnabled > 0 } }
+            when { expression { configuration.testStage.isEnabled } }
             steps {
-                sh "echo ${environment.projectName}"
+                executeTestStage(configuration.testStage)
             }
             post {
                 always {
@@ -71,19 +75,15 @@ pipeline {
     }
 }
 
-Environment getEnvironment() {
-    def config = readJSON file: 'config.json'
-    return new Environment(config.environment.projectName, config.environment.sourcePath)
+Environment getConfiguration() {
+    return new Configuration()
 }
 
-void executeTestStage(def json) {
-    def config = readJSON text: json
-    println("Will print config:")
-    println(config)
-    String projectName = "${config.environment.projectName}"
-    String reportPath = "${config.environment.reportPath}"
-
-    sh "bundle exec fastlane test projectName:$projectName reportPath:$reportPath"
+void executeTestStage(TestStage stage) {
+    sh "bundle exec fastlane test
+            projectName:${stage.projectName}
+            devices:${stage.devices}
+            reportPath:${stage.reportPath}"
 }
 
 void executeTestCoverageStage(def json) {
