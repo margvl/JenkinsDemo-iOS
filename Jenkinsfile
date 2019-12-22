@@ -3,7 +3,7 @@
 class ProjectConfiguration {
     TestStage testStage
     
-    ProjectConfiguration(Test testStage) {
+    ProjectConfiguration(TestStage testStage) {
         this.testStage = testStage
     }
 }
