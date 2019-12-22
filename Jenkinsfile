@@ -74,9 +74,9 @@ TestStageConfiguration getTestStageConfiguration() {
 
 void executeTestStage() {
     TestStageConfiguration configuration = getTestStageConfiguration()
-    sh "bundle exec fastlane test"
-            + " projectName:${configuration.projectName}"
-            + " devices:${configuration.devices}"
-            + " reportPath:${configuration.reportPath}"
+    sh "bundle exec fastlane test" +
+            " projectName:${configuration.projectName}" +
+            " devices:${configuration.devices}" +
+            " reportPath:${configuration.reportPath}"
 }
 
