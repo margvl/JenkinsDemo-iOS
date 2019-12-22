@@ -1,5 +1,7 @@
 #!groovy
 
+import groovy.json.JsonSlurper
+
 class Configuration {
     TestStage testStage
     
