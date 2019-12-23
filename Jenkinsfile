@@ -30,6 +30,7 @@ pipeline {
     }
     
     environment {
+        TestStageConfiguration testStage = getTestStageConfiguration()
     }
     
     stages {
@@ -39,18 +40,12 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                expression {
-                    TestStageConfiguration testStage = getTestStageConfiguration()
-                    testStage.isEnabled == true
-                }
-            }
+            when { testStage.isEnabled }
             steps {
                 executeTestStage()
             }
             post {
                 always {
-                    TestStageConfiguration testStage = getTestStageConfiguration()
                     junit '"${testStage.reportPath}"/scan/*.junit'
                 }
             }
