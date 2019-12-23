@@ -35,36 +35,18 @@ pipeline {
     
     stages {
         stage('SetUp') {
-            steps {
-                sh 'bundle install'
-            }
+            steps { sh 'bundle install' }
         }
         stage('Test') {
-            when {
-                expression { return testStage.isEnabled }
-            }
-            steps {
-                sh "echo TestStage: ${testStage.getClass()}"
-                sh "echo ReportPath: ${testStage.reportPath.getClass()}"
-                sh "echo IsEnabled: ${testStage.isEnabled.getClass()}"
-                executeTestStage()
-            }
-            post {
-                always {
-                    junit '"${testStage.reportPath}"/scan/*.junit'
-                }
-            }
+            when { expression { return testStage.isEnabled } }
+            steps { executeTestStage() }
+            post { success { reportTestStageResults(testStage.reportPath) } }
         }
     }
 
     post {
-        success {
-            sh 'echo "success :)"'
-        }
-
-        failure {
-            sh 'echo "failure :("'
-        }
+        success { sh 'echo "success :)"' }
+        failure { sh 'echo "failure :("' }
     }
 }
 
@@ -91,5 +73,9 @@ void executeTestStage() {
             " workspaceName:\"${stage.workspaceName}\"" +
             " device:\"${stage.device}\"" +
             " reportPath:\"${stage.reportPath}\""
+}
+
+void reportTestStageResults(String reportPath) {
+    junit '"${reportPath}"/scan/*.junit'
 }
 
