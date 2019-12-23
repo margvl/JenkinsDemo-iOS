@@ -1,11 +1,11 @@
-class TestStageConfiguration {
+class TestStage {
     Boolean isEnabled
     String projectName
     String workspaceName
     String device
     String reportPath
 
-    TestStageConfiguration(
+    TestStage(
             Boolean isEnabled,
             String projectName,
             String workspaceName,
@@ -30,7 +30,7 @@ pipeline {
     }
     
     environment {
-        TestStageConfiguration testStage = getTestStageConfiguration()
+        TestStage testStage = getTestStage()
     }
     
     stages {
@@ -41,6 +41,7 @@ pipeline {
         }
         stage('Test') {
             steps {
+                sh "#!/bin/bash echo TestStage: ${testStage}"
                 sh "#!/bin/bash echo ReportPath: ${testStage.reportPath}"
                 sh "#!/bin/bash echo IsEnabled: ${testStage.isEnabled}"
                 executeTestStage()
@@ -64,13 +65,13 @@ pipeline {
     }
 }
 
-TestStageConfiguration getTestStageConfiguration() {
+TestStage getTestStage() {
     def config = readJSON file: 'config.json'
     def environment = config.environment
     def stages = config.stages
     def test = stages.test
 
-    TestStageConfiguration testStage = new TestStageConfiguration(
+    TestStage testStage = new TestStage(
             test.isEnabled,
             environment.projectName,
             (environment.workspaceName.getClass() == String) ? environment.workspaceName : null,
@@ -81,11 +82,11 @@ TestStageConfiguration getTestStageConfiguration() {
 }
 
 void executeTestStage() {
-    TestStageConfiguration configuration = getTestStageConfiguration()
+    TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
-            " projectName:\"${configuration.projectName}.xcodeproj\"" +
-            " workspaceName:\"${configuration.workspaceName}\"" +
-            " device:\"${configuration.device}\"" +
-            " reportPath:\"${configuration.reportPath}\""
+            " projectName:\"${stage.projectName}.xcodeproj\"" +
+            " workspaceName:\"${stage.workspaceName}\"" +
+            " device:\"${stage.device}\"" +
+            " reportPath:\"${stage.reportPath}\""
 }
 
