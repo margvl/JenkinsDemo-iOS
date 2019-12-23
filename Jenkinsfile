@@ -76,6 +76,6 @@ void executeTestStage() {
 }
 
 void reportTestStageResults(String reportPath) {
-    junit '"${reportPath}"/scan/*.junit'
+    junit '"${reportPath}"/scan/report.junit'
 }
 
