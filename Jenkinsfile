@@ -40,10 +40,8 @@ pipeline {
             }
         }
         stage('Test') {
-            when {
-                expression { return testStage.isEnabled == true }
-            }
             steps {
+                sh 'echo "IsEnabled: ${testStage.isEnabled}"'
                 executeTestStage()
             }
             post {
