@@ -70,7 +70,7 @@ void executeTestStage() {
     TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
             " projectName:\"${stage.projectName}.xcodeproj\"" +
-            ((stage.workspace == null) ? "" : " workspaceName:\"${stage.workspaceName}\"") +
+            ((stage.workspaceName == null) ? "" : " workspaceName:\"${stage.workspaceName}\"") +
             " device:\"${stage.device}\"" +
             " reportPath:\"${stage.reportPath}\""
 }
