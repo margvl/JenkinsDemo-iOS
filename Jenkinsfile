@@ -40,7 +40,7 @@ pipeline {
         stage('Test') {
             when { expression { return testStage.isEnabled } }
             steps { executeTestStage() }
-            post { success { reportTestStageResults(testStage.reportPath) } }
+            post { always { reportTestStageResults(testStage.reportPath) } }
         }
     }
 
@@ -76,6 +76,7 @@ void executeTestStage() {
 }
 
 void reportTestStageResults(String reportPath) {
+    println("ReportPath: " + reportPath)
     junit '"${reportPath}"/scan/report.junit'
 }
 
