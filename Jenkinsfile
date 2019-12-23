@@ -41,9 +41,9 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh "#!/bin/bash echo TestStage: ${testStage}"
-                sh "#!/bin/bash echo ReportPath: ${testStage.reportPath}"
-                sh "#!/bin/bash echo IsEnabled: ${testStage.isEnabled}"
+                sh "echo TestStage: ${testStage}"
+                sh "echo ReportPath: ${testStage.reportPath}"
+                sh "echo IsEnabled: ${testStage.isEnabled}"
                 executeTestStage()
             }
             post {
