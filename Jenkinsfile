@@ -40,7 +40,7 @@ pipeline {
             }
         }
         stage('Test') {
-            when { expression { testStage.isEnabled == "true" } }
+            when { expression { ${testStage.isEnabled} == "true" } }
             steps {
                 executeTestStage()
             }
