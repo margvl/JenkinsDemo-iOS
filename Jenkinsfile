@@ -40,6 +40,9 @@ pipeline {
             }
         }
         stage('Test') {
+            when {
+                expression { return testStage.isEnabled }
+            }
             steps {
                 sh "echo TestStage: ${testStage.getClass()}"
                 sh "echo ReportPath: ${testStage.reportPath.getClass()}"
