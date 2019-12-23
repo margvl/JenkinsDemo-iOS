@@ -40,6 +40,7 @@ pipeline {
             }
         }
         stage('Test') {
+	    when { expression { testStage.isEnabled } }
             steps {
                 executeTestStage()
             }
@@ -82,7 +83,7 @@ void executeTestStage() {
     TestStageConfiguration configuration = getTestStageConfiguration()
     sh "bundle exec fastlane test" +
             " projectName:\"${configuration.projectName}.xcodeproj\"" +
-            " workspaceName:\"${configuration.workspaceName}\"" +
+            ((environment.workspaceName) ? " workspaceName:\"${configuration.workspaceName}\"" : "") +
             " device:\"${configuration.device}\"" +
             " reportPath:\"${configuration.reportPath}\""
 }
