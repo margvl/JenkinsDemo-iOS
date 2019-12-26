@@ -1,3 +1,25 @@
+class TestCoverageStage {
+    Boolean isEnabled
+    String projectName
+    String workspaceName
+    String sourcePath
+    String reportPath
+    
+    TestCoverageStage(
+            Boolean isEnabled,
+            String projectName,
+            String workspaceName,
+            String sourcePath,
+            String reportPath) {
+        
+        this.isEnabled = isEnabled
+        this.projectName = projectName
+        this.workspaceName = workspaceName
+        this.sourcePath = sourcePath
+        this.reportPath = reportPath
+    }
+}
+
 class TestStage {
     Boolean isEnabled
     String projectName
@@ -18,6 +40,10 @@ class TestStage {
         this.device = device
         this.reportPath = reportPath
     }
+    
+    void execute() {
+    
+    }
 }
 
 pipeline {
@@ -30,6 +56,7 @@ pipeline {
     }
     
     environment {
+        TestCoverageStage testCoverageStage =
         TestStage testStage = getTestStage()
     }
     
@@ -37,6 +64,7 @@ pipeline {
         stage('SetUp') {
             steps { sh 'bundle install' }
         }
+        
         stage('Test') {
             when { expression { return testStage.isEnabled } }
             steps { executeTestStage() }
@@ -50,11 +78,26 @@ pipeline {
     }
 }
 
+
+TestCoverageStage getTestCoverageStage() {
+    def config = readJSON file: 'config.json'
+    def environment = config.environment
+    def coverage = config.stages.testCoverage
+    
+    TestCoverageStage testCoverageStage = new TestCoverageStage(
+            coverage.isEnabled,
+            environment.projectName,
+            (environment.workspaceName.getClass() == String) ? environment.workspaceName : null,
+            environment.sourcePath,
+            environment.reportPath + "/slather")
+
+    return testCoverageStage
+}
+
 TestStage getTestStage() {
     def config = readJSON file: 'config.json'
     def environment = config.environment
-    def stages = config.stages
-    def test = stages.test
+    def test = config.stages.test
 
     TestStage testStage = new TestStage(
             test.isEnabled,
