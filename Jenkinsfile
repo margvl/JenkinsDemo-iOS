@@ -142,5 +142,5 @@ def getWorkspaceFilename(workspaceName) {
 // ---------------------------
 
 def getWorkspaceParam(String workspaceFilename) {
-    return (stage.workspaceFilename == null) ? "" : " workspaceFilename:\"${workspaceFilename}\""
+    return (workspaceFilename == null) ? "" : " workspaceFilename:\"${workspaceFilename}\""
 }
