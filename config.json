@@ -13,6 +13,7 @@
         },
         "testCoverage": {
             "isEnabled": true
+            "scheme": "JenkinsDemo"
         }
     }
 }

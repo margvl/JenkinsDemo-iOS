@@ -176,6 +176,10 @@ String getOutputPathParam(String outputPath) {
     return " outputPath:" + outputPath
 }
 
+String getSchemeParam(String scheme) {
+    return " scheme:" + "\"" + scheme + "\""
+}
+
 String getDeviceParam(String device) {
     return " device:" + "\"" + device + "\""
 }
