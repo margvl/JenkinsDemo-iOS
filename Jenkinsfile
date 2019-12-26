@@ -42,7 +42,11 @@ class TestStage {
     }
     
     void execute() {
-    
+        sh "bundle exec fastlane test" +
+                " projectName:\"${projectName}.xcodeproj\"" +
+                ((workspaceName == null) ? "" : " workspaceName:\"${workspaceName}.xcworkspace\"") +
+                " device:\"${device}\"" +
+                " reportPath:\"${reportPath}\"/"
     }
 }
 
@@ -67,7 +71,7 @@ pipeline {
         
         stage('Test') {
             when { expression { return testStage.isEnabled } }
-            steps { executeTestStage() }
+            steps { testStage.execute() }
             post { always { reportTestStageResults(testStage.reportPath) } }
         }
     }
