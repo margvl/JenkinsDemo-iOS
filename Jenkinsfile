@@ -115,10 +115,10 @@ TestStage getTestStage() {
 void executeTestStage() {
     TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
-            " projectFilename:\"${stage.projectFilename}\"" +
-            getWorkspaceParam(stage.workspaceFilename) +
-            " device:\"${stage.device}\"" +
-            " reportPath:\"${stage.reportPath}\""
+            getProjectFilenameParam(stage.projectFilename) +
+            getWorkspaceFilenameParam(stage.workspaceFilename) +
+            getDeviceParam(stage.device) +
+            getReportPathParam(stage.reportPath)"
 }
 
 void reportTestStageResults(String reportPath) {
@@ -141,6 +141,26 @@ def getWorkspaceFilename(workspaceName) {
 // --- Fastfile Parameters ---
 // ---------------------------
 
-def getWorkspaceParam(String workspaceFilename) {
-    return (workspaceFilename == null) ? "" : " workspaceFilename:\"${workspaceFilename}\""
+String getProjectFilenameParam(String projectFilename) {
+    return " projectFilename:" + projectFilename
+}
+
+String getWorkspaceFilenameParam(String workspaceFilename) {
+    return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
+}
+
+String getSourcePathParam(String sourcePath) {
+    return " sourcePath:" + sourcePath
+}
+
+String getReportPathParam(String reportPath) {
+    return " reportPath:" + reportPath
+}
+
+String getOutputPathParam(String outputPath) {
+    return " outputPath:" + outputPath
+}
+
+String getDeviceParam(String device) {
+    return " device:" + device
 }
