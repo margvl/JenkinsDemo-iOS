@@ -116,7 +116,7 @@ void executeTestStage() {
     TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
             " projectFilename:\"${stage.projectFilename}\"" +
-            ((stage.workspaceFilename == null) ? "" : " workspaceFilename:\"${stage.workspaceFilename}\"") +
+            getWorkspaceParam(stage.workspaceFilename) +
             " device:\"${stage.device}\"" +
             " reportPath:\"${stage.reportPath}\""
 }
@@ -135,4 +135,12 @@ def getProjectFilename(projectName) {
 
 def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+}
+
+// ---------------------------
+// --- Fastfile Parameters ---
+// ---------------------------
+
+def getWorkspaceParam(String workspaceFilename) {
+    return (stage.workspaceFilename == null) ? "" : " workspaceFilename:\"${workspaceFilename}\""
 }
