@@ -2,9 +2,9 @@
     "environment": {
         "projectName": "JenkinsDemo",
         "workspaceName": null,
-        "sourcePath": "./JenkinsDemo",
-        "reportPath": "./build/report",
-        "outputPath": "./build/output"
+        "sourcePath": "JenkinsDemo",
+        "reportPath": "build/report",
+        "outputPath": "build/output"
     },
     "stages": {
         "test": {
