@@ -118,7 +118,7 @@ void executeTestStage() {
             getProjectFilenameParam(stage.projectFilename) +
             getWorkspaceFilenameParam(stage.workspaceFilename) +
             getDeviceParam(stage.device) +
-            getReportPathParam(stage.reportPath)"
+            getReportPathParam(stage.reportPath)
 }
 
 void reportTestStageResults(String reportPath) {
