@@ -61,7 +61,7 @@ TestStage getTestStage() {
             environment.projectName,
             (environment.workspaceName.getClass() == String) ? environment.workspaceName : null,
             test.device,
-            environment.reportPath)
+            environment.reportPath + "/scan")
 
     return testStage
 }
@@ -72,11 +72,11 @@ void executeTestStage() {
             " projectName:\"${stage.projectName}.xcodeproj\"" +
             ((stage.workspaceName == null) ? "" : " workspaceName:\"${stage.workspaceName}\"") +
             " device:\"${stage.device}\"" +
-            " reportPath:\"${stage.reportPath}\""
+            " reportPath:\"${stage.reportPath}\"/"
 }
 
 void reportTestStageResults(String reportPath) {
     println("ReportPath: " + reportPath)
-    junit '"${reportPath}"/scan/report.junit'
+    junit '"${reportPath}"/*.junit'
 }
 
