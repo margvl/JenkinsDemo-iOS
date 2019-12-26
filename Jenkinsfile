@@ -76,8 +76,7 @@ void executeTestStage() {
 }
 
 void reportTestStageResults(String reportPath) {
-    String rootPath = $PWD
-    println("ReportPath: " + rootPath + reportPath)
-    junit '"$rootPath"/"$reportPath"/*.junit'
+    println("ReportPath: " + reportPath)
+    junit '"$reportPath"/*.junit'
 }
 
