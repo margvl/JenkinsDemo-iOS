@@ -105,7 +105,7 @@ TestStage getTestStage() {
     TestStage testStage = new TestStage(
             test.isEnabled,
             getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName).
+            getWorkspaceFilename(environment.workspaceName),
             test.device,
             environment.reportPath + "/scan")
 
@@ -115,10 +115,10 @@ TestStage getTestStage() {
 void executeTestStage() {
     TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
-            " projectFilename:\"${stage.projectFilename}.xcodeproj\"" +
+            " projectFilename:\"${stage.projectFilename}\"" +
             ((stage.workspaceFilename == null) ? "" : " workspaceFilename:\"${stage.workspaceFilename}\"") +
             " device:\"${stage.device}\"" +
-            " reportPath:\"${stage.reportPath}\"/"
+            " reportPath:\"${stage.reportPath}\""
 }
 
 void reportTestStageResults(String reportPath) {
