@@ -68,8 +68,8 @@ TestCoverageStage getTestCoverageStage() {
     
     TestCoverageStage testCoverageStage = new TestCoverageStage(
             coverage.isEnabled,
-            environment.projectName,
-            (environment.workspaceName.getClass() == String) ? environment.workspaceName : null,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
             environment.sourcePath,
             environment.reportPath + "/slather")
 
