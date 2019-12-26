@@ -17,6 +17,11 @@ pipeline {
             steps { sh 'bundle install' }
         }
         
+        stage('Test Coverage') {
+            when { expression { return testCoverageStage.isEnabled } }
+            steps { executeTestCoverageStage() }
+        }
+        
         stage('Test') {
             when { expression { return testStage.isEnabled } }
             steps { executeTestStage() }
@@ -70,6 +75,16 @@ TestCoverageStage getTestCoverageStage() {
 
     return testCoverageStage
 }
+
+void executeTestCoverageStage() {
+    TestCoverageStage stage = getTestCoverageStage()
+    sh "bundle exec fastlane coverage" +
+            getProjectFilenameParam(stage.projectFilename) +
+            getWorkspaceFilenameParam(stage.workspaceFilename) +
+            getSourcePathParam(stage.sourcePath) +
+            getReportPathParam(stage.reportPath)
+}
+
 
 // ------------------
 // --- Test Stage ---
