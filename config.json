@@ -12,7 +12,7 @@
             "device": "iPhone 8"
         },
         "testCoverage": {
-            "isEnabled": true
+            "isEnabled": true,
             "scheme": "JenkinsDemo"
         }
     }
