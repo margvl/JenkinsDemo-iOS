@@ -1,55 +1,3 @@
-class TestCoverageStage {
-    Boolean isEnabled
-    String projectName
-    String workspaceName
-    String sourcePath
-    String reportPath
-    
-    TestCoverageStage(
-            Boolean isEnabled,
-            String projectName,
-            String workspaceName,
-            String sourcePath,
-            String reportPath) {
-        
-        this.isEnabled = isEnabled
-        this.projectName = projectName
-        this.workspaceName = workspaceName
-        this.sourcePath = sourcePath
-        this.reportPath = reportPath
-    }
-}
-
-class TestStage {
-    Boolean isEnabled
-    String projectName
-    String workspaceName
-    String device
-    String reportPath
-
-    TestStage(
-            Boolean isEnabled,
-            String projectName,
-            String workspaceName,
-            String device,
-            String reportPath) {
-
-        this.isEnabled = isEnabled
-        this.projectName = projectName
-        this.workspaceName = workspaceName
-        this.device = device
-        this.reportPath = reportPath
-    }
-    
-    Void execute() {
-        sh "bundle exec fastlane test" +
-                " projectName:\"${projectName}.xcodeproj\"" +
-                ((workspaceName == null) ? "" : " workspaceName:\"${workspaceName}.xcworkspace\"") +
-                " device:\"${device}\"" +
-                " reportPath:\"${reportPath}\"/"
-    }
-}
-
 pipeline {
     agent any
 
@@ -71,7 +19,7 @@ pipeline {
         
         stage('Test') {
             when { expression { return testStage.isEnabled } }
-            steps { script { testStage.execute() } }
+            steps { executeTestStage() }
             post { always { reportTestStageResults(testStage.reportPath) } }
         }
     }
@@ -82,6 +30,31 @@ pipeline {
     }
 }
 
+// ---------------------------
+// --- Test Coverage Stage ---
+// ---------------------------
+
+class TestCoverageStage {
+    Boolean isEnabled
+    String projectFilename
+    String workspaceFilename
+    String sourcePath
+    String reportPath
+    
+    TestCoverageStage(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String sourcePath,
+            String reportPath) {
+        
+        this.isEnabled = isEnabled
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.sourcePath = sourcePath
+        this.reportPath = reportPath
+    }
+}
 
 TestCoverageStage getTestCoverageStage() {
     def config = readJSON file: 'config.json'
@@ -98,6 +71,32 @@ TestCoverageStage getTestCoverageStage() {
     return testCoverageStage
 }
 
+// ------------------
+// --- Test Stage ---
+// ------------------
+
+class TestStage {
+    Boolean isEnabled
+    String projectFilename
+    String workspaceFilename
+    String device
+    String reportPath
+
+    TestStage(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String device,
+            String reportPath) {
+
+        this.isEnabled = isEnabled
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.device = device
+        this.reportPath = reportPath
+    }
+}
+
 TestStage getTestStage() {
     def config = readJSON file: 'config.json'
     def environment = config.environment
@@ -105,8 +104,8 @@ TestStage getTestStage() {
 
     TestStage testStage = new TestStage(
             test.isEnabled,
-            environment.projectName,
-            (environment.workspaceName.getClass() == String) ? environment.workspaceName : null,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName).
             test.device,
             environment.reportPath + "/scan")
 
@@ -116,8 +115,8 @@ TestStage getTestStage() {
 void executeTestStage() {
     TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
-            " projectName:\"${stage.projectName}.xcodeproj\"" +
-            ((stage.workspaceName == null) ? "" : " workspaceName:\"${stage.workspaceName}\"") +
+            " projectFilename:\"${stage.projectFilename}.xcodeproj\"" +
+            ((stage.workspaceFilename == null) ? "" : " workspaceFilename:\"${stage.workspaceFilename}\"") +
             " device:\"${stage.device}\"" +
             " reportPath:\"${stage.reportPath}\"/"
 }
@@ -126,3 +125,14 @@ void reportTestStageResults(String reportPath) {
     junit reportPath + "/*.junit"
 }
 
+// ---------------
+// --- Helpers ---
+// ---------------
+
+def getProjectFilename(projectName) {
+    return projectName + ".xcodeproj"
+}
+
+def getWorkspaceFilename(workspaceName) {
+    return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+}

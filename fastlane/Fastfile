@@ -3,8 +3,8 @@ fastlane_version "2.66.2"
 desc "Runs all the tests"
 lane :test do |options|
     scan(
-        project: options[:projectName],
-        workspace: options[:workspaceName],
+        project: options[:projectFilename],
+        workspace: options[:workspaceFilename],
         device: options[:device],
         clean: true,
         prelaunch_simulator: true,
@@ -16,8 +16,8 @@ end
 desc "Run test coverage"
 lane :coverage do |options|
     slather(
-        proj: options[:projectName],
-        workspace: options[:workspaceName],
+        proj: options[:projectFilename],
+        workspace: options[:workspaceFilename],
         input_format: "auto",
         source_directory: options[:sourcePath],
         output_directory: options[:reportPath],
