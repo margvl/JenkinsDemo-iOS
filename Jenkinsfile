@@ -77,6 +77,7 @@ void executeTestStage() {
 
 void reportTestStageResults(String reportPath) {
     println("ReportPath: " + reportPath)
-    junit 'build/report/*.junit'
+    String fullReportPath = reportPath + "/*.junit"
+    junit fullReportPath
 }
 
