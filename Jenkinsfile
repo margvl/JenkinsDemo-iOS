@@ -43,6 +43,7 @@ class TestCoverageStage {
     Boolean isEnabled
     String projectFilename
     String workspaceFilename
+    String scheme
     String sourcePath
     String reportPath
     
@@ -50,12 +51,14 @@ class TestCoverageStage {
             Boolean isEnabled,
             String projectFilename,
             String workspaceFilename,
+            String scheme,
             String sourcePath,
             String reportPath) {
         
         this.isEnabled = isEnabled
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
+        this.scheme = scheme
         this.sourcePath = sourcePath
         this.reportPath = reportPath
     }
@@ -70,6 +73,7 @@ TestCoverageStage getTestCoverageStage() {
             coverage.isEnabled,
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
+            coverage.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
 
@@ -81,6 +85,7 @@ void executeTestCoverageStage() {
     sh "bundle exec fastlane coverage" +
             getProjectFilenameParam(stage.projectFilename) +
             getWorkspaceFilenameParam(stage.workspaceFilename) +
+            getSchemeParam(stage.scheme) +
             getSourcePathParam(stage.sourcePath) +
             getReportPathParam(stage.reportPath)
 }
