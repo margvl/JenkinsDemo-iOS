@@ -71,7 +71,7 @@ pipeline {
         
         stage('Test') {
             when { expression { return testStage.isEnabled } }
-            steps { testStage.execute() }
+            steps { script { testStage.execute() } }
             post { always { reportTestStageResults(testStage.reportPath) } }
         }
     }
