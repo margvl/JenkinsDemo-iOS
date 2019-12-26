@@ -56,7 +56,7 @@ pipeline {
     }
     
     environment {
-        TestCoverageStage testCoverageStage =
+        TestCoverageStage testCoverageStage = getTestCoverageStage()
         TestStage testStage = getTestStage()
     }
     
