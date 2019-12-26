@@ -18,10 +18,10 @@ lane :coverage do |options|
     slather(
         proj: options[:projectFilename],
         workspace: options[:workspaceFilename],
+        scheme: options[:scheme],
         input_format: "auto",
         source_directory: options[:sourcePath],
         output_directory: options[:reportPath],
-        scheme: options[:scheme],
         html: true,
         jenkins: true
     )
