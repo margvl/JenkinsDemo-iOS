@@ -41,7 +41,7 @@ class TestStage {
         this.reportPath = reportPath
     }
     
-    void execute() {
+    Void execute() {
         sh "bundle exec fastlane test" +
                 " projectName:\"${projectName}.xcodeproj\"" +
                 ((workspaceName == null) ? "" : " workspaceName:\"${workspaceName}.xcworkspace\"") +
