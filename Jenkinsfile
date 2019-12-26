@@ -162,5 +162,5 @@ String getOutputPathParam(String outputPath) {
 }
 
 String getDeviceParam(String device) {
-    return " device:" + device
+    return " device:" + "\"" + device + "\""
 }
