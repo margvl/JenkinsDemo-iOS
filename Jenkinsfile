@@ -1,7 +1,6 @@
-node("master") {
+node {
     checkout scm
     properties([
-            ansiColor('xterm'),
             buildDiscarder(logRotator(numToKeepStr: '15')),
             disableConcurrentBuilds()])
     
