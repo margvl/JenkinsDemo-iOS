@@ -1,7 +1,7 @@
 node {
     checkout scm
     properties([
-            ansiColor('xterm')
+            ansiColor('xterm'),
             buildDiscarder(logRotator(numToKeepStr: '15')),
             disableConcurrentBuilds()])
     
