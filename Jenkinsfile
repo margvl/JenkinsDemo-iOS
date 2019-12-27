@@ -6,7 +6,7 @@ node {
             disableConcurrentBuilds()])
     
     catchError {
-        executeTestStage()
+        executeSetUpStage()
     }
 }
 
