@@ -5,7 +5,15 @@ node {
             disableConcurrentBuilds()])
     
     catchError {
-        executeSetUpStage()
+        stage('SetUp') {
+            executeSetUpStage()
+        }
+        stage('Test') {
+            executeTestStage()
+        }
+        stage('Coverage') {
+            executeTestCoverageStage()
+        }
     }
 }
 
