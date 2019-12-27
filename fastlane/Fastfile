@@ -5,6 +5,7 @@ lane :test do |options|
     scan(
         project: options[:projectFilename],
         workspace: options[:workspaceFilename],
+        scheme: options[:scheme],
         device: options[:device],
         clean: true,
         prelaunch_simulator: true,
