@@ -1,6 +1,5 @@
 node {
     ansiColor('xterm') {
-    
         properties([
                 buildDiscarder(logRotator(numToKeepStr: '15')),
                 disableConcurrentBuilds()])
@@ -10,7 +9,8 @@ node {
                 executeSetUpStage()
             }
             stage('Test') {
-                executeTestStage()
+                TestStage stage = getTestStage()
+                stage.execute()
             }
             stage('Coverage') {
                 executeTestCoverageStage()
@@ -99,6 +99,35 @@ class TestStage {
         this.scheme = scheme
         this.device = device
         this.reportPath = reportPath
+    }
+    
+    void execute() {
+        sh "bundle exec fastlane test" +
+                getProjectFilenameParam(projectFilename) +
+                getWorkspaceFilenameParam(workspaceFilename) +
+                getSchemeParam(scheme) +
+                getDeviceParam(device) +
+                getReportPathParam(reportPath)
+    }
+    
+    String getProjectFilenameParam(String projectFilename) {
+        return " projectFilename:" + projectFilename
+    }
+
+    String getWorkspaceFilenameParam(String workspaceFilename) {
+        return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
+    }
+
+    String getReportPathParam(String reportPath) {
+        return " reportPath:" + reportPath
+    }
+
+    String getSchemeParam(String scheme) {
+        return " scheme:" + "\"" + scheme + "\""
+    }
+
+    String getDeviceParam(String device) {
+        return " device:" + "\"" + device + "\""
     }
 }
 
