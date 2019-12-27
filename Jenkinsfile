@@ -1,10 +1,10 @@
 node {
-    checkout scm
-    properties([
-            buildDiscarder(logRotator(numToKeepStr: '15')),
-            disableConcurrentBuilds()])
-    
     ansiColor('xterm') {
+    
+        properties([
+                buildDiscarder(logRotator(numToKeepStr: '15')),
+                disableConcurrentBuilds()])
+    
         catchError {
             stage('SetUp') {
                 executeSetUpStage()
@@ -67,6 +67,7 @@ pipeline {
 
 
 void executeSetUpStage() {
+    checkout scm
     sh 'bundle install'
 }
 
