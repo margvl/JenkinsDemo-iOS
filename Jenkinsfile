@@ -1,3 +1,16 @@
+node {
+    checkout scm
+    properties([
+            ansiColor('xterm')
+            buildDiscarder(logRotator(numToKeepStr: '15')),
+            disableConcurrentBuilds()])
+    
+    catchError {
+        executeTestStage()
+    }
+}
+
+/*
 pipeline {
     agent any
 
@@ -8,13 +21,13 @@ pipeline {
     }
     
     environment {
-        TestCoverageStage testCoverageStage = getTestCoverageStage()
         TestStage testStage = getTestStage()
+        TestCoverageStage testCoverageStage = getTestCoverageStage()
     }
     
     stages {
         stage('SetUp') {
-            steps { sh 'bundle install' }
+            steps { executeSetUpStage() }
         }
         
         stage('Test') {
@@ -34,10 +47,25 @@ pipeline {
         failure { sh 'echo "failure :("' }
     }
 }
+*/
+
+
+
+
+// --------------------
+// --- Set Up Stage ---
+// --------------------
+
+
+void executeSetUpStage() {
+    sh 'bundle install'
+}
+
 
 // ------------------
 // --- Test Stage ---
 // ------------------
+
 
 class TestStage {
     Boolean isEnabled
@@ -94,9 +122,11 @@ void reportTestStageResults(String reportPath) {
     junit reportPath + "/*.junit"
 }
 
+
 // ---------------------------
 // --- Test Coverage Stage ---
 // ---------------------------
+
 
 class TestCoverageStage {
     Boolean isEnabled
