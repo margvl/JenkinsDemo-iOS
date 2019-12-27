@@ -35,9 +35,64 @@ pipeline {
     }
 }
 
+// ------------------
+// --- Test Stage ---
+// ------------------
 
+class TestStage {
+    Boolean isEnabled
+    String projectFilename
+    String workspaceFilename
+    String scheme
+    String device
+    String reportPath
 
+    TestStage(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String scheme,
+            String device,
+            String reportPath) {
 
+        this.isEnabled = isEnabled
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.scheme = scheme
+        this.device = device
+        this.reportPath = reportPath
+    }
+}
+
+TestStage getTestStage() {
+    def config = readJSON file: 'config.json'
+    def environment = config.environment
+    def test = config.stages.test
+
+    TestStage testStage = new TestStage(
+            test.isEnabled,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            test.device,
+            environment.reportPath + "/scan")
+
+    return testStage
+}
+
+void executeTestStage() {
+    TestStage stage = getTestStage()
+    sh "bundle exec fastlane test" +
+            getProjectFilenameParam(stage.projectFilename) +
+            getWorkspaceFilenameParam(stage.workspaceFilename) +
+            getSchemeParam(stage.scheme) +
+            getDeviceParam(stage.device) +
+            getReportPathParam(stage.reportPath)
+}
+
+void reportTestStageResults(String reportPath) {
+    junit reportPath + "/*.junit"
+}
 
 // ---------------------------
 // --- Test Coverage Stage ---
@@ -92,61 +147,6 @@ void executeTestCoverageStage() {
             getSchemeParam(stage.scheme) +
             getSourcePathParam(stage.sourcePath) +
             getReportPathParam(stage.reportPath)
-}
-
-
-// ------------------
-// --- Test Stage ---
-// ------------------
-
-class TestStage {
-    Boolean isEnabled
-    String projectFilename
-    String workspaceFilename
-    String device
-    String reportPath
-
-    TestStage(
-            Boolean isEnabled,
-            String projectFilename,
-            String workspaceFilename,
-            String device,
-            String reportPath) {
-
-        this.isEnabled = isEnabled
-        this.projectFilename = projectFilename
-        this.workspaceFilename = workspaceFilename
-        this.device = device
-        this.reportPath = reportPath
-    }
-}
-
-TestStage getTestStage() {
-    def config = readJSON file: 'config.json'
-    def environment = config.environment
-    def test = config.stages.test
-
-    TestStage testStage = new TestStage(
-            test.isEnabled,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            test.device,
-            environment.reportPath + "/scan")
-
-    return testStage
-}
-
-void executeTestStage() {
-    TestStage stage = getTestStage()
-    sh "bundle exec fastlane test" +
-            getProjectFilenameParam(stage.projectFilename) +
-            getWorkspaceFilenameParam(stage.workspaceFilename) +
-            getDeviceParam(stage.device) +
-            getReportPathParam(stage.reportPath)
-}
-
-void reportTestStageResults(String reportPath) {
-    junit reportPath + "/*.junit"
 }
 
 // ---------------
