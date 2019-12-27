@@ -1,19 +1,20 @@
 node {
     checkout scm
     properties([
-            ansiColor('xterm'),
             buildDiscarder(logRotator(numToKeepStr: '15')),
             disableConcurrentBuilds()])
     
-    catchError {
-        stage('SetUp') {
-            executeSetUpStage()
-        }
-        stage('Test') {
-            executeTestStage()
-        }
-        stage('Coverage') {
-            executeTestCoverageStage()
+    ansiColor('xterm') {
+        catchError {
+            stage('SetUp') {
+                executeSetUpStage()
+            }
+            stage('Test') {
+                executeTestStage()
+            }
+            stage('Coverage') {
+                executeTestCoverageStage()
+            }
         }
     }
 }
