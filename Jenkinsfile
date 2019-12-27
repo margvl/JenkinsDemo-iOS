@@ -16,10 +16,21 @@ pipeline {
         stage('SetUp') {
             steps { sh 'bundle install' }
         }
+        script {
+            if (true) {
+                stage('SetUp1') {
+                    steps { sh 'bundle install' }
+                }
+            }
+        }
         
-        stage('Test Coverage') {
-            when { expression { return testCoverageStage.isEnabled } }
-            steps { executeTestCoverageStage() }
+        script {
+            if (false) {
+                stage('Test Coverage') {
+                    when { expression { return testCoverageStage.isEnabled } }
+                    steps { executeTestCoverageStage() }
+                }
+            }
         }
         
         stage('Test') {
@@ -34,6 +45,8 @@ pipeline {
         failure { sh 'echo "failure :("' }
     }
 }
+
+
 
 
 
