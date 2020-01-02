@@ -122,10 +122,11 @@ TestStage getTestStage() {
 void executeTestStageIfNeeded() {
     TestStage stage = getTestStage()
     if (stage.isEnabled) {
-        // stage('Test') {
-        //     run(stage.executionCommand())
-        //     junit stage.reportPath + "/*.junit"
-        // }
+        stage('Test') {
+            sh stage.executionCommand()
+            // run(stage.executionCommand())
+            // junit stage.reportPath + "/*.junit"
+        }
         // executeTestCoverageStageIfNeeded()
     }
 }
