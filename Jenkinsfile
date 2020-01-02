@@ -9,11 +9,7 @@ node {
                 executeSetUpStage()
             }
             stage('Test') {
-                TestStage stage = getTestStage()
-                executeTestStage(stage)
-            }
-            stage('Coverage') {
-                executeTestCoverageStage()
+                executeTestStage()
             }
         }
     }
@@ -169,6 +165,7 @@ TestStage getTestStage() {
 
 void executeTestStage(TestStage stage) {
     /*
+    TestStage stage = getTestStage()
     sh stage.executionCommand()
     
     sh "bundle exec fastlane test" +
@@ -243,7 +240,7 @@ void executeTestCoverageStage() {
 // ---------------
 // --- Helpers ---
 // ---------------
-
+/*
 def getProjectFilename(projectName) {
     return projectName + ".xcodeproj"
 }
@@ -251,11 +248,12 @@ def getProjectFilename(projectName) {
 def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
-
+*/
 // ---------------------------
 // --- Fastfile Parameters ---
 // ---------------------------
 
+/*
 String getProjectFilenameParam(String projectFilename) {
     return " projectFilename:" + projectFilename
 }
@@ -283,3 +281,4 @@ String getSchemeParam(String scheme) {
 String getDeviceParam(String device) {
     return " device:" + "\"" + device + "\""
 }
+*/
