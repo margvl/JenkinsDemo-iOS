@@ -212,18 +212,21 @@ class BuildStage extends Stage {
     String workspaceFilename
     String outputPath
     String outputName
+    BuildItem[] itemList
     
     BuildStage(
             Boolean isEnabled,
             String title,
             String projectFilename,
             String workspaceFilename,
-            String outputPath) {
+            String outputPath
+            BuildItem[] items) {
         
         super(isEnabled, title)
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.outputPath = outputPath
+        this.itemList = items
     }
     
     String executionCommand() {
@@ -237,7 +240,7 @@ class BuildItem {
     String configuration
     String scheme
     String exportMethod
-    BuildProfile[] profiles
+    BuildProfile[] profileList
     
     BuildItem(
             Integer index,
@@ -252,7 +255,7 @@ class BuildItem {
         this.configuration = configuration
         this.scheme = scheme
         this.exportMethod = exportMethod
-        this.profiles = profiles
+        this.profileList = profiles
     }
 }
 
