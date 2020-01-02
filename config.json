@@ -9,11 +9,13 @@
     "stages": {
         "test": {
             "isEnabled": true,
+            "title": "Test",
             "scheme": "JenkinsDemo",
             "device": "iPhone 8"
         },
         "testCoverage": {
             "isEnabled": true,
+            "title": "Coverage",
             "scheme": "JenkinsDemo"
         }
     }

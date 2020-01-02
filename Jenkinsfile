@@ -70,7 +70,6 @@ void executeSetUpStage() {
 // ------------------
 
 class TestStage extends Stage {
-    Boolean isEnabled
     String projectFilename
     String workspaceFilename
     String scheme
@@ -85,7 +84,7 @@ class TestStage extends Stage {
             String device,
             String reportPath) {
             
-        this.isEnabled = isEnabled
+        super(isEnabled)
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
@@ -110,6 +109,7 @@ TestStage getTestStage() {
 
     TestStage testStage = new TestStage(
             test.isEnabled,
+            test.title,
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
@@ -120,13 +120,13 @@ TestStage getTestStage() {
 }
 
 void executeTestStageIfNeeded() {
-    TestStage testStage = getTestStage()
-    if (true) {
-        stage('Test') {
-            run(testStage.executionCommand())
-            junit stage.reportPath + "/*.junit"
+    TestStage test = getTestStage()
+    if (test.isEnabled) {
+        stage(test.title) {
+            run(test.executionCommand())
+            junit test.reportPath + "/*.junit"
         }
-        // executeTestCoverageStageIfNeeded()
+        executeTestCoverageStageIfNeeded()
     }
 }
 
@@ -170,13 +170,14 @@ class TestCoverageStage extends Stage {
 TestCoverageStage getTestCoverageStage() {
     def config = readJSON file: 'config.json'
     def environment = config.environment
-    def coverage = config.stages.testCoverage
+    def testCoverage = config.stages.testCoverage
     
     TestCoverageStage testCoverageStage = new TestCoverageStage(
-            coverage.isEnabled,
+            testCoverage.isEnabled,
+            testCoverage.title,
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
-            coverage.scheme,
+            testCoverage.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
 
@@ -184,9 +185,11 @@ TestCoverageStage getTestCoverageStage() {
 }
 
 void executeTestCoverageStageIfNeeded() {
-    TestCoverageStage stage = getTestCoverageStage()
-    if (stage.isEnabled) {
-        run(stage.executionCommand())
+    TestCoverageStage testCoverage = getTestCoverageStage()
+    if (testCoverage.isEnabled) {
+        stage(testCoverage.title) {
+            run(testCoverage.executionCommand())
+        }
     }
 }
 
@@ -206,8 +209,16 @@ def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
 
-class Stage {
-
+abstract class Stage {
+    Boolean isEnabled
+    String title
+    
+    Stage(Boolean isEnabled, String title) {
+        this.isEnabled = isEnabled
+        this.title = title
+    }
+    
+    abstract String executionCommand()
 
 
     String getProjectFilenameParam(String projectFilename) {
