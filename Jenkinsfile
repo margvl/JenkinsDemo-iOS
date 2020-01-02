@@ -5,12 +5,8 @@ node {
                 disableConcurrentBuilds()])
     
         catchError {
-            stage('SetUp') {
-                executeSetUpStage()
-            }
-            stage('Test') {
-                executeTestStage()
-            }
+            executeSetUpStage()
+            executeTestStageIfNeeded()
         }
     }
 }
@@ -62,8 +58,10 @@ pipeline {
 // --------------------
 
 void executeSetUpStage() {
-    checkout scm
-    sh 'bundle install'
+    stage('SetUp') {
+        checkout scm
+        run('bundle install')
+    }
 }
 
 
@@ -71,7 +69,149 @@ void executeSetUpStage() {
 // --- Test Stage ---
 // ------------------
 
-class Stage {
+class TestStage extends Stage {
+    String projectFilename
+    String workspaceFilename
+    String scheme
+    String device
+    String reportPath
+
+    TestStage(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String scheme,
+            String device,
+            String reportPath) {
+            
+        super(isEnabled)
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.scheme = scheme
+        this.device = device
+        this.reportPath = reportPath
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane test" +
+                getProjectFilenameParam(projectFilename) +
+                getWorkspaceFilenameParam(workspaceFilename) +
+                getSchemeParam(scheme) +
+                getDeviceParam(device) +
+                getReportPathParam(reportPath)
+    }
+}
+
+TestStage getTestStage() {
+    def config = readJSON file: 'config.json'
+    def environment = config.environment
+    def test = config.stages.test
+
+    TestStage testStage = new TestStage(
+            test.isEnabled,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            test.device,
+            environment.reportPath + "/scan")
+
+    return testStage
+}
+
+void executeTestStageIfNeeded() {
+    TestStage stage = getTestStage()
+    if (stage.isEnabled) {
+        stage('Test') {
+            run(stage.executionCommand())
+            junit stage.reportPath + "/*.junit"
+        }
+        executeTestCoverageStageIfNeeded()
+    }
+}
+
+void reportTestStageResults(String reportPath) {
+    junit reportPath + "/*.junit"
+}
+
+// ---------------------------
+// --- Test Coverage Stage ---
+// ---------------------------
+
+class TestCoverageStage extends Stage {
+    String projectFilename
+    String workspaceFilename
+    String scheme
+    String sourcePath
+    String reportPath
+    
+    TestCoverageStage(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String scheme,
+            String sourcePath,
+            String reportPath) {
+        
+        super(isEnabled)
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.scheme = scheme
+        this.sourcePath = sourcePath
+        this.reportPath = reportPath
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane coverage" +
+                getProjectFilenameParam(projectFilename) +
+                getWorkspaceFilenameParam(workspaceFilename) +
+                getSchemeParam(scheme) +
+                getSourcePathParam(sourcePath) +
+                getReportPathParam(reportPath)
+    }
+}
+
+TestCoverageStage getTestCoverageStage() {
+    def config = readJSON file: 'config.json'
+    def environment = config.environment
+    def coverage = config.stages.testCoverage
+    
+    TestCoverageStage testCoverageStage = new TestCoverageStage(
+            coverage.isEnabled,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            coverage.scheme,
+            environment.sourcePath,
+            environment.reportPath + "/slather")
+
+    return testCoverageStage
+}
+
+void executeTestCoverageStageIfNeeded() {
+    TestCoverageStage stage = getTestCoverageStage()
+    run(stage.executionCommand())
+}
+
+// ---------------
+// --- Helpers ---
+// ---------------
+
+void run(String command) {
+    sh command
+}
+
+def getProjectFilename(projectName) {
+    return projectName + ".xcodeproj"
+}
+
+def getWorkspaceFilename(workspaceName) {
+    return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+}
+
+abstract class Stage {
+    Boolean isEnabled
+
+    abstract String executionCommand()
+
     String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
     }
@@ -99,203 +239,4 @@ class Stage {
     String getDeviceParam(String device) {
         return " device:" + "\"" + device + "\""
     }
-
-    String getProjectFilename(projectName) {
-        return projectName + ".xcodeproj"
-    }
-
-    String getWorkspaceFilename(workspaceName) {
-        return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
-    }
 }
-
-class TestStage extends Stage {
-    Boolean isEnabled
-    String projectFilename
-    String workspaceFilename
-    String scheme
-    String device
-    String reportPath
-
-    TestStage(HashMap config) {
-        def environment = config.environment
-        def test = config.stages.test
-        
-        this.isEnabled = test.isEnabled
-        this.projectFilename = getProjectFilename(environment.projectName)
-        this.workspaceFilename = getWorkspaceFilename(environment.workspaceName)
-        this.scheme = test.scheme
-        this.device = test.device
-        this.reportPath = environment.reportPath + "/scan"
-    }
-
-    TestStage(
-            Boolean isEnabled,
-            String projectFilename,
-            String workspaceFilename,
-            String scheme,
-            String device,
-            String reportPath) {
-
-        this.isEnabled = isEnabled
-        this.projectFilename = projectFilename
-        this.workspaceFilename = workspaceFilename
-        this.scheme = scheme
-        this.device = device
-        this.reportPath = reportPath
-    }
-    
-    Boolean isExecutable() {
-        return isEnabled
-    }
-    
-    String executionCommand() {
-        return "bundle exec fastlane test" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getDeviceParam(device) +
-                getReportPathParam(reportPath)
-    }
-}
-
-TestStage getTestStage() {
-    HashMap config = readJSON file: 'config.json'
-    return new TestStage(config)
-
-    /*
-    def config = readJSON file: 'config.json'
-    def environment = config.environment
-    def test = config.stages.test
-
-    TestStage testStage = new TestStage(
-            test.isEnabled,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            test.scheme,
-            test.device,
-            environment.reportPath + "/scan")
-
-    return testStage
-    */
-}
-
-void executeTestStage() {
-    
-    TestStage stage = getTestStage()
-    sh stage.executionCommand()
-    /*
-    sh "bundle exec fastlane test" +
-            getProjectFilenameParam(stage.projectFilename) +
-            getWorkspaceFilenameParam(stage.workspaceFilename) +
-            getSchemeParam(stage.scheme) +
-            getDeviceParam(stage.device) +
-            getReportPathParam(stage.reportPath)
-    */
-}
-
-void reportTestStageResults(String reportPath) {
-    junit reportPath + "/*.junit"
-}
-
-
-// ---------------------------
-// --- Test Coverage Stage ---
-// ---------------------------
-
-class TestCoverageStage {
-    Boolean isEnabled
-    String projectFilename
-    String workspaceFilename
-    String scheme
-    String sourcePath
-    String reportPath
-    
-    TestCoverageStage(
-            Boolean isEnabled,
-            String projectFilename,
-            String workspaceFilename,
-            String scheme,
-            String sourcePath,
-            String reportPath) {
-        
-        this.isEnabled = isEnabled
-        this.projectFilename = projectFilename
-        this.workspaceFilename = workspaceFilename
-        this.scheme = scheme
-        this.sourcePath = sourcePath
-        this.reportPath = reportPath
-    }
-}
-
-TestCoverageStage getTestCoverageStage() {
-    def config = readJSON file: 'config.json'
-    def environment = config.environment
-    def coverage = config.stages.testCoverage
-    
-    TestCoverageStage testCoverageStage = new TestCoverageStage(
-            coverage.isEnabled,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            coverage.scheme,
-            environment.sourcePath,
-            environment.reportPath + "/slather")
-
-    return testCoverageStage
-}
-
-void executeTestCoverageStage() {
-    TestCoverageStage stage = getTestCoverageStage()
-    sh "bundle exec fastlane coverage" +
-            getProjectFilenameParam(stage.projectFilename) +
-            getWorkspaceFilenameParam(stage.workspaceFilename) +
-            getSchemeParam(stage.scheme) +
-            getSourcePathParam(stage.sourcePath) +
-            getReportPathParam(stage.reportPath)
-}
-
-// ---------------
-// --- Helpers ---
-// ---------------
-
-def getProjectFilename(projectName) {
-    return projectName + ".xcodeproj"
-}
-
-def getWorkspaceFilename(workspaceName) {
-    return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
-}
-
-// ---------------------------
-// --- Fastfile Parameters ---
-// ---------------------------
-
-/*
-String getProjectFilenameParam(String projectFilename) {
-    return " projectFilename:" + projectFilename
-}
-
-String getWorkspaceFilenameParam(String workspaceFilename) {
-    return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
-}
-
-String getSourcePathParam(String sourcePath) {
-    return " sourcePath:" + sourcePath
-}
-
-String getReportPathParam(String reportPath) {
-    return " reportPath:" + reportPath
-}
-
-String getOutputPathParam(String outputPath) {
-    return " outputPath:" + outputPath
-}
-
-String getSchemeParam(String scheme) {
-    return " scheme:" + "\"" + scheme + "\""
-}
-
-String getDeviceParam(String device) {
-    return " device:" + "\"" + device + "\""
-}
-*/
