@@ -6,7 +6,7 @@ node {
     
         catchError {
             executeSetUpStage()
-            executeTestStageIfNeeded()
+            //executeTestStageIfNeeded()
             executeBuildStageIfNeeded()
         }
     }
