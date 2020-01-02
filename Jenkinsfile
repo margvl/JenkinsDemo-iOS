@@ -160,7 +160,7 @@ class TestStage extends Stage {
 }
 
 TestStage getTestStage() {
-    def config = script.readJSON file: filename
+    def config = readJSON file: 'config.json'
     return new TestStage(config)
 
     /*
