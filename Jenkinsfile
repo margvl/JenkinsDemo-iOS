@@ -122,8 +122,8 @@ TestStage getTestStage() {
 void executeTestStageIfNeeded() {
     TestStage stage = getTestStage()
     if (stage.isEnabled) {
+        sh stage.executionCommand()
         stage('Test') {
-            sh stage.executionCommand()
             // run(stage.executionCommand())
             // junit stage.reportPath + "/*.junit"
         }
