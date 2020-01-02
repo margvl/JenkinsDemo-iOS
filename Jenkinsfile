@@ -191,6 +191,12 @@ void executeTestCoverageStageIfNeeded() {
     if (testCoverage.isEnabled) {
         stage(testCoverage.title) {
             run(testCoverage.executionCommand())
+            publishHTML([allowMissing: false,
+                         alwaysLinkToLastBuild: false,
+                         keepAll: false,
+                         reportDir: "${reportsPath}/slather/",
+                         reportFiles: 'index.html',
+                         reportName: 'Test Coverage Report'])
         }
     }
 }
