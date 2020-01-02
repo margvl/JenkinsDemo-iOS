@@ -71,47 +71,7 @@ void executeSetUpStage() {
 // --- Test Stage ---
 // ------------------
 
-trait CommandsTrait {
-
-}
-
-class TestStage implements CommandsTrait {
-    Boolean isEnabled
-    String projectFilename
-    String workspaceFilename
-    String scheme
-    String device
-    String reportPath
-
-    TestStage(
-            Boolean isEnabled,
-            String projectFilename,
-            String workspaceFilename,
-            String scheme,
-            String device,
-            String reportPath) {
-
-        this.isEnabled = isEnabled
-        this.projectFilename = projectFilename
-        this.workspaceFilename = workspaceFilename
-        this.scheme = scheme
-        this.device = device
-        this.reportPath = reportPath
-    }
-    
-    Boolean isExecutable() {
-        return isEnabled
-    }
-    
-    String executionCommand() {
-        return "bundle exec fastlane test" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getDeviceParam(device) +
-                getReportPathParam(reportPath)
-    }
-    
+class Stage {
     String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
     }
@@ -146,6 +106,44 @@ class TestStage implements CommandsTrait {
 
     String getWorkspaceFilename(workspaceName) {
         return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+    }
+}
+
+class TestStage extends Stage {
+    Boolean isEnabled
+    String projectFilename
+    String workspaceFilename
+    String scheme
+    String device
+    String reportPath
+
+    TestStage(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String scheme,
+            String device,
+            String reportPath) {
+
+        this.isEnabled = isEnabled
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.scheme = scheme
+        this.device = device
+        this.reportPath = reportPath
+    }
+    
+    Boolean isExecutable() {
+        return isEnabled
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane test" +
+                getProjectFilenameParam(projectFilename) +
+                getWorkspaceFilenameParam(workspaceFilename) +
+                getSchemeParam(scheme) +
+                getDeviceParam(device) +
+                getReportPathParam(reportPath)
     }
 }
 
