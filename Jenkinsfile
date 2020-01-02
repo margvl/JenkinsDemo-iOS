@@ -123,11 +123,11 @@ void executeTestStageIfNeeded() {
     TestStage stage = getTestStage()
     if (stage.isEnabled) {
         //sh stage.executionCommand()
-        //stage('Test') {
+        stage('Testing') {
             sh 'echo "Success?"'
             // run(stage.executionCommand())
             // junit stage.reportPath + "/*.junit"
-        //}
+        }
         // executeTestCoverageStageIfNeeded()
     }
 }
