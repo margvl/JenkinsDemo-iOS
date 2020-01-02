@@ -78,13 +78,14 @@ class TestStage extends Stage {
 
     TestStage(
             Boolean isEnabled,
+            String title,
             String projectFilename,
             String workspaceFilename,
             String scheme,
             String device,
             String reportPath) {
             
-        super(isEnabled)
+        super(isEnabled, title)
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
@@ -143,13 +144,14 @@ class TestCoverageStage extends Stage {
     
     TestCoverageStage(
             Boolean isEnabled,
+            String title,
             String projectFilename,
             String workspaceFilename,
             String scheme,
             String sourcePath,
             String reportPath) {
         
-        super(isEnabled)
+        super(isEnabled, title)
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
