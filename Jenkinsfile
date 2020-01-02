@@ -129,10 +129,6 @@ void executeTestStageIfNeeded() {
     }
 }
 
-void reportTestStageResults(String reportPath) {
-    junit reportPath + "/*.junit"
-}
-
 // ---------------------------
 // --- Test Coverage Stage ---
 // ---------------------------
@@ -211,6 +207,10 @@ abstract class Stage {
     Boolean isEnabled
 
     abstract String executionCommand()
+
+    Stage(Boolean isEnabled) {
+        this.isEnabled = isEnabled
+    }
 
     String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
