@@ -10,7 +10,7 @@ node {
             }
             stage('Test') {
                 TestStage stage = getTestStage()
-                stage.execute(sh)
+                executeTestStage(stage)
             }
             stage('Coverage') {
                 executeTestCoverageStage()
