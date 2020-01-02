@@ -194,9 +194,9 @@ void executeTestCoverageStageIfNeeded() {
             publishHTML([allowMissing: false,
                          alwaysLinkToLastBuild: false,
                          keepAll: false,
-                         reportDir: "${reportsPath}/slather/",
+                         reportDir: testCoverage.reportPath,
                          reportFiles: 'index.html',
-                         reportName: 'Test Coverage Report'])
+                         reportName: testCoverage.title + "Report"])
         }
     }
 }
