@@ -121,7 +121,7 @@ TestStage getTestStage() {
 
 void executeTestStageIfNeeded() {
     TestStage stage = getTestStage()
-    if (stage.isEnabled) {
+    if (true) {
         //sh stage.executionCommand()
         stage("Testing") {
             sh 'echo "Success?"'
