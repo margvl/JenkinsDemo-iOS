@@ -10,7 +10,7 @@ node {
             }
             stage('Test') {
                 TestStage stage = getTestStage()
-                executeTestStage(stage)
+                stage.execute(sh)
             }
             stage('Coverage') {
                 executeTestCoverageStage()
@@ -97,6 +97,10 @@ class TestStage {
         this.scheme = scheme
         this.device = device
         this.reportPath = reportPath
+    }
+    
+    void executeCommand(sh) {
+        sh "bundle exec fastlane test"
     }
 }
 
