@@ -240,7 +240,7 @@ void executeTestCoverageStage() {
 // ---------------
 // --- Helpers ---
 // ---------------
-/*
+
 def getProjectFilename(projectName) {
     return projectName + ".xcodeproj"
 }
@@ -248,7 +248,7 @@ def getProjectFilename(projectName) {
 def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
-*/
+
 // ---------------------------
 // --- Fastfile Parameters ---
 // ---------------------------
