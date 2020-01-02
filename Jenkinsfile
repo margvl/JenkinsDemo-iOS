@@ -9,8 +9,7 @@ node {
                 executeSetUpStage()
             }
             stage('Test') {
-                TestStage stage = getTestStage()
-                stage.execute()
+                executeTestStage()
             }
             stage('Coverage') {
                 executeTestCoverageStage()
@@ -149,12 +148,16 @@ TestStage getTestStage() {
 
 void executeTestStage() {
     TestStage stage = getTestStage()
+    stage.execute()
+/*
+    TestStage stage = getTestStage()
     sh "bundle exec fastlane test" +
             getProjectFilenameParam(stage.projectFilename) +
             getWorkspaceFilenameParam(stage.workspaceFilename) +
             getSchemeParam(stage.scheme) +
             getDeviceParam(stage.device) +
             getReportPathParam(stage.reportPath)
+*/
 }
 
 void reportTestStageResults(String reportPath) {
