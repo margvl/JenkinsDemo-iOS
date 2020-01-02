@@ -207,9 +207,8 @@ def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
 
-abstract class Stage {
+class Stage {
 
-    abstract String executionCommand()
 
 
     String getProjectFilenameParam(String projectFilename) {
