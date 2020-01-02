@@ -71,8 +71,11 @@ void executeSetUpStage() {
 // --- Test Stage ---
 // ------------------
 
+trait CommandsTrait {
 
-class TestStage {
+}
+
+class TestStage implements CommandsTrait {
     Boolean isEnabled
     String projectFilename
     String workspaceFilename
@@ -162,7 +165,7 @@ TestStage getTestStage() {
     return testStage
 }
 
-void executeTestStage(TestStage stage) {
+void executeTestStage() {
     /*
     TestStage stage = getTestStage()
     sh stage.executionCommand()
