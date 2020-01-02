@@ -17,6 +17,24 @@
             "isEnabled": true,
             "title": "Coverage",
             "scheme": "JenkinsDemo"
+        },
+        "build": {
+            "isEnabled": true,
+            "title": "Build",
+            "items": [
+                {
+                    "buildIndex": 0,
+                    "configuration": "Debug",
+                    "scheme": "JenkinsDemo",
+                    "exportMethod": "ad-hoc",
+                    "provisioningProfiles": [
+                        {
+                            "id": "com.telesoftas",
+                            "name": "Generic Adhoc"
+                        }
+                    ]
+                }
+            ]
         }
     }
 }

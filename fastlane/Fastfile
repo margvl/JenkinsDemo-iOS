@@ -27,3 +27,24 @@ lane :coverage do |options|
         jenkins: true
     )
 end
+
+lane :build do |options|
+    gym(
+        project: options[:projectFilename],
+        workspace: options[:workspaceFilename],
+        configuration: options[:configuration],
+        scheme: options[:scheme],
+        clean: true,
+        output_directory: options[:outputPath],
+        output_name: options[:outputName],
+        skip_profile_detection: true,
+        export_xcargs: "-allowProvisioningUpdates",
+        export_method: options[:environment],
+        export_options: {
+            signingStyle: "manual",
+            provisioningProfiles: {
+                "com.telesoftas.jenkins.template" => "Generic Adhoc"
+            }
+        }
+    )
+end

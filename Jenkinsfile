@@ -7,6 +7,7 @@ node {
         catchError {
             executeSetUpStage()
             executeTestStageIfNeeded()
+            executeBuildStageIfNeeded()
         }
     }
 }
@@ -201,6 +202,98 @@ void executeTestCoverageStageIfNeeded() {
     }
 }
 
+
+// -------------------
+// --- Build Stage ---
+// -------------------
+
+class BuildStage extends Stage {
+    String projectFilename
+    String workspaceFilename
+    String outputPath
+    String outputName
+    
+    BuildStage(
+            Boolean isEnabled,
+            String title,
+            String projectFilename,
+            String workspaceFilename,
+            String outputPath) {
+        
+        super(isEnabled, title)
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.outputPath = outputPath
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane build"
+    }
+}
+
+class BuildItem {
+    Integer index
+    String name
+    String configuration
+    String scheme
+    String exportMethod
+    BuildProfile[] profiles
+}
+
+class BuildProfile {
+    String bundleId
+    String profileName
+}
+
+BuildStage getBuildStage() {
+    def config = readJSON file: 'config.json'
+    def environment = config.environment
+    def build = config.stages.build
+    def itemList = build.items
+
+    BuildItem[] buildItemList = []
+    itemList.each { item ->
+        def profileList = item.provisioningProfiles
+        BuildProfile[] buildProfileList = []
+        profileList.each { profile ->
+            BuildProfile buildProfile = new BuildProfile(
+                profile.bundleId,
+                profile.name
+            )
+            buildProfileList.add(buildProfile)
+        }
+        
+        BuildItem buildItem = new BuildItem(
+                item.index,
+                "name",
+                item.configuration,
+                item.scheme,
+                item.exportMethod,
+                buildProfileList
+        )
+        buildItemList.add(buildItem)
+    }
+
+    BuildStage buildStage = new BuildStage(
+            build.isEnabled,
+            build.title,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            environment.outputPath + "/gym",
+            buildItemList)
+
+    return buildStage
+}
+
+void executeBuildStageIfNeeded() {
+    BuildStage buildStage = getBuildStage()
+    if (buildStage.isEnabled) {
+        stage(buildStage.name) {
+            run(buildStage.executionCommand())
+        }
+    }
+}
+
 // ---------------
 // --- Helpers ---
 // ---------------
@@ -216,6 +309,11 @@ def getProjectFilename(projectName) {
 def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
+
+
+// -------------
+// --- Stage ---
+// -------------
 
 abstract class Stage {
     Boolean isEnabled
