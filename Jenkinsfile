@@ -70,6 +70,7 @@ void executeSetUpStage() {
 // ------------------
 
 class TestStage extends Stage {
+    Boolean isEnabled
     String projectFilename
     String workspaceFilename
     String scheme
@@ -84,7 +85,7 @@ class TestStage extends Stage {
             String device,
             String reportPath) {
             
-        super(isEnabled)
+        this.isEnabled = isEnabled
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
@@ -125,7 +126,7 @@ void executeTestStageIfNeeded() {
             run(stage.executionCommand())
             junit stage.reportPath + "/*.junit"
         }
-        executeTestCoverageStageIfNeeded()
+        // executeTestCoverageStageIfNeeded()
     }
 }
 
@@ -204,13 +205,9 @@ def getWorkspaceFilename(workspaceName) {
 }
 
 abstract class Stage {
-    Boolean isEnabled
 
     abstract String executionCommand()
 
-    Stage(Boolean isEnabled) {
-        this.isEnabled = isEnabled
-    }
 
     String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
