@@ -9,7 +9,8 @@ node {
                 executeSetUpStage()
             }
             stage('Test') {
-                executeTestStage()
+                TestStage stage = getTestStage()
+                executeTestStage(stage)
             }
             stage('Coverage') {
                 executeTestCoverageStage()
@@ -64,7 +65,6 @@ pipeline {
 // --- Set Up Stage ---
 // --------------------
 
-
 void executeSetUpStage() {
     checkout scm
     sh 'bundle install'
@@ -74,7 +74,6 @@ void executeSetUpStage() {
 // ------------------
 // --- Test Stage ---
 // ------------------
-
 
 class TestStage {
     Boolean isEnabled
@@ -99,35 +98,6 @@ class TestStage {
         this.device = device
         this.reportPath = reportPath
     }
-    
-    void execute() {
-        sh "bundle exec fastlane test" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getDeviceParam(device) +
-                getReportPathParam(reportPath)
-    }
-    
-    String getProjectFilenameParam(String projectFilename) {
-        return " projectFilename:" + projectFilename
-    }
-
-    String getWorkspaceFilenameParam(String workspaceFilename) {
-        return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
-    }
-
-    String getReportPathParam(String reportPath) {
-        return " reportPath:" + reportPath
-    }
-
-    String getSchemeParam(String scheme) {
-        return " scheme:" + "\"" + scheme + "\""
-    }
-
-    String getDeviceParam(String device) {
-        return " device:" + "\"" + device + "\""
-    }
 }
 
 TestStage getTestStage() {
@@ -146,18 +116,14 @@ TestStage getTestStage() {
     return testStage
 }
 
-void executeTestStage() {
-    TestStage stage = getTestStage()
-    stage.execute()
-/*
-    TestStage stage = getTestStage()
+void executeTestStage(TestStage stage) {
     sh "bundle exec fastlane test" +
             getProjectFilenameParam(stage.projectFilename) +
             getWorkspaceFilenameParam(stage.workspaceFilename) +
             getSchemeParam(stage.scheme) +
             getDeviceParam(stage.device) +
             getReportPathParam(stage.reportPath)
-*/
+
 }
 
 void reportTestStageResults(String reportPath) {
@@ -168,7 +134,6 @@ void reportTestStageResults(String reportPath) {
 // ---------------------------
 // --- Test Coverage Stage ---
 // ---------------------------
-
 
 class TestCoverageStage {
     Boolean isEnabled
