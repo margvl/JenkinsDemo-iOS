@@ -278,7 +278,7 @@ BuildStage getBuildStage() {
         BuildProfile[] buildProfileList = []
         profileList.each { profile ->
             BuildProfile buildProfile = new BuildProfile(
-                profile.bundleId,
+                profile.id,
                 profile.name
             )
             buildProfileList.add(buildProfile)
@@ -286,7 +286,7 @@ BuildStage getBuildStage() {
         
         BuildItem buildItem = new BuildItem(
                 item.index,
-                "name",
+                "name.ipa",
                 item.configuration,
                 item.scheme,
                 item.exportMethod,
