@@ -124,6 +124,7 @@ void executeTestStageIfNeeded() {
     if (stage.isEnabled) {
         sh stage.executionCommand()
         stage('Test') {
+            sh 'echo "Success?"'
             // run(stage.executionCommand())
             // junit stage.reportPath + "/*.junit"
         }
