@@ -117,8 +117,7 @@ class TestStage extends Stage {
     String device
     String reportPath
 
-    TestStage(script, filename) {
-        def config = script.readJSON file: filename
+    TestStage(def config) {
         def environment = config.environment
         def test = config.stages.test
         
@@ -161,7 +160,8 @@ class TestStage extends Stage {
 }
 
 TestStage getTestStage() {
-    return new TestStage(this, 'config.json')
+    def config = script.readJSON file: filename
+    return new TestStage(config)
 
     /*
     def config = readJSON file: 'config.json'
