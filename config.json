@@ -29,7 +29,7 @@
                     "exportMethod": "ad-hoc",
                     "provisioningProfiles": [
                         {
-                            "id": "com.telesoftas",
+                            "id": "com.telesoftas.jenkins.demo",
                             "name": "Generic Adhoc"
                         }
                     ]

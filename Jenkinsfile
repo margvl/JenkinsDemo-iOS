@@ -312,7 +312,7 @@ BuildStage getBuildStage() {
 void executeBuildStageIfNeeded() {
     BuildStage buildStage = getBuildStage()
     if (buildStage.isEnabled) {
-        stage(buildStage.name) {
+        stage(buildStage.title) {
             run(buildStage.executionCommand())
         }
     }
