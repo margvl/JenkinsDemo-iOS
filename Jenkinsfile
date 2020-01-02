@@ -117,7 +117,7 @@ class TestStage extends Stage {
     String device
     String reportPath
 
-    TestStage(def config) {
+    TestStage(HashMap config) {
         def environment = config.environment
         def test = config.stages.test
         
@@ -160,7 +160,7 @@ class TestStage extends Stage {
 }
 
 TestStage getTestStage() {
-    def config = readJSON file: 'config.json'
+    HashMap config = readJSON file: 'config.json'
     return new TestStage(config)
 
     /*
