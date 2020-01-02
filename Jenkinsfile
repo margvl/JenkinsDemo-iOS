@@ -122,10 +122,10 @@ TestStage getTestStage() {
 void executeTestStageIfNeeded() {
     TestStage stage = getTestStage()
     if (stage.isEnabled) {
-        stage('Test') {
-            run(stage.executionCommand())
-            junit stage.reportPath + "/*.junit"
-        }
+        // stage('Test') {
+        //     run(stage.executionCommand())
+        //     junit stage.reportPath + "/*.junit"
+        // }
         // executeTestCoverageStageIfNeeded()
     }
 }
@@ -185,7 +185,9 @@ TestCoverageStage getTestCoverageStage() {
 
 void executeTestCoverageStageIfNeeded() {
     TestCoverageStage stage = getTestCoverageStage()
-    run(stage.executionCommand())
+    if (stage.isEnabled) {
+        run(stage.executionCommand())
+    }
 }
 
 // ---------------
