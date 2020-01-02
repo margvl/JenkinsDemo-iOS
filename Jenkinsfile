@@ -71,45 +71,8 @@ void executeSetUpStage() {
 // --- Test Stage ---
 // ------------------
 
-trait CommandCreatable {
-    String getProjectFilenameParam(String projectFilename) {
-        return " projectFilename:" + projectFilename
-    }
 
-    String getWorkspaceFilenameParam(String workspaceFilename) {
-        return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
-    }
-
-    String getSourcePathParam(String sourcePath) {
-        return " sourcePath:" + sourcePath
-    }
-
-    String getReportPathParam(String reportPath) {
-        return " reportPath:" + reportPath
-    }
-
-    String getOutputPathParam(String outputPath) {
-        return " outputPath:" + outputPath
-    }
-
-    String getSchemeParam(String scheme) {
-        return " scheme:" + "\"" + scheme + "\""
-    }
-
-    String getDeviceParam(String device) {
-        return " device:" + "\"" + device + "\""
-    }
-
-    String getProjectFilename(projectName) {
-        return projectName + ".xcodeproj"
-    }
-
-    String getWorkspaceFilename(workspaceName) {
-        return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
-    }
-}
-
-class TestStage implements CommandCreatable {
+class TestStage {
     Boolean isEnabled
     String projectFilename
     String workspaceFilename
@@ -144,6 +107,42 @@ class TestStage implements CommandCreatable {
                 getSchemeParam(scheme) +
                 getDeviceParam(device) +
                 getReportPathParam(reportPath)
+    }
+    
+    String getProjectFilenameParam(String projectFilename) {
+        return " projectFilename:" + projectFilename
+    }
+
+    String getWorkspaceFilenameParam(String workspaceFilename) {
+        return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
+    }
+
+    String getSourcePathParam(String sourcePath) {
+        return " sourcePath:" + sourcePath
+    }
+
+    String getReportPathParam(String reportPath) {
+        return " reportPath:" + reportPath
+    }
+
+    String getOutputPathParam(String outputPath) {
+        return " outputPath:" + outputPath
+    }
+
+    String getSchemeParam(String scheme) {
+        return " scheme:" + "\"" + scheme + "\""
+    }
+
+    String getDeviceParam(String device) {
+        return " device:" + "\"" + device + "\""
+    }
+
+    String getProjectFilename(projectName) {
+        return projectName + ".xcodeproj"
+    }
+
+    String getWorkspaceFilename(workspaceName) {
+        return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
     }
 }
 
