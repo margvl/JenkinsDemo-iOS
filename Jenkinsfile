@@ -118,7 +118,7 @@ class TestStage extends Stage {
     String reportPath
 
     TestStage(def script, String filename) {
-        def config = readJSON file: filename
+        def config = script.readJSON file: filename
         def environment = config.environment
         def test = config.stages.test
         
