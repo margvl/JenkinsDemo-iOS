@@ -219,7 +219,7 @@ class BuildStage extends Stage {
             String title,
             String projectFilename,
             String workspaceFilename,
-            String outputPath
+            String outputPath,
             BuildItem[] items) {
         
         super(isEnabled, title)
