@@ -284,7 +284,7 @@ BuildStage getBuildStage() {
                 profile.id,
                 profile.name
             )
-            //buildProfileList.add(buildProfile)
+            buildProfileList << buildProfile
         }
         
         BuildItem buildItem = new BuildItem(
@@ -295,7 +295,7 @@ BuildStage getBuildStage() {
                 item.exportMethod,
                 buildProfileList
         )
-        //buildItemList.add(buildItem)
+        buildItemList << buildItem
     }
 
     BuildStage buildStage = new BuildStage(
