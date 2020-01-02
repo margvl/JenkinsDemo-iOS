@@ -120,13 +120,11 @@ TestStage getTestStage() {
 }
 
 void executeTestStageIfNeeded() {
-    TestStage stage = getTestStage()
+    TestStage testStage = getTestStage()
     if (true) {
-        //sh stage.executionCommand()
-        stage("Testing") {
-            sh 'echo "Success?"'
-            // run(stage.executionCommand())
-            // junit stage.reportPath + "/*.junit"
+        stage('Test') {
+            run(testStage.executionCommand())
+            junit stage.reportPath + "/*.junit"
         }
         // executeTestCoverageStageIfNeeded()
     }
