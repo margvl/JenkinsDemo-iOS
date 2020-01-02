@@ -195,8 +195,8 @@ void executeTestCoverageStageIfNeeded() {
                          alwaysLinkToLastBuild: false,
                          keepAll: false,
                          reportDir: testCoverage.reportPath,
-                         reportFiles: 'index.html',
-                         reportName: testCoverage.title + "Report"])
+                         reportFiles: "index.html",
+                         reportName: testCoverage.title + " Report"])
         }
     }
 }
