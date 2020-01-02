@@ -238,11 +238,32 @@ class BuildItem {
     String scheme
     String exportMethod
     BuildProfile[] profiles
+    
+    BuildItem(
+            Integer index,
+            String name,
+            String configuration,
+            String scheme,
+            String exportMethod,
+            BuildProfile[] profiles) {
+    
+        this.index = index
+        this.name = name
+        this.configuration = configuration
+        this.scheme = scheme
+        this.exportMethod = exportMethod
+        this.profiles = profiles
+    }
 }
 
 class BuildProfile {
-    String bundleId
-    String profileName
+    String id
+    String name
+    
+    BuildProfile(String id, String name) {
+        this.id = id
+        this.name = name
+    }
 }
 
 BuildStage getBuildStage() {
