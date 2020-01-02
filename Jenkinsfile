@@ -117,6 +117,19 @@ class TestStage extends Stage {
     String device
     String reportPath
 
+    TestStage(def script, String filename) {
+        def config = readJSON file: filename
+        def environment = config.environment
+        def test = config.stages.test
+        
+        this.isEnabled = test.isEnabled
+        this.projectFilename = getProjectFilename(environment.projectName)
+        this.workspaceFilename = getWorkspaceFilename(environment.workspaceName)
+        this.scheme = test.scheme
+        this.device = test.device
+        this.reportPath = environment.reportPath + "/scan"
+    }
+
     TestStage(
             Boolean isEnabled,
             String projectFilename,
@@ -148,6 +161,9 @@ class TestStage extends Stage {
 }
 
 TestStage getTestStage() {
+    return new TestStage(this, 'config.json')
+
+    /*
     def config = readJSON file: 'config.json'
     def environment = config.environment
     def test = config.stages.test
@@ -161,6 +177,7 @@ TestStage getTestStage() {
             environment.reportPath + "/scan")
 
     return testStage
+    */
 }
 
 void executeTestStage() {
