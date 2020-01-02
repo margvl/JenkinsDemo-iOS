@@ -168,8 +168,9 @@ TestStage getTestStage() {
 }
 
 void executeTestStage(TestStage stage) {
-    sh stage.executionCommand()
     /*
+    sh stage.executionCommand()
+    
     sh "bundle exec fastlane test" +
             getProjectFilenameParam(stage.projectFilename) +
             getWorkspaceFilenameParam(stage.workspaceFilename) +
