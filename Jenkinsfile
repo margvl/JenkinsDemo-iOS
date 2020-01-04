@@ -377,7 +377,7 @@ abstract class Stage {
         return " provisioningProfiles:" + "\"" + provisioningProfiles + "\""
     }
 
-    String getOutputNameParam(string outputName) {
+    String getOutputNameParam(String outputName) {
         return " outputName:" + "\"" + outputName + "\""
     }
 
