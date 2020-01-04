@@ -36,7 +36,7 @@
                 },
                 {
                     "id": "1",
-                    "configuration": "Debug",
+                    "configuration": "Release",
                     "scheme": "JenkinsDemo-Staging",
                     "exportMethod": "ad-hoc",
                     "provisioningProfiles": [
