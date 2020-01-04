@@ -32,7 +32,7 @@ lane :build do |options|
 
     provisioningProfilesString = options[:provisioningProfiles]
     profileValuePairStringList = provisioningProfilesString.split(",")
-    provisioningProfiles = [:]
+    def provisioningProfiles
     profileValuePairStringList.each do |profilePairString|
         profileValueList = profilePairString.split("=>")
         provisioningProfiles[profileValueList.first] = profileValueList.last

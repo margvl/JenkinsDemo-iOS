@@ -16,7 +16,6 @@ node {
 // --------------------
 // --- Set Up Stage ---
 // --------------------
-
 void executeSetUpStage() {
     stage('SetUp') {
         checkout scm
@@ -28,7 +27,6 @@ void executeSetUpStage() {
 // ------------------
 // --- Test Stage ---
 // ------------------
-
 class TestStage extends Stage {
     String projectFilename
     String workspaceFilename
@@ -94,7 +92,6 @@ void executeTestStageIfNeeded() {
 // ---------------------------
 // --- Test Coverage Stage ---
 // ---------------------------
-
 class TestCoverageStage extends Stage {
     String projectFilename
     String workspaceFilename
@@ -165,7 +162,6 @@ void executeTestCoverageStageIfNeeded() {
 // -------------------
 // --- Build Stage ---
 // -------------------
-
 class BuildStage extends Stage {
     String projectFilename
     String workspaceFilename
@@ -317,7 +313,6 @@ void executeBuildStageIfNeeded() {
 // ---------------
 // --- Helpers ---
 // ---------------
-
 void run(String command) {
     sh command
 }
@@ -334,7 +329,6 @@ def getWorkspaceFilename(workspaceName) {
 // -------------
 // --- Stage ---
 // -------------
-
 abstract class Stage {
     Boolean isEnabled
     String title
