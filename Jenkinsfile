@@ -365,7 +365,7 @@ abstract class Stage {
         return " outputPath:" + outputPath
     }
 
-    String getConfigurationParam(String scheme) {
+    String getConfigurationParam(String configuration) {
         return " configuration:" + configuration
     }
 
