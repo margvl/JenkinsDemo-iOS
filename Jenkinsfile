@@ -258,7 +258,7 @@ class BuildProfile {
     }
     
     String value() {
-        return profile.id + "=>" + profile.name
+        return id + "=>" + name
     }
 }
 
