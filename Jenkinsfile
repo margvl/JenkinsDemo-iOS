@@ -241,10 +241,10 @@ class BuildItem {
     String profilesValue() {
         String[] valueList = []
         profileList.each { profile ->
-            value += (profile.id + "=>" + profile.name)
+            valueList += profile.value()
         }
-        String value1 = valueList.join(',')
-        return value1
+        String value = valueList.join(',')
+        return value
     }
 }
 
@@ -255,6 +255,10 @@ class BuildProfile {
     BuildProfile(String id, String name) {
         this.id = id
         this.name = name
+    }
+    
+    String value() {
+        return profile.id + "=>" + profile.name
     }
 }
 
