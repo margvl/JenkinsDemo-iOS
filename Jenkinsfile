@@ -256,10 +256,6 @@ class BuildProfile {
         this.id = id
         this.name = name
     }
-    
-    String value() {
-        return id + "=>" + name
-    }
 }
 
 BuildStage getBuildStage() {
