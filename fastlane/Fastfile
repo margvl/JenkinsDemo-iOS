@@ -29,6 +29,15 @@ lane :coverage do |options|
 end
 
 lane :build do |options|
+
+    provisioningProfilesString = options[:provisioningProfiles]
+    profileValuePairStringList = provisioningProfilesString.split(",")
+    provisioningProfiles = [:]
+    profileValuePairStringList.each do |profilePairString|
+        profileValueList = profilePairString.split("=>")
+        provisioningProfiles[profileValueList.first] = profileValueList.last
+    end
+
     gym(
         project: options[:projectFilename],
         workspace: options[:workspaceFilename],
@@ -39,12 +48,10 @@ lane :build do |options|
         output_name: options[:outputName],
         skip_profile_detection: true,
         export_xcargs: "-allowProvisioningUpdates",
-        export_method: options[:environment],
+        export_method: options[:exportMethod],
         export_options: {
             signingStyle: "manual",
-            provisioningProfiles: {
-                "com.telesoftas.jenkins.template" => "Generic Adhoc"
-            }
+            provisioningProfiles: provisioningProfiles
         }
     )
 end

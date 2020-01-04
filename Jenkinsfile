@@ -12,47 +12,6 @@ node {
     }
 }
 
-/*
-pipeline {
-    agent any
-
-    options {
-        ansiColor('xterm')
-        buildDiscarder(logRotator(numToKeepStr: '15'))
-        disableConcurrentBuilds()
-    }
-    
-    environment {
-        TestStage testStage = getTestStage()
-        TestCoverageStage testCoverageStage = getTestCoverageStage()
-    }
-    
-    stages {
-        stage('SetUp') {
-            steps { executeSetUpStage() }
-        }
-        
-        stage('Test') {
-            when { expression { return testStage.isEnabled } }
-            steps { executeTestStage() }
-            post { always { reportTestStageResults(testStage.reportPath) } }
-        }
-        
-        stage('Test Coverage') {
-            when { expression { return testCoverageStage.isEnabled } }
-            steps { executeTestCoverageStage() }
-        }
-    }
-
-    post {
-        success { sh 'echo "success :)"' }
-        failure { sh 'echo "failure :("' }
-    }
-}
-*/
-
-
-
 
 // --------------------
 // --- Set Up Stage ---
@@ -211,7 +170,6 @@ class BuildStage extends Stage {
     String projectFilename
     String workspaceFilename
     String outputPath
-    String outputName
     BuildItem[] itemList
     
     BuildStage(
@@ -229,8 +187,30 @@ class BuildStage extends Stage {
         this.itemList = items
     }
     
+    String[] executionCommands() {
+        String[] executionCommandList = []
+        itemList.each { item ->
+            String executionCommand = "bundle exec fastlane build" +
+                    getProjectFilenameParam(projectFilename) +
+                    getWorkspaceFilenameParam(workspaceFilename) +
+                    getConfigurationParam(item.configuration) +
+                    getSchemeParam(item.scheme) +
+                    getOutputPathParam(outputPath) +
+                    getOutputNameParam(item.name) +
+                    getExportMethodParam(item.exportMethod) +
+                    getProvisioningProfilesParam(item.profilesValue())
+            executionCommandList += executionCommand
+        }
+        return executionCommandList
+    }
+    
     String executionCommand() {
-        return "bundle exec fastlane build"
+        return "bundle exec fastlane coverage" +
+                getProjectFilenameParam(projectFilename) +
+                getWorkspaceFilenameParam(workspaceFilename) +
+                getSchemeParam(scheme) +
+                getSourcePathParam(sourcePath) +
+                getReportPathParam(reportPath)
     }
 }
 
@@ -257,6 +237,15 @@ class BuildItem {
         this.exportMethod = exportMethod
         this.profileList = profiles
     }
+    
+    String profilesValue() {
+        String[] valueList = []
+        profileList.each { profile ->
+            value += profile.value()
+        }
+        String value = valueList.join(',')
+        return value
+    }
 }
 
 class BuildProfile {
@@ -266,6 +255,10 @@ class BuildProfile {
     BuildProfile(String id, String name) {
         this.id = id
         this.name = name
+    }
+    
+    String value() {
+        return id + "=>" + name
     }
 }
 
@@ -289,7 +282,7 @@ BuildStage getBuildStage() {
         
         BuildItem buildItem = new BuildItem(
                 item.index,
-                "name.ipa",
+                environment.projectName + "-" + item.index + ".ipa",
                 item.configuration,
                 item.scheme,
                 item.exportMethod,
@@ -313,7 +306,10 @@ void executeBuildStageIfNeeded() {
     BuildStage buildStage = getBuildStage()
     if (buildStage.isEnabled) {
         stage(buildStage.title) {
-            run(buildStage.executionCommand())
+            String[] executionCommandList = buildStage.executionCommands()
+            executionCommandList.each { executionCommand ->
+                run(executionCommand)
+            }
         }
     }
 }
@@ -348,8 +344,6 @@ abstract class Stage {
         this.title = title
     }
     
-    abstract String executionCommand()
-
 
     String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
@@ -369,6 +363,22 @@ abstract class Stage {
 
     String getOutputPathParam(String outputPath) {
         return " outputPath:" + outputPath
+    }
+
+    String getConfigurationParam(String scheme) {
+        return " configuration:" + configuration
+    }
+
+    String getExportMethodParam(String exportMethod) {
+        return " exportMethod:" + exportMethod
+    }
+
+    String getProvisioningProfilesParam(String provisioningProfiles) {
+        return " provisioningProfiles:" + "\"" + provisioningProfiles + "\""
+    }
+
+    String getOutputNameParam(string outputName) {
+        return " outputName:" + "\"" + outputName + "\""
     }
 
     String getSchemeParam(String scheme) {
