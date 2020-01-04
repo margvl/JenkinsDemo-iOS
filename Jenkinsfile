@@ -241,7 +241,7 @@ class BuildItem {
     String profilesValue() {
         String[] valueList = []
         profileList.each { profile ->
-            value += profile.value()
+            value += (profile.id + "=>" + profile.name)
         }
         String value = valueList.join(',')
         return value
