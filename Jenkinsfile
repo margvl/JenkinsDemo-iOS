@@ -211,7 +211,7 @@ class BuildStage extends Stage {
 }
 
 class BuildItem {
-    Integer index
+    String id
     String name
     String configuration
     String scheme
@@ -219,14 +219,14 @@ class BuildItem {
     BuildProfile[] profileList
     
     BuildItem(
-            Integer index,
+            String id,
             String name,
             String configuration,
             String scheme,
             String exportMethod,
             BuildProfile[] profiles) {
     
-        this.index = index
+        this.id = id
         this.name = name
         this.configuration = configuration
         this.scheme = scheme
@@ -277,8 +277,8 @@ BuildStage getBuildStage() {
         }
         
         BuildItem buildItem = new BuildItem(
-                item.index,
-                environment.projectName + "-" + item.index + ".ipa",
+                item.id,
+                environment.projectName + "-" + item.id + ".ipa",
                 item.configuration,
                 item.scheme,
                 item.exportMethod,

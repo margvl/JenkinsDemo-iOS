@@ -23,13 +23,25 @@
             "title": "Build",
             "items": [
                 {
-                    "buildIndex": 0,
+                    "id": "0",
                     "configuration": "Debug",
                     "scheme": "JenkinsDemo",
                     "exportMethod": "ad-hoc",
                     "provisioningProfiles": [
                         {
                             "id": "com.telesoftas.jenkins.demo",
+                            "name": "Generic Adhoc"
+                        }
+                    ]
+                },
+                {
+                    "id": "1",
+                    "configuration": "Debug",
+                    "scheme": "JenkinsDemo-Staging",
+                    "exportMethod": "ad-hoc",
+                    "provisioningProfiles": [
+                        {
+                            "id": "com.telesoftas.jenkins.demo.staging",
                             "name": "Generic Adhoc"
                         }
                     ]
