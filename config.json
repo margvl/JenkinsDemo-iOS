@@ -21,13 +21,11 @@
             "isEnabled": true,
             "title": "Test",
             "scheme": "JenkinsDemo",
-            "devices": ["iPhone 8"]
+            "devices": ["iPhone 8"],
+            "isCoverageEnabled": true
         },
         "analyze": {
             "title": "Analyze",
-            "testCoverage": {
-                "isEnabled": true
-            },
             "swiftLint": {
                 "isEnabled": false
             },

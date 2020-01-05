@@ -8,6 +8,7 @@ node {
 
         catchError {
             executeStageIfNeeded(setUpStage)
+            executeStageIfNeeded(testStage)
             //executeTestStageIfNeeded()
             //executeBuildStageIfNeeded()
         }
@@ -38,6 +39,13 @@ void loadUp(String filename) {
     println("analyze: " + analyze)
 
     setUpStage = new SetUpStage(setUp.title)
+    TestCoverageStep testCoverage = new TestCoverageStep(
+            test.isCoverageEnabled,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            environment.sourcePath,
+            environment.reportPath + "/slather")
     testStage = new TestStage(
             test.isEnabled,
             test.title,
@@ -45,16 +53,10 @@ void loadUp(String filename) {
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
             test.device,
-            environment.reportPath + "/scan")
+            environment.reportPath + "/scan",
+            testCoverage)
     
-    TestCoverageStep testCoverage = new TestCoverageStep(
-            analyze.testCoverage.isEnabled,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            test.scheme,
-            environment.sourcePath,
-            environment.reportPath + "/slather")
-    StageStep[] stepList = [testCoverage]
+    StageStep[] stepList = []
     analyzeStage = new AnalyzeStage(analyze.title, stepList)
 }
 
@@ -100,6 +102,7 @@ class TestStage extends Stage {
     String scheme
     String device
     String reportPath
+    StageStep coverageStep
 
     TestStage(
             Boolean isEnabled,
@@ -108,7 +111,8 @@ class TestStage extends Stage {
             String workspaceFilename,
             String scheme,
             String device,
-            String reportPath) {
+            String reportPath
+            StageStep coverageStep) {
             
         super(isEnabled, title)
         this.projectFilename = projectFilename
@@ -116,36 +120,24 @@ class TestStage extends Stage {
         this.scheme = scheme
         this.device = device
         this.reportPath = reportPath
+        this.coverageStep = coverageStep
     }
     
     String[] executionCommands() {
-        String testCommand = "bundle exec fastlane test" +
+        String[] executionCommandList = []
+        executionCommandList += ("bundle exec fastlane test" +
                 getProjectFilenameParam(projectFilename) +
                 getWorkspaceFilenameParam(workspaceFilename) +
                 getSchemeParam(scheme) +
                 getDeviceParam(device) +
-                getReportPathParam(reportPath)
-        return [testCommand]
+                getReportPathParam(reportPath))
+        if coverageStep.isEnabled {
+            executionCommandList += coverageStep.executionCommand()
+        }
+        return executionCommandList
     }
 }
-/*
-TestStage getTestStage() {
-    def config = readJSON file: 'config.json'
-    def environment = config.environment
-    def test = config.stages.test
 
-    TestStage testStage = new TestStage(
-            test.isEnabled,
-            test.title,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            test.scheme,
-            test.device,
-            environment.reportPath + "/scan")
-
-    return testStage
-}
-*/
 
 void executeTestStageIfNeeded() {
     TestStage test = getTestStage()
