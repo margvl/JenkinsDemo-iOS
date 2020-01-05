@@ -4,7 +4,7 @@ node {
                 buildDiscarder(logRotator(numToKeepStr: '15')),
                 disableConcurrentBuilds()])
     
-        loadUp()
+        loadUp('config.json')
 
         catchError {
             executeSetUpStage()
