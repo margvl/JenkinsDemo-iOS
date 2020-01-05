@@ -30,6 +30,12 @@ void loadUp(String filename) {
     def test = config.stages.test
     def analyze = config.stages.analyze
     
+    println("config: " + config)
+    println("environment: " + environment)
+    println("setUp: " + setUp)
+    println("test: " + test)
+    println("analyze: " + analyze)
+
     setUpStage = new SetUpStage(setUp.title)
     testStage = new TestStage(
             test.isEnabled,
