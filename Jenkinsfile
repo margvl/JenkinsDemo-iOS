@@ -138,40 +138,6 @@ class TestStage extends Stage {
     }
 }
 
-
-void executeTestStageIfNeeded() {
-    TestStage test = getTestStage()
-    if (testStage.isEnabled) {
-        stage(testStage.title) {
-            run(testStage.executionCommand())
-            junit test.reportPath + "/*.junit"
-        }
-        executeTestCoverageStageIfNeeded()
-    }
-}
-
-// ---------------------
-// --- Analyze Stage ---
-// ---------------------
-class AnalyzeStage extends Stage {
-    StageStep[] stepList
-    
-    AnalyzeStage(String title, StageStep[] steps) {
-        // TODO: Decide `enabled` value dependend on enabled steps
-        super(true, title)
-        this.stepList = steps
-    }
-    
-    String[] executionCommands() {
-        return []
-    }
-}
-
-interface StageStep {
-    Boolean isEnabled
-    String executionCommand()
-}
-
 class TestCoverageStep implements StageStep {
     Boolean isEnabled
     String projectFilename
@@ -203,6 +169,35 @@ class TestCoverageStep implements StageStep {
                 getSchemeParam(scheme) +
                 getSourcePathParam(sourcePath) +
                 getReportPathParam(reportPath)
+    }
+}
+
+
+void executeTestStageIfNeeded() {
+    TestStage test = getTestStage()
+    if (testStage.isEnabled) {
+        stage(testStage.title) {
+            run(testStage.executionCommand())
+            junit test.reportPath + "/*.junit"
+        }
+        executeTestCoverageStageIfNeeded()
+    }
+}
+
+// ---------------------
+// --- Analyze Stage ---
+// ---------------------
+class AnalyzeStage extends Stage {
+    StageStep[] stepList
+    
+    AnalyzeStage(String title, StageStep[] steps) {
+        // TODO: Decide `enabled` value dependend on enabled steps
+        super(true, title)
+        this.stepList = steps
+    }
+    
+    String[] executionCommands() {
+        return []
     }
 }
 
@@ -450,10 +445,58 @@ def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
 
+String getProjectFilenameParam(String projectFilename) {
+    return " projectFilename:" + projectFilename
+}
+
+String getWorkspaceFilenameParam(String workspaceFilename) {
+    return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
+}
+
+String getSourcePathParam(String sourcePath) {
+    return " sourcePath:" + sourcePath
+}
+
+String getReportPathParam(String reportPath) {
+    return " reportPath:" + reportPath
+}
+
+String getOutputPathParam(String outputPath) {
+    return " outputPath:" + outputPath
+}
+
+String getConfigurationParam(String configuration) {
+    return " configuration:" + configuration
+}
+
+String getExportMethodParam(String exportMethod) {
+    return " exportMethod:" + exportMethod
+}
+
+String getProvisioningProfilesParam(String provisioningProfiles) {
+    return " provisioningProfiles:" + "\"" + provisioningProfiles + "\""
+}
+
+String getOutputNameParam(String outputName) {
+    return " outputName:" + "\"" + outputName + "\""
+}
+
+String getSchemeParam(String scheme) {
+    return " scheme:" + "\"" + scheme + "\""
+}
+
+String getDeviceParam(String device) {
+    return " device:" + "\"" + device + "\""
+}
 
 // -------------
 // --- Stage ---
 // -------------
+interface StageStep {
+    Boolean isEnabled
+    String executionCommand()
+}
+
 abstract class Stage {
     Boolean isEnabled
     String title
@@ -464,49 +507,4 @@ abstract class Stage {
     }
     
     abstract String[] executionCommands()
-
-
-    String getProjectFilenameParam(String projectFilename) {
-        return " projectFilename:" + projectFilename
-    }
-
-    String getWorkspaceFilenameParam(String workspaceFilename) {
-        return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
-    }
-
-    String getSourcePathParam(String sourcePath) {
-        return " sourcePath:" + sourcePath
-    }
-
-    String getReportPathParam(String reportPath) {
-        return " reportPath:" + reportPath
-    }
-
-    String getOutputPathParam(String outputPath) {
-        return " outputPath:" + outputPath
-    }
-
-    String getConfigurationParam(String configuration) {
-        return " configuration:" + configuration
-    }
-
-    String getExportMethodParam(String exportMethod) {
-        return " exportMethod:" + exportMethod
-    }
-
-    String getProvisioningProfilesParam(String provisioningProfiles) {
-        return " provisioningProfiles:" + "\"" + provisioningProfiles + "\""
-    }
-
-    String getOutputNameParam(String outputName) {
-        return " outputName:" + "\"" + outputName + "\""
-    }
-
-    String getSchemeParam(String scheme) {
-        return " scheme:" + "\"" + scheme + "\""
-    }
-
-    String getDeviceParam(String device) {
-        return " device:" + "\"" + device + "\""
-    }
 }
