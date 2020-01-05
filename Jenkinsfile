@@ -52,7 +52,7 @@ void loadUp(String filename) {
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
-            test.device,
+            test.devices,
             environment.reportPath + "/scan",
             testCoverage)
     
@@ -100,7 +100,7 @@ class TestStage extends Stage {
     String projectFilename
     String workspaceFilename
     String scheme
-    String device
+    String[] deviceList
     String reportPath
     StageStep coverageStep
 
@@ -110,7 +110,7 @@ class TestStage extends Stage {
             String projectFilename,
             String workspaceFilename,
             String scheme,
-            String device,
+            String[] devices,
             String reportPath,
             StageStep coverageStep) {
             
@@ -118,7 +118,7 @@ class TestStage extends Stage {
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
-        this.device = device
+        this.deviceList = devices
         this.reportPath = reportPath
         this.coverageStep = coverageStep
     }
@@ -129,7 +129,7 @@ class TestStage extends Stage {
                 ParamBuilder.getProjectFilenameParam(projectFilename) +
                 ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
-                ParamBuilder.getDeviceParam(device) +
+                ParamBuilder.getDevicesParam(deviceList.join(',')) +
                 ParamBuilder.getReportPathParam(reportPath))
         if (coverageStep.isEnabled) {
             executionCommandList += coverageStep.executionCommand()
@@ -486,7 +486,7 @@ class ParamBuilder {
         return " scheme:" + "\"" + scheme + "\""
     }
 
-    static String getDeviceParam(String devices) {
+    static String getDevicesParam(String devices) {
         return " devices:" + "\"" + devices + "\""
     }
 }
