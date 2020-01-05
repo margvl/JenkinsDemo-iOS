@@ -63,7 +63,7 @@ void executeTestStageIfNeeded() {
 void executeTestCoverageStepIfNeeded() {
     TestCoverageStep coverageStep = testStage.coverageStep
     if (coverageStep.isEnabled) {
-        run(coverage.executionCommand())
+        run(coverageStep.executionCommand())
         publishHTML([allowMissing: false,
                      alwaysLinkToLastBuild: false,
                      keepAll: false,
