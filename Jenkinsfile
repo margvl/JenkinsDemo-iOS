@@ -25,11 +25,11 @@ BuildStage buildStage = null
 void loadUp(String filename) {
     checkout scm
 
-    def config = readJSON file: filename
-    def environment = config.environment
-    def setUp = config.stages.setUp
-    def test = config.stages.test
-    def analyze = config.stages.analyze
+    HashMap config = readJSON file: filename
+    HashMap environment = config.environment
+    HashMap setUp = config.stages.setUp
+    HashMap test = config.stages.test
+    HashMap analyze = config.stages.analyze
     
     println("config: " + config)
     println("environment: " + environment)
@@ -54,7 +54,8 @@ void loadUp(String filename) {
             test.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
-    analyzeStage = new AnalyzeStage(analyze.title, [testCoverage])
+    StageStep[] stepList = [testCoverage]
+    analyzeStage = new AnalyzeStage(analyze.title, stepList)
 }
 
 // --------------------
