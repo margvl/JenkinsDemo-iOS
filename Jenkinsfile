@@ -304,7 +304,7 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
     SwiftLintStep swiftLintStep = new SwiftLintStep(
             swiftLint.isEnabled,
             environment.reportPath + "/swiftlint",
-            swiftLint.configFile)
+            NameBuilder.getConfigFile(swiftLint.configFile))
             
     Map cloc = analyze.cloc
     ClocStep clocStep = new ClocStep(
@@ -484,6 +484,10 @@ class NameBuilder {
 
     static String getWorkspaceFilename(workspaceName) {
         return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+    }
+    
+    static String getConfigFile(configFile) {
+        return (configFile.getClass() == String) ? configFile : null
     }
     
     static String getOutputName(projectName, buildId) {
