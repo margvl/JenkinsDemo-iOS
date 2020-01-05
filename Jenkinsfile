@@ -54,7 +54,7 @@ void loadUp(String filename) {
 // --- Set Up Stage ---
 // --------------------
 void executeSetUpStage() {
-    stage(setUpStage.title) {
+    stage('Set up') {
         checkout scm
         run('bundle install')
     }
