@@ -8,7 +8,7 @@ node {
 
         catchError {
             executeStageIfNeeded(setUpStage)
-            //executeStageIfNeeded(testStage)
+            executeStageIfNeeded(testStage)
             //executeTestStageIfNeeded()
             //executeBuildStageIfNeeded()
         }
@@ -61,7 +61,7 @@ void loadUp(String filename) {
 }
 
 
-executeStageIfNeeded(Stage executableStage) {
+void executeStageIfNeeded(Stage executableStage) {
     if (executableStage.isEnabled) {
         stage(executableStage.title) {
             String[] executionCommandList = executableStage.executionCommands()
