@@ -540,6 +540,10 @@ class ParamBuilder {
         return " devices:" + "\"" + devices + "\""
     }
     
+    static String getConfigFileParam(String configFile) {
+        return (configFile == null) ? "" : (" configFile:" + configFile)
+    }
+    
     static String getExcludeDirectoriesParam(String excludeDirectories) {
         return " excludeDirectories:" + "\"" + excludeDirectories + "\""
     }
