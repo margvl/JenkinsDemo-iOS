@@ -25,11 +25,11 @@ BuildStage buildStage = null
 void loadUp(String filename) {
     checkout scm
 
-    HashMap config = readJSON file: filename
-    HashMap environment = config.environment
-    HashMap setUp = config.stages.setUp
-    HashMap test = config.stages.test
-    HashMap analyze = config.stages.analyze
+    Map config = readJSON file: filename
+    Map environment = config.environment
+    Map setUp = config.stages.setUp
+    Map test = config.stages.test
+    Map analyze = config.stages.analyze
     
     println("config: " + config)
     println("environment: " + environment)
