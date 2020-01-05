@@ -486,8 +486,8 @@ class ParamBuilder {
         return " scheme:" + "\"" + scheme + "\""
     }
 
-    static String getDeviceParam(String device) {
-        return " device:" + "\"" + device + "\""
+    static String getDeviceParam(String devices) {
+        return " devices:" + "\"" + devices + "\""
     }
 }
 
