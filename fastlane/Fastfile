@@ -31,7 +31,7 @@ lane :coverage do |options|
     )
 end
 
-desc "Run SwiftLint"
+desc "Run SwiftLint analyze tool"
 lane :swiftLint do
     swiftlint(
         mode: :lint,
@@ -39,6 +39,15 @@ lane :swiftLint do
         reporter: "checkstyle",
         config_file: options[:configFile],
         ignore_exit_status: true
+    )
+end
+
+desc "Run Cloc analyze tool"
+lane :cloc do
+    cloc(
+       exclude_dir: options[:excludeDirectories],
+       output_directory: options[:reportPath],
+       source_directory: options[:sourcePath]
     )
 end
 

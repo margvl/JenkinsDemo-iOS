@@ -31,7 +31,8 @@
                 "configFile": null
             },
             "cloc": {
-                "isEnabled": false
+                "isEnabled": false,
+                "excludeDirectories": "build"
             }
         },
         "build": {

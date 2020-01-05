@@ -76,21 +76,32 @@ void executeTestCoverageStepIfNeeded() {
 }
 
 void executeAnalyzeStageIfNeeded() {
-    
+    if (analyze.isEnabled) {
+        stage(analyze.title) {
+            executeSwiftLintStepIfNeeded()
+            executeClocStepIfNeeded()
+        }
+    }
 }
 
 void executeSwiftLintStepIfNeeded() {
-    TestCoverageStep coverageStep = analyze.coverageStep
-    if (isSwiftLintStageEnabled) {
-        run(coverageStep.executionCommand())
-        shWithColor "mkdir -p ${reportsPath}/swiftlint"
-        shWithColor 'bundle exec fastlane lint'
+    SwiftLintStep swifLintStep = analyze.swifLintStep
+    if (swifLintStep.isEnabled) {
+        run(swifLintStep.executionCommand())
         step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
               canComputeNew: false,
               defaultEncoding: '',
               healthy: '',
-              pattern: "${reportsPath}/swiftlint/result.xml",
+              pattern: "${swifLintStep.reportPath}/result.xml",
               unHealthy: ''])
+    }
+}
+
+void executeClocStepIfNeeded() {
+    ClocStep clocStep = analyze.cloc
+    if (clocStep.isEnabled) {
+        run(clocStep.executionCommand())
+        sloccountPublish encoding: '', pattern: "${clocStep.reportsPath}/cloc.xml"
     }
 }
 
@@ -233,17 +244,14 @@ class AnalyzeStage extends Stage {
     StageStep clocStep
     
     AnalyzeStage(
+            Boolean isEnabled,
             String title,
             StageStep swiftLintStep,
             StageStep clocStep) {
-        Boolean isEnabled = swiftLintStep.isEnabed || clocStep.isEnabled,
+            
         super(isEnabled, title)
         this.swiftLintStep = swiftLintStep
         this.clocStep = clocStep
-    }
-    
-    String[] executionCommands() {
-        return []
     }
 }
 
@@ -271,9 +279,23 @@ class SwiftLintStep implements StageStep {
 
 class ClocStep implements StageStep {
     Boolean isEnabled
+    String sourcePath
+    String reportPath
+
+    ClocStep(
+            Boolean isEnabled,
+            String sourcePath,
+            String reportPath) {
+    
+        this.isEnabled = isEnabled
+        this.sourcePath = sourcePath
+        this.reportPath = reportPath
+    }
 
     String executionCommand() {
-        return ""
+        return "bundle exec fastlane cloc" +
+                ParamBuilder.getSourcePathParam(sourcePath) +
+                ParamBuilder.getReportPathParam(reportPath)
     }
 }
 
@@ -286,10 +308,15 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
             
     Map cloc = analyze.cloc
     ClocStep cloc = new ClocStep(
-            cloc.isEnabled)
+            cloc.isEnabled,
+            environment.sourcePath,
+            environment.reportPath + "/cloc")
     
-    StageStep[] stepList = [swiftLint, cloc]
-    return new AnalyzeStage(analyze.title, stepList)
+    return new AnalyzeStage(
+            swiftLintStep.isEnabed || clocStep.isEnabled,
+            analyze.title,
+            swiftLint,
+            cloc)
 }
 
 // -------------------
@@ -507,6 +534,10 @@ class ParamBuilder {
 
     static String getDevicesParam(String devices) {
         return " devices:" + "\"" + devices + "\""
+    }
+    
+    static String getExcludeDirectoriesParam(String excludeDirectories) {
+        return " excludeDirectories:" + "\"" + excludeDirectories + "\""
     }
 }
 
