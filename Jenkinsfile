@@ -156,7 +156,7 @@ class SetUpStage extends Stage {
         super(true, title)
     }
     
-    String installDependenciesCommand() {
+    String dependenciesInstallationCommand() {
         return "bundle install"
     }
 }
