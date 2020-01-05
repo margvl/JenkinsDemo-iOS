@@ -161,6 +161,10 @@ class AnalyzeStage extends Stage {
         super(true, title)
         this.stepList = steps
     }
+    
+    String[] executionCommands() {
+        return []
+    }
 }
 
 interface StageStep {
