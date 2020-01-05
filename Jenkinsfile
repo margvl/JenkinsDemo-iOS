@@ -46,13 +46,17 @@ void loadUp(String filename) {
             test.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
+    String[] deviceList = []
+    test.devices.each { device ->
+        deviceList += device
+    }
     testStage = new TestStage(
             test.isEnabled,
             test.title,
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
-            test.devices,
+            deviceList,
             environment.reportPath + "/scan",
             testCoverage)
     
