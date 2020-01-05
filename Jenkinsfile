@@ -7,10 +7,11 @@ node {
         loadUp('config.json')
 
         catchError {
-            executeStageIfNeeded(setUpStage)
-            executeStageIfNeeded(testStage)
-            //executeTestStageIfNeeded()
-            //executeBuildStageIfNeeded()
+            executeSetUpStage()
+            executeTestStageIfNeeded()
+            executeAnalyzeStageIfNeeded()
+            executeBuildStageIfNeeded()
+            executeDistributionStageIfNeeded()
         }
     }
 }
@@ -31,6 +32,8 @@ void loadUp(String filename) {
     Map setUp = config.stages.setUp
     Map test = config.stages.test
     Map analyze = config.stages.analyze
+    Map build = config.stages.build
+    def itemList = build.items
     
     println("config: " + config)
     println("environment: " + environment)
@@ -39,6 +42,7 @@ void loadUp(String filename) {
     println("analyze: " + analyze)
 
     setUpStage = new SetUpStage(setUp.title)
+    
     TestCoverageStep testCoverage = new TestCoverageStep(
             test.isCoverageEnabled,
             getProjectFilename(environment.projectName),
@@ -62,13 +66,77 @@ void loadUp(String filename) {
     
     StageStep[] stepList = []
     analyzeStage = new AnalyzeStage(analyze.title, stepList)
+
+    BuildItem[] buildItemList = []
+    itemList.each { item ->
+        def profileList = item.provisioningProfiles
+        BuildProfile[] buildProfileList = []
+        profileList.each { profile ->
+            BuildProfile buildProfile = new BuildProfile(
+                profile.id,
+                profile.name
+            )
+            buildProfileList += buildProfile
+        }
+        
+        BuildItem buildItem = new BuildItem(
+                item.id,
+                environment.projectName + "-" + item.id + ".ipa",
+                item.configuration,
+                item.scheme,
+                item.exportMethod,
+                buildProfileList
+        )
+        buildItemList += buildItem
+    }
+
+    buildStage = new BuildStage(
+            build.isEnabled,
+            build.title,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            environment.outputPath + "/gym",
+            buildItemList)
 }
 
+void executeSetUpStage() {
+    stage(setUpStage.title) {
+        run(setUpStage.dependenciesInstallationCommand())
+    }
+}
 
-void executeStageIfNeeded(Stage executableStage) {
-    if (executableStage.isEnabled) {
-        stage(executableStage.title) {
-            String[] executionCommandList = executableStage.executionCommands()
+void executeTestStageIfNeeded() {
+    if (testStage.isEnabled) {
+        stage(testStage.title) {
+            run(testStage.executionCommand())
+            junit test.reportPath + "/*.junit"
+            
+            executeTestCoverageStepIfNeeded()
+        }
+    }
+}
+
+void executeTestCoverageStepIfNeeded() {
+    TestCoverageStep coverage = testStage.coverageStep
+    if (coverage.isEnabled) {
+        run(coverage.executionCommand())
+        publishHTML([allowMissing: false,
+                     alwaysLinkToLastBuild: false,
+                     keepAll: false,
+                     reportDir: coverage.reportPath,
+                     reportFiles: "index.html",
+                     reportName: "Coverage Report"])
+    }
+}
+
+void executeAnalyzeStageIfNeeded() {
+
+}
+
+void executeBuildStageIfNeeded() {
+    if (buildStage.isEnabled) {
+        stage(buildStage.title) {
+            String[] executionCommandList = buildStage.executionCommands()
             executionCommandList.each { executionCommand ->
                 run(executionCommand)
             }
@@ -76,24 +144,20 @@ void executeStageIfNeeded(Stage executableStage) {
     }
 }
 
+void executeDistributionStageIfNeeded() {
+
+}
 
 // --------------------
 // --- Set Up Stage ---
 // --------------------
-void executeSetUpStage() {
-    stage('Set up') {
-        run('bundle install')
-    }
-}
-
 class SetUpStage extends Stage {
     SetUpStage(String title) {
         super(true, title)
     }
     
-    String[] executionCommands() {
-        String[] executionCommandList = ["bundle install"]
-        return executionCommandList
+    String installDependenciesCommand() {
+        return "bundle install"
     }
 }
 
@@ -127,18 +191,13 @@ class TestStage extends Stage {
         this.coverageStep = coverageStep
     }
     
-    String[] executionCommands() {
-        String[] executionCommandList = []
-        executionCommandList += ("bundle exec fastlane test" +
+    String executionCommand() {
+        return "bundle exec fastlane test" +
                 ParamBuilder.getProjectFilenameParam(projectFilename) +
                 ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
                 ParamBuilder.getDevicesParam(deviceList.join(',')) +
-                ParamBuilder.getReportPathParam(reportPath))
-        if (coverageStep.isEnabled) {
-            executionCommandList += coverageStep.executionCommand()
-        }
-        return executionCommandList
+                ParamBuilder.getReportPathParam(reportPath)
     }
 }
 
@@ -177,17 +236,6 @@ class TestCoverageStep implements StageStep {
 }
 
 
-void executeTestStageIfNeeded() {
-    TestStage test = getTestStage()
-    if (testStage.isEnabled) {
-        stage(testStage.title) {
-            run(testStage.executionCommand())
-            junit test.reportPath + "/*.junit"
-        }
-        executeTestCoverageStageIfNeeded()
-    }
-}
-
 // ---------------------
 // --- Analyze Stage ---
 // ---------------------
@@ -221,76 +269,6 @@ class ClocStep implements StageStep {
     }
 }
 
-// ---------------------------
-// --- Test Coverage Stage ---
-// ---------------------------
-/*
-class TestCoverageStage extends Stage {
-    String projectFilename
-    String workspaceFilename
-    String scheme
-    String sourcePath
-    String reportPath
-    
-    TestCoverageStage(
-            Boolean isEnabled,
-            String title,
-            String projectFilename,
-            String workspaceFilename,
-            String scheme,
-            String sourcePath,
-            String reportPath) {
-        
-        super(isEnabled, title)
-        this.projectFilename = projectFilename
-        this.workspaceFilename = workspaceFilename
-        this.scheme = scheme
-        this.sourcePath = sourcePath
-        this.reportPath = reportPath
-    }
-    
-    String executionCommand() {
-        return "bundle exec fastlane coverage" +
-                ParamBuilder.getProjectFilenameParam(projectFilename) +
-                ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
-                ParamBuilder.getSchemeParam(scheme) +
-                ParamBuilder.getSourcePathParam(sourcePath) +
-                ParamBuilder.getReportPathParam(reportPath)
-    }
-}
-
-TestCoverageStage getTestCoverageStage() {
-    def config = readJSON file: 'config.json'
-    def environment = config.environment
-    def testCoverage = config.stages.testCoverage
-    
-    TestCoverageStage testCoverageStage = new TestCoverageStage(
-            testCoverage.isEnabled,
-            testCoverage.title,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            testCoverage.scheme,
-            environment.sourcePath,
-            environment.reportPath + "/slather")
-
-    return testCoverageStage
-}
-
-void executeTestCoverageStageIfNeeded() {
-    TestCoverageStage testCoverage = getTestCoverageStage()
-    if (testCoverage.isEnabled) {
-        stage(testCoverage.title) {
-            run(testCoverage.executionCommand())
-            publishHTML([allowMissing: false,
-                         alwaysLinkToLastBuild: false,
-                         keepAll: false,
-                         reportDir: testCoverage.reportPath,
-                         reportFiles: "index.html",
-                         reportName: testCoverage.title + " Report"])
-        }
-    }
-}
-*/
 
 // -------------------
 // --- Build Stage ---
@@ -382,57 +360,6 @@ class BuildProfile {
     }
 }
 
-BuildStage getBuildStage() {
-    def config = readJSON file: 'config.json'
-    def environment = config.environment
-    def build = config.stages.build
-    def itemList = build.items
-
-    BuildItem[] buildItemList = []
-    itemList.each { item ->
-        def profileList = item.provisioningProfiles
-        BuildProfile[] buildProfileList = []
-        profileList.each { profile ->
-            BuildProfile buildProfile = new BuildProfile(
-                profile.id,
-                profile.name
-            )
-            buildProfileList += buildProfile
-        }
-        
-        BuildItem buildItem = new BuildItem(
-                item.id,
-                environment.projectName + "-" + item.id + ".ipa",
-                item.configuration,
-                item.scheme,
-                item.exportMethod,
-                buildProfileList
-        )
-        buildItemList += buildItem
-    }
-
-    BuildStage buildStage = new BuildStage(
-            build.isEnabled,
-            build.title,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            environment.outputPath + "/gym",
-            buildItemList)
-
-    return buildStage
-}
-
-void executeBuildStageIfNeeded() {
-    BuildStage buildStage = getBuildStage()
-    if (buildStage.isEnabled) {
-        stage(buildStage.title) {
-            String[] executionCommandList = buildStage.executionCommands()
-            executionCommandList.each { executionCommand ->
-                run(executionCommand)
-            }
-        }
-    }
-}
 
 // ---------------
 // --- Helpers ---
@@ -503,7 +430,7 @@ interface StageStep {
     String executionCommand()
 }
 
-abstract class Stage {
+class Stage {
     Boolean isEnabled
     String title
     
@@ -511,6 +438,4 @@ abstract class Stage {
         this.isEnabled = isEnabled
         this.title = title
     }
-    
-    abstract String[] executionCommands()
 }
