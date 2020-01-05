@@ -109,7 +109,7 @@ void executeTestStageIfNeeded() {
     if (testStage.isEnabled) {
         stage(testStage.title) {
             run(testStage.executionCommand())
-            junit test.reportPath + "/*.junit"
+            junit testStage.reportPath + "/*.junit"
             
             executeTestCoverageStepIfNeeded()
         }
