@@ -235,7 +235,7 @@ class AnalyzeStage extends Stage {
         super(false, title)
         this.stepList = steps
         
-        steps.each { step ->
+        for(step in steps) {
             if (step.isEnabled) {
                 isEnabled = step.isEnabled
                 break
