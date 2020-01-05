@@ -21,7 +21,7 @@ SetUpStage setUpStage = null
 TestStage testStage = null
 AnalyzeStage analyzeStage = null
 BuildStage buildStage = null
-//DistributionStage distributionStage = null
+DistributionStage distributionStage = null
 
 
 void loadUp(String filename) {
@@ -29,54 +29,18 @@ void loadUp(String filename) {
 
     Map config = readJSON file: filename
     Map environment = config.environment
-    Map setUp = config.stages.setUp
-    Map test = config.stages.test
-    Map analyze = config.stages.analyze
-    Map build = config.stages.build
-    List itemList = build.items
-    
-    println("config: " + config)
-    println("environment: " + environment)
-    println("setUp: " + setUp)
-    println("test: " + test)
-    println("analyze: " + analyze)
+    Map stages = config.stages
+    Map setUp = stages.setUp
+    Map test = stages.test
+    Map analyze = stages.analyze
+    Map build = stages.build
+    Map distribution = stages.distribution
 
     setUpStage = getSetUpStage(setUp)
     testStage = getTestStage(environment, test)
-
-    StageStep[] stepList = []
-    analyzeStage = new AnalyzeStage(analyze.title, stepList)
-
-    BuildItem[] buildItemList = []
-    itemList.each { item ->
-        List profileList = item.provisioningProfiles
-        BuildProfile[] buildProfileList = []
-        profileList.each { profile ->
-            BuildProfile buildProfile = new BuildProfile(
-                profile.id,
-                profile.name
-            )
-            buildProfileList += buildProfile
-        }
-        
-        BuildItem buildItem = new BuildItem(
-                item.id,
-                environment.projectName + "-" + item.id + ".ipa",
-                item.configuration,
-                item.scheme,
-                item.exportMethod,
-                buildProfileList
-        )
-        buildItemList += buildItem
-    }
-
-    buildStage = new BuildStage(
-            build.isEnabled,
-            build.title,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            environment.outputPath + "/gym",
-            buildItemList)
+    analyzeStage = getAnalyzeStage(analyze)
+    buildStage = getBuildStage(environment, build)
+    distributionStage = getDistributionStage(distribution)
 }
 
 void executeSetUpStage() {
@@ -97,13 +61,13 @@ void executeTestStageIfNeeded() {
 }
 
 void executeTestCoverageStepIfNeeded() {
-    TestCoverageStep coverage = testStage.coverageStep
-    if (coverage.isEnabled) {
+    TestCoverageStep coverageStep = testStage.coverageStep
+    if (coverageStep.isEnabled) {
         run(coverage.executionCommand())
         publishHTML([allowMissing: false,
                      alwaysLinkToLastBuild: false,
                      keepAll: false,
-                     reportDir: coverage.reportPath,
+                     reportDir: coverageStep.reportPath,
                      reportFiles: "index.html",
                      reportName: "Coverage Report"])
     }
@@ -222,8 +186,8 @@ class TestCoverageStep implements StageStep {
 TestStage getTestStage(Map environment, Map test) {
     TestCoverageStep testCoverage = new TestCoverageStep(
             test.isCoverageEnabled,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
+            NameBuilder.getProjectFilename(environment.projectName),
+            NameBuilder.getWorkspaceFilename(environment.workspaceName),
             test.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
@@ -235,8 +199,8 @@ TestStage getTestStage(Map environment, Map test) {
     TestStage testStage = new TestStage(
             test.isEnabled,
             test.title,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
+            NameBuilder.getProjectFilename(environment.projectName),
+            NameBuilder.getWorkspaceFilename(environment.workspaceName),
             test.scheme,
             deviceList,
             environment.reportPath + "/scan",
@@ -277,6 +241,10 @@ class ClocStep implements StageStep {
     }
 }
 
+AnalyzeStage getAnalyzeStage(Map analyze) {
+    StageStep[] stepList = []
+    return new AnalyzeStage(analyze.title, stepList)
+}
 
 // -------------------
 // --- Build Stage ---
@@ -368,20 +336,86 @@ class BuildProfile {
     }
 }
 
+BuildStage getBuildStage(Map environment, Map build) {
+    List itemList = build.items
+    
+    BuildItem[] buildItemList = []
+    itemList.each { item ->
+        List profileList = item.provisioningProfiles
+        BuildProfile[] buildProfileList = []
+        profileList.each { profile ->
+            BuildProfile buildProfile = new BuildProfile(
+                profile.id,
+                profile.name
+            )
+            buildProfileList += buildProfile
+        }
+        
+        BuildItem buildItem = new BuildItem(
+                item.id,
+                NameBuilder.getOutputName(environment.projectName, item.id),
+                item.configuration,
+                item.scheme,
+                item.exportMethod,
+                buildProfileList
+        )
+        buildItemList += buildItem
+    }
+
+    return new BuildStage(
+            build.isEnabled,
+            build.title,
+            NameBuilder.getProjectFilename(environment.projectName),
+            NameBuilder.getWorkspaceFilename(environment.workspaceName),
+            environment.outputPath + "/gym",
+            buildItemList)
+}
+
+
+// --------------------
+// --- Distribution ---
+// --------------------
+class DistributionStage extends Stage {
+    DistributionStage(Boolean isEnabled, String title) {
+        super(isEnabled, title)
+    }
+}
+
+DistributionStage getDistributionStage(Map distribution) {
+    return DistributionStage(distribution.isEnabled, distribution.title)
+}
+
 
 // ---------------
 // --- Helpers ---
 // ---------------
-void run(String command) {
-    sh command
+interface StageStep {
+    Boolean isEnabled
+    String executionCommand()
 }
 
-String getProjectFilename(projectName) {
-    return projectName + ".xcodeproj"
+class Stage {
+    Boolean isEnabled
+    String title
+    
+    Stage(Boolean isEnabled, String title) {
+        this.isEnabled = isEnabled
+        this.title = title
+    }
 }
 
-String getWorkspaceFilename(workspaceName) {
-    return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+class NameBuilder {
+    static String getProjectFilename(projectName) {
+        return projectName + ".xcodeproj"
+    }
+
+    static String getWorkspaceFilename(workspaceName) {
+        return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
+    }
+    
+    static String getOutputName(projectName, buildId) {
+        return projectName + "-" + buildId + ".ipa",
+    }
 }
 
 class ParamBuilder {
@@ -430,20 +464,6 @@ class ParamBuilder {
     }
 }
 
-// -------------
-// --- Stage ---
-// -------------
-interface StageStep {
-    Boolean isEnabled
-    String executionCommand()
-}
-
-class Stage {
-    Boolean isEnabled
-    String title
-    
-    Stage(Boolean isEnabled, String title) {
-        this.isEnabled = isEnabled
-        this.title = title
-    }
+void run(String command) {
+    sh command
 }
