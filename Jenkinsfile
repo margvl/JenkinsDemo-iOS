@@ -38,7 +38,7 @@ void loadUp(String filename) {
 
     setUpStage = getSetUpStage(setUp)
     testStage = getTestStage(environment, test)
-    analyzeStage = getAnalyzeStage(analyze)
+    analyzeStage = getAnalyzeStage(environment, analyze)
     buildStage = getBuildStage(environment, build)
     distributionStage = getDistributionStage(distribution)
 }
