@@ -101,7 +101,7 @@ void executeClocStepIfNeeded() {
     ClocStep clocStep = analyzeStage.clocStep
     if (clocStep.isEnabled) {
         run(clocStep.executionCommand())
-        sloccountPublish encoding: '', pattern: "${clocStep.reportsPath}/cloc.xml"
+        sloccountPublish encoding: '', pattern: "${clocStep.reportPath}/cloc.xml"
     }
 }
 
