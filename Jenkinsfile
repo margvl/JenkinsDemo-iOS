@@ -42,28 +42,8 @@ void loadUp(String filename) {
     println("analyze: " + analyze)
 
     setUpStage = getSetUpStage(setUp)
-    
-    TestCoverageStep testCoverage = new TestCoverageStep(
-            test.isCoverageEnabled,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            test.scheme,
-            environment.sourcePath,
-            environment.reportPath + "/slather")
-    String[] deviceList = []
-    test.devices.each { device ->
-        deviceList += device
-    }
-    testStage = new TestStage(
-            test.isEnabled,
-            test.title,
-            getProjectFilename(environment.projectName),
-            getWorkspaceFilename(environment.workspaceName),
-            test.scheme,
-            deviceList,
-            environment.reportPath + "/scan",
-            testCoverage)
-    
+    testStage = getTestStage(environment, test)
+
     StageStep[] stepList = []
     analyzeStage = new AnalyzeStage(analyze.title, stepList)
 
@@ -239,6 +219,30 @@ class TestCoverageStep implements StageStep {
     }
 }
 
+TestStage getTestStage(Map environment, Map test) {
+    TestCoverageStep testCoverage = new TestCoverageStep(
+            test.isCoverageEnabled,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            environment.sourcePath,
+            environment.reportPath + "/slather")
+            
+    String[] deviceList = []
+    test.devices.each { device ->
+        deviceList += device
+    }
+    TestStage testStage = new TestStage(
+            test.isEnabled,
+            test.title,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            deviceList,
+            environment.reportPath + "/scan",
+            testCoverage)
+    return testStage
+}
 
 // ---------------------
 // --- Analyze Stage ---
