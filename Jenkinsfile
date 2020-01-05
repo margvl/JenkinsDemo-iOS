@@ -76,8 +76,8 @@ void executeTestCoverageStepIfNeeded() {
 }
 
 void executeAnalyzeStageIfNeeded() {
-    if (analyze.isEnabled) {
-        stage(analyze.title) {
+    if (analyzeStage.isEnabled) {
+        stage(analyzeStage.title) {
             executeSwiftLintStepIfNeeded()
             executeClocStepIfNeeded()
         }
@@ -85,7 +85,7 @@ void executeAnalyzeStageIfNeeded() {
 }
 
 void executeSwiftLintStepIfNeeded() {
-    SwiftLintStep swifLintStep = analyze.swifLintStep
+    SwiftLintStep swifLintStep = analyzeStage.swifLintStep
     if (swifLintStep.isEnabled) {
         run(swifLintStep.executionCommand())
         step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
@@ -98,7 +98,7 @@ void executeSwiftLintStepIfNeeded() {
 }
 
 void executeClocStepIfNeeded() {
-    ClocStep clocStep = analyze.cloc
+    ClocStep clocStep = analyzeStage.clocStep
     if (clocStep.isEnabled) {
         run(clocStep.executionCommand())
         sloccountPublish encoding: '', pattern: "${clocStep.reportsPath}/cloc.xml"
@@ -257,17 +257,17 @@ class AnalyzeStage extends Stage {
 
 class SwiftLintStep implements StageStep {
     Boolean isEnabled
-    String reportPath
     String configFile
+    String reportPath
     
     SwiftLintStep(
             Boolean isEnabled,
-            String reportPath,
-            String configFile) {
+            String configFile,
+            String reportPath) {
             
         this.isEnabled = isEnabled
-        this.reportPath = reportPath
         this.configFile = configFile
+        this.reportPath = reportPath
     }
     
     String executionCommand() {
@@ -303,8 +303,8 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
     Map swiftLint = analyze.swiftLint
     SwiftLintStep swiftLintStep = new SwiftLintStep(
             swiftLint.isEnabled,
-            environment.reportPath + "/swiftlint",
-            NameBuilder.getConfigFile(swiftLint.configFile))
+            NameBuilder.getConfigFile(swiftLint.configFile),
+            environment.reportPath + "/swiftlint")
             
     Map cloc = analyze.cloc
     ClocStep clocStep = new ClocStep(

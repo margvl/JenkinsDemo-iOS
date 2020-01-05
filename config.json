@@ -27,11 +27,11 @@
         "analyze": {
             "title": "Analyze",
             "swiftLint": {
-                "isEnabled": false,
+                "isEnabled": true,
                 "configFile": null
             },
             "cloc": {
-                "isEnabled": false,
+                "isEnabled": true,
                 "excludeDirectories": "build"
             }
         },
