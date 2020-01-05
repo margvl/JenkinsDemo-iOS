@@ -33,7 +33,7 @@ void loadUp(String filename) {
     Map test = config.stages.test
     Map analyze = config.stages.analyze
     Map build = config.stages.build
-    def itemList = build.items
+    List itemList = build.items
     
     println("config: " + config)
     println("environment: " + environment)
@@ -50,17 +50,17 @@ void loadUp(String filename) {
             test.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
-    //String[] deviceList = []
-    //test.devices.each { device ->
-    //    deviceList += device
-    //}
+    String[] deviceList = []
+    test.devices.each { device ->
+        deviceList += device
+    }
     testStage = new TestStage(
             test.isEnabled,
             test.title,
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
-            test.devices.map { it }.join(','),
+            deviceList,
             environment.reportPath + "/scan",
             testCoverage)
     
@@ -69,7 +69,7 @@ void loadUp(String filename) {
 
     BuildItem[] buildItemList = []
     itemList.each { item ->
-        def profileList = item.provisioningProfiles
+        List profileList = item.provisioningProfiles
         BuildProfile[] buildProfileList = []
         profileList.each { profile ->
             BuildProfile buildProfile = new BuildProfile(
@@ -168,7 +168,7 @@ class TestStage extends Stage {
     String projectFilename
     String workspaceFilename
     String scheme
-    String devices
+    String[] deviceList
     String reportPath
     StageStep coverageStep
 
@@ -178,7 +178,7 @@ class TestStage extends Stage {
             String projectFilename,
             String workspaceFilename,
             String scheme,
-            String devices,
+            String[] devices,
             String reportPath,
             StageStep coverageStep) {
             
@@ -186,7 +186,7 @@ class TestStage extends Stage {
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
-        this.devices = devices
+        this.deviceList = devices
         this.reportPath = reportPath
         this.coverageStep = coverageStep
     }
@@ -196,7 +196,7 @@ class TestStage extends Stage {
                 ParamBuilder.getProjectFilenameParam(projectFilename) +
                 ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
-                ParamBuilder.getDevicesParam(devices) +
+                ParamBuilder.getDevicesParam(devices.join(',')) +
                 ParamBuilder.getReportPathParam(reportPath)
     }
 }
@@ -368,11 +368,11 @@ void run(String command) {
     sh command
 }
 
-def getProjectFilename(projectName) {
+String getProjectFilename(projectName) {
     return projectName + ".xcodeproj"
 }
 
-def getWorkspaceFilename(workspaceName) {
+String getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
 
