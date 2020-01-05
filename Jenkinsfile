@@ -50,17 +50,17 @@ void loadUp(String filename) {
             test.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
-    String[] deviceList = []
-    test.devices.each { device ->
-        deviceList += device
-    }
+    //String[] deviceList = []
+    //test.devices.each { device ->
+    //    deviceList += device
+    //}
     testStage = new TestStage(
             test.isEnabled,
             test.title,
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
-            deviceList,
+            test.devices.join(','),
             environment.reportPath + "/scan",
             testCoverage)
     
@@ -168,7 +168,7 @@ class TestStage extends Stage {
     String projectFilename
     String workspaceFilename
     String scheme
-    String[] deviceList
+    String devices
     String reportPath
     StageStep coverageStep
 
@@ -178,7 +178,7 @@ class TestStage extends Stage {
             String projectFilename,
             String workspaceFilename,
             String scheme,
-            String[] devices,
+            String devices,
             String reportPath,
             StageStep coverageStep) {
             
@@ -186,7 +186,7 @@ class TestStage extends Stage {
         this.projectFilename = projectFilename
         this.workspaceFilename = workspaceFilename
         this.scheme = scheme
-        this.deviceList = devices
+        this.devices = devices
         this.reportPath = reportPath
         this.coverageStep = coverageStep
     }
@@ -196,7 +196,7 @@ class TestStage extends Stage {
                 ParamBuilder.getProjectFilenameParam(projectFilename) +
                 ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
-                ParamBuilder.getDevicesParam(deviceList.join(',')) +
+                ParamBuilder.getDevicesParam(devices) +
                 ParamBuilder.getReportPathParam(reportPath)
     }
 }
