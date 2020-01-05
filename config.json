@@ -23,7 +23,7 @@
             "scheme": "JenkinsDemo",
             "devices": ["iPhone 8"]
         },
-        "analyze" {
+        "analyze": {
             "title": "Analyze",
             "testCoverage": {
                 "isEnabled": true
