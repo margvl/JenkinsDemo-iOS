@@ -8,7 +8,7 @@ node {
 
         catchError {
             executeStageIfNeeded(setUpStage)
-            executeStageIfNeeded(testStage)
+            //executeStageIfNeeded(testStage)
             //executeTestStageIfNeeded()
             //executeBuildStageIfNeeded()
         }
