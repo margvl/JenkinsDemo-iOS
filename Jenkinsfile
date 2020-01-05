@@ -111,7 +111,7 @@ class TestStage extends Stage {
             String workspaceFilename,
             String scheme,
             String device,
-            String reportPath
+            String reportPath,
             StageStep coverageStep) {
             
         super(isEnabled, title)
