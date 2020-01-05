@@ -41,7 +41,7 @@ void loadUp(String filename) {
     println("test: " + test)
     println("analyze: " + analyze)
 
-    setUpStage = new SetUpStage(setUp.title)
+    setUpStage = getSetUpStage(setUp)
     
     TestCoverageStep testCoverage = new TestCoverageStep(
             test.isCoverageEnabled,
@@ -159,6 +159,10 @@ class SetUpStage extends Stage {
     String dependenciesInstallationCommand() {
         return "bundle install"
     }
+}
+
+SetUpStage getSetUpStage(Map setUp) {
+    return new SetUpStage(setUp.title)
 }
 
 // ------------------
