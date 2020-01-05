@@ -271,7 +271,7 @@ class SwiftLintStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane swiftLint" +
+        return "bundle exec fastlane lint" +
                 ParamBuilder.getReportPathParam(reportPath) +
                 ParamBuilder.getConfigFileParam(configFile)
     }
@@ -293,7 +293,7 @@ class ClocStep implements StageStep {
     }
 
     String executionCommand() {
-        return "bundle exec fastlane cloc" +
+        return "bundle exec fastlane count" +
                 ParamBuilder.getSourcePathParam(sourcePath) +
                 ParamBuilder.getReportPathParam(reportPath)
     }

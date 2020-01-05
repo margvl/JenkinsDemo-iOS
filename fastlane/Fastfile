@@ -32,7 +32,7 @@ lane :coverage do |options|
 end
 
 desc "Run SwiftLint analyze tool"
-lane :swiftLint do |options|
+lane :lint do |options|
     swiftlint(
         mode: :lint,
         output_file: "#{options[:reportPath]}/result.xml",
@@ -43,7 +43,7 @@ lane :swiftLint do |options|
 end
 
 desc "Run Cloc analyze tool"
-lane :cloc do |options|
+lane :count do |options|
     cloc(
        exclude_dir: options[:excludeDirectories],
        output_directory: options[:reportPath],
