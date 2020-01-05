@@ -131,7 +131,7 @@ class TestStage extends Stage {
                 getSchemeParam(scheme) +
                 getDeviceParam(device) +
                 getReportPathParam(reportPath))
-        if coverageStep.isEnabled {
+        if (coverageStep.isEnabled) {
             executionCommandList += coverageStep.executionCommand()
         }
         return executionCommandList
