@@ -271,7 +271,7 @@ class SwiftLintStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane swiftLine" +
+        return "bundle exec fastlane swiftLint" +
                 ParamBuilder.getReportPathParam(reportPath) +
                 ParamBuilder.getConfigFileParam(configFile)
     }
