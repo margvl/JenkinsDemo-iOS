@@ -126,11 +126,11 @@ class TestStage extends Stage {
     String[] executionCommands() {
         String[] executionCommandList = []
         executionCommandList += ("bundle exec fastlane test" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getDeviceParam(device) +
-                getReportPathParam(reportPath))
+                ParamBuilder.getProjectFilenameParam(projectFilename) +
+                ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
+                ParamBuilder.getSchemeParam(scheme) +
+                ParamBuilder.getDeviceParam(device) +
+                ParamBuilder.getReportPathParam(reportPath))
         if (coverageStep.isEnabled) {
             executionCommandList += coverageStep.executionCommand()
         }
@@ -164,11 +164,11 @@ class TestCoverageStep implements StageStep {
     
     String executionCommand() {
         return "bundle exec fastlane coverage" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getSourcePathParam(sourcePath) +
-                getReportPathParam(reportPath)
+                ParamBuilder.getProjectFilenameParam(projectFilename) +
+                ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
+                ParamBuilder.getSchemeParam(scheme) +
+                ParamBuilder.getSourcePathParam(sourcePath) +
+                ParamBuilder.getReportPathParam(reportPath)
     }
 }
 
@@ -247,11 +247,11 @@ class TestCoverageStage extends Stage {
     
     String executionCommand() {
         return "bundle exec fastlane coverage" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getSourcePathParam(sourcePath) +
-                getReportPathParam(reportPath)
+                ParamBuilder.getProjectFilenameParam(projectFilename) +
+                ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
+                ParamBuilder.getSchemeParam(scheme) +
+                ParamBuilder.getSourcePathParam(sourcePath) +
+                ParamBuilder.getReportPathParam(reportPath)
     }
 }
 
@@ -316,14 +316,14 @@ class BuildStage extends Stage {
         String[] executionCommandList = []
         itemList.each { item ->
             String executionCommand = "bundle exec fastlane build" +
-                    getProjectFilenameParam(projectFilename) +
-                    getWorkspaceFilenameParam(workspaceFilename) +
-                    getConfigurationParam(item.configuration) +
-                    getSchemeParam(item.scheme) +
-                    getOutputPathParam(outputPath) +
-                    getOutputNameParam(item.name) +
-                    getExportMethodParam(item.exportMethod) +
-                    getProvisioningProfilesParam(item.profilesValue())
+                    ParamBuilder.getProjectFilenameParam(projectFilename) +
+                    ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
+                    ParamBuilder.getConfigurationParam(item.configuration) +
+                    ParamBuilder.getSchemeParam(item.scheme) +
+                    ParamBuilder.getOutputPathParam(outputPath) +
+                    ParamBuilder.getOutputNameParam(item.name) +
+                    ParamBuilder.getExportMethodParam(item.exportMethod) +
+                    ParamBuilder.getProvisioningProfilesParam(item.profilesValue())
             executionCommandList += executionCommand
         }
         return executionCommandList
@@ -445,48 +445,50 @@ def getWorkspaceFilename(workspaceName) {
     return (workspaceName.getClass() == String) ? (workspaceName + ".xcworkspace") : null
 }
 
-String getProjectFilenameParam(String projectFilename) {
-    return " projectFilename:" + projectFilename
-}
+class ParamBuilder {
+    static String getProjectFilenameParam(String projectFilename) {
+        return " projectFilename:" + projectFilename
+    }
 
-String getWorkspaceFilenameParam(String workspaceFilename) {
-    return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
-}
+    static String getWorkspaceFilenameParam(String workspaceFilename) {
+        return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
+    }
 
-String getSourcePathParam(String sourcePath) {
-    return " sourcePath:" + sourcePath
-}
+    static String getSourcePathParam(String sourcePath) {
+        return " sourcePath:" + sourcePath
+    }
 
-String getReportPathParam(String reportPath) {
-    return " reportPath:" + reportPath
-}
+    static String getReportPathParam(String reportPath) {
+        return " reportPath:" + reportPath
+    }
 
-String getOutputPathParam(String outputPath) {
-    return " outputPath:" + outputPath
-}
+    static String getOutputPathParam(String outputPath) {
+        return " outputPath:" + outputPath
+    }
 
-String getConfigurationParam(String configuration) {
-    return " configuration:" + configuration
-}
+    static String getConfigurationParam(String configuration) {
+        return " configuration:" + configuration
+    }
 
-String getExportMethodParam(String exportMethod) {
-    return " exportMethod:" + exportMethod
-}
+    static String getExportMethodParam(String exportMethod) {
+        return " exportMethod:" + exportMethod
+    }
 
-String getProvisioningProfilesParam(String provisioningProfiles) {
-    return " provisioningProfiles:" + "\"" + provisioningProfiles + "\""
-}
+    static String getProvisioningProfilesParam(String provisioningProfiles) {
+        return " provisioningProfiles:" + "\"" + provisioningProfiles + "\""
+    }
 
-String getOutputNameParam(String outputName) {
-    return " outputName:" + "\"" + outputName + "\""
-}
+    static String getOutputNameParam(String outputName) {
+        return " outputName:" + "\"" + outputName + "\""
+    }
 
-String getSchemeParam(String scheme) {
-    return " scheme:" + "\"" + scheme + "\""
-}
+    static String getSchemeParam(String scheme) {
+        return " scheme:" + "\"" + scheme + "\""
+    }
 
-String getDeviceParam(String device) {
-    return " device:" + "\"" + device + "\""
+    static String getDeviceParam(String device) {
+        return " device:" + "\"" + device + "\""
+    }
 }
 
 // -------------
