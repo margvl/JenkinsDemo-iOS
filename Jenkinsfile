@@ -60,7 +60,7 @@ void loadUp(String filename) {
             getProjectFilename(environment.projectName),
             getWorkspaceFilename(environment.workspaceName),
             test.scheme,
-            test.devices.join(','),
+            test.devices.map { it }.join(','),
             environment.reportPath + "/scan",
             testCoverage)
     
