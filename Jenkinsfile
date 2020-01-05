@@ -24,11 +24,11 @@ node {
 
 
 void loadUp(String filename) {
-    Map config = readJSON file: filename
-    Map environment = config.environment
-    Map setUp = config.stages.setUp
-    Map test = config.stages.test
-    Map analyze = config.stages.analyze
+    def config = readJSON file: filename
+    def environment = config.environment
+    def setUp = config.stages.setUp
+    def test = config.stages.test
+    def analyze = config.stages.analyze
     
     setUpStage = new SetUpStage(setUp.title)
     testStage = new TestStage(
