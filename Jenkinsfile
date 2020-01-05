@@ -232,16 +232,15 @@ class AnalyzeStage extends Stage {
     StageStep[] stepList
     
     AnalyzeStage(String title, StageStep[] steps) {
-        Boolean isEnabled = false
+        super(false, title)
+        this.stepList = steps
+        
         steps.each { step ->
             if (step.isEnabled) {
                 isEnabled = step.isEnabled
                 break
             }
         }
-        
-        super(isEnabled, title)
-        this.stepList = steps
     }
     
     String[] executionCommands() {
