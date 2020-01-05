@@ -149,8 +149,9 @@ void executeTestStageIfNeeded() {
 class AnalyzeStage extends Stage {
     StageStep[] stepList
     
-    AnalyzeStage(Boolean isEnabled, String title, StageStep[] steps) {
-        super(isEnabled, title)
+    AnalyzeStage(String title, StageStep[] steps) {
+        // TODO: Decide `enabled` value dependend on enabled steps
+        super(true, title)
         this.stepList = steps
     }
 }
