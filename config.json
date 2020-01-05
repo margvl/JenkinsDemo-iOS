@@ -7,35 +7,40 @@
         "outputPath": "build/output"
     },
     "stages": {
+        "setUp": {
+            "title": "Set Up",
+            "cocoaPods": {
+                "isEnabled": false
+            },
+            "carthage": {
+                "isEnabled": false,
+                "platform": "iOS"
+            }
+        },
         "test": {
             "isEnabled": true,
             "title": "Test",
             "scheme": "JenkinsDemo",
-            "device": "iPhone 8"
+            "devices": ["iPhone 8"]
         },
-        "testCoverage": {
-            "isEnabled": true,
-            "title": "Coverage",
-            "scheme": "JenkinsDemo"
-        },
+        "analyze" {
+            "title": "Analyze",
+            "testCoverage": {
+                "isEnabled": true
+            },
+            "swiftLint": {
+                "isEnabled": false
+            },
+            "cloc": {
+                "isEnabled": false
+            }
+        }
         "build": {
             "isEnabled": true,
             "title": "Build",
             "items": [
                 {
                     "id": "0",
-                    "configuration": "Debug",
-                    "scheme": "JenkinsDemo",
-                    "exportMethod": "ad-hoc",
-                    "provisioningProfiles": [
-                        {
-                            "id": "com.telesoftas.jenkins.demo",
-                            "name": "Generic Adhoc"
-                        }
-                    ]
-                },
-                {
-                    "id": "1",
                     "configuration": "Release",
                     "scheme": "JenkinsDemo-Staging",
                     "exportMethod": "ad-hoc",
@@ -47,6 +52,10 @@
                     ]
                 }
             ]
+        }
+        "distribution": {
+            "isEnabled": true,
+            "title": "Distribution"
         }
     }
 }

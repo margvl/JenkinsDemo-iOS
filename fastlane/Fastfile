@@ -2,11 +2,15 @@ fastlane_version "2.66.2"
 
 desc "Runs all the tests"
 lane :test do |options|
+
+    devicesString = options[:devices]
+    deviceList = devicesString.split(",")
+
     scan(
         project: options[:projectFilename],
         workspace: options[:workspaceFilename],
         scheme: options[:scheme],
-        device: options[:device],
+        devices: deviceList,
         clean: true,
         prelaunch_simulator: true,
         output_directory: options[:reportPath],

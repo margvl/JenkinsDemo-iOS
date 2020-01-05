@@ -4,25 +4,69 @@ node {
                 buildDiscarder(logRotator(numToKeepStr: '15')),
                 disableConcurrentBuilds()])
     
+        loadUp()
+
         catchError {
             executeSetUpStage()
             //executeTestStageIfNeeded()
-            executeBuildStageIfNeeded()
+            //executeBuildStageIfNeeded()
         }
     }
 }
 
 
+SetUpStage setUpStage = null
+TestStage testStage = null
+AnalyzeStage analyzeStage = null
+BuildStage buildStage = null
+//DistributionStage distributionStage = null
+
+void loadUp(String filename) {
+    Map config = readJSON file: filename
+    Map environment = config.environment
+    Map setUp = config.stages.setUp
+    Map test = config.stages.test
+    Map analyze = config.stages.analyze
+    
+    setUpStage = new SetUpStage(setUp.title)
+    testStage = new TestStage(
+            test.isEnabled,
+            test.title,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            test.device,
+            environment.reportPath + "/scan")
+    
+    TestCoverageStep testCoverage = new TestCoverageStep(
+            analyze.testCoverage.isEnabled,
+            getProjectFilename(environment.projectName),
+            getWorkspaceFilename(environment.workspaceName),
+            test.scheme,
+            environment.sourcePath,
+            environment.reportPath + "/slather")
+    analyzeStage = new AnalyzeStage(analyze.title, [testCoverage])
+}
+
 // --------------------
 // --- Set Up Stage ---
 // --------------------
 void executeSetUpStage() {
-    stage('SetUp') {
+    stage(setUpStage.title) {
         checkout scm
         run('bundle install')
     }
 }
 
+class SetUpStage extends Stage {
+    SetUpStage(String title) {
+        super(true, title)
+    }
+    
+    String[] executionCommands() {
+        return []
+    }
+}
 
 // ------------------
 // --- Test Stage ---
@@ -51,16 +95,17 @@ class TestStage extends Stage {
         this.reportPath = reportPath
     }
     
-    String executionCommand() {
-        return "bundle exec fastlane test" +
+    String[] executionCommands() {
+        String testCommand = "bundle exec fastlane test" +
                 getProjectFilenameParam(projectFilename) +
                 getWorkspaceFilenameParam(workspaceFilename) +
                 getSchemeParam(scheme) +
                 getDeviceParam(device) +
                 getReportPathParam(reportPath)
+        return [testCommand]
     }
 }
-
+/*
 TestStage getTestStage() {
     def config = readJSON file: 'config.json'
     def environment = config.environment
@@ -77,21 +122,90 @@ TestStage getTestStage() {
 
     return testStage
 }
+*/
 
 void executeTestStageIfNeeded() {
     TestStage test = getTestStage()
-    if (test.isEnabled) {
-        stage(test.title) {
-            run(test.executionCommand())
+    if (testStage.isEnabled) {
+        stage(testStage.title) {
+            run(testStage.executionCommand())
             junit test.reportPath + "/*.junit"
         }
         executeTestCoverageStageIfNeeded()
     }
 }
 
+// ---------------------
+// --- Analyze Stage ---
+// ---------------------
+class AnalyzeStage extends Stage {
+    StageStep[] stepList
+    
+    AnalyzeStage(Boolean isEnabled, String title, StageStep[] steps) {
+        super(isEnabled, title)
+        this.stepList = steps
+    }
+}
+
+interface StageStep {
+    Boolean isEnabled
+    String executionCommand()
+}
+
+class TestCoverageStep implements StageStep {
+    Boolean isEnabled
+    String projectFilename
+    String workspaceFilename
+    String scheme
+    String sourcePath
+    String reportPath
+    
+    TestCoverageStep(
+            Boolean isEnabled,
+            String projectFilename,
+            String workspaceFilename,
+            String scheme,
+            String sourcePath,
+            String reportPath) {
+        
+        this.isEnabled = isEnabled
+        this.projectFilename = projectFilename
+        this.workspaceFilename = workspaceFilename
+        this.scheme = scheme
+        this.sourcePath = sourcePath
+        this.reportPath = reportPath
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane coverage" +
+                getProjectFilenameParam(projectFilename) +
+                getWorkspaceFilenameParam(workspaceFilename) +
+                getSchemeParam(scheme) +
+                getSourcePathParam(sourcePath) +
+                getReportPathParam(reportPath)
+    }
+}
+
+class SwiftLintStep implements StageStep {
+    Boolean isEnabled
+    
+    String executionCommand() {
+        return ""
+    }
+}
+
+class ClocStep implements StageStep {
+    Boolean isEnabled
+
+    String executionCommand() {
+        return ""
+    }
+}
+
 // ---------------------------
 // --- Test Coverage Stage ---
 // ---------------------------
+/*
 class TestCoverageStage extends Stage {
     String projectFilename
     String workspaceFilename
@@ -157,7 +271,7 @@ void executeTestCoverageStageIfNeeded() {
         }
     }
 }
-
+*/
 
 // -------------------
 // --- Build Stage ---
@@ -198,15 +312,6 @@ class BuildStage extends Stage {
             executionCommandList += executionCommand
         }
         return executionCommandList
-    }
-    
-    String executionCommand() {
-        return "bundle exec fastlane coverage" +
-                getProjectFilenameParam(projectFilename) +
-                getWorkspaceFilenameParam(workspaceFilename) +
-                getSchemeParam(scheme) +
-                getSourcePathParam(sourcePath) +
-                getReportPathParam(reportPath)
     }
 }
 
