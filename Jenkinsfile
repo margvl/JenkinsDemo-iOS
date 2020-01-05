@@ -301,13 +301,13 @@ class ClocStep implements StageStep {
 
 AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
     Map swiftLint = analyze.swiftLint
-    SwiftLintStep swiftLint = new SwiftLintStep(
+    SwiftLintStep swiftLintStep = new SwiftLintStep(
             swiftLint.isEnabled,
             environment.reportPath + "/swiftlint",
             swiftLint.configFile)
             
     Map cloc = analyze.cloc
-    ClocStep cloc = new ClocStep(
+    ClocStep clocStep = new ClocStep(
             cloc.isEnabled,
             environment.sourcePath,
             environment.reportPath + "/cloc")
@@ -315,8 +315,8 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
     return new AnalyzeStage(
             swiftLintStep.isEnabed || clocStep.isEnabled,
             analyze.title,
-            swiftLint,
-            cloc)
+            swiftLintStep,
+            clocStep)
 }
 
 // -------------------
