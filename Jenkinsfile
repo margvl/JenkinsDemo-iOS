@@ -372,9 +372,9 @@ BuildStage getBuildStage(Map environment, Map build) {
 }
 
 
-// --------------------
-// --- Distribution ---
-// --------------------
+// --------------------------
+// --- Distribution Stage ---
+// --------------------------
 class DistributionStage extends Stage {
     DistributionStage(Boolean isEnabled, String title) {
         super(isEnabled, title)
@@ -382,7 +382,7 @@ class DistributionStage extends Stage {
 }
 
 DistributionStage getDistributionStage(Map distribution) {
-    return DistributionStage(distribution.isEnabled, distribution.title)
+    return new DistributionStage(distribution.isEnabled, distribution.title)
 }
 
 
