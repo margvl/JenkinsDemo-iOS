@@ -7,7 +7,7 @@ node {
         loadUp('config.json')
 
         catchError {
-            executeSetUpStage()
+            executeStageIfNeeded(setUpStage)
             //executeTestStageIfNeeded()
             //executeBuildStageIfNeeded()
         }
@@ -58,6 +58,19 @@ void loadUp(String filename) {
     analyzeStage = new AnalyzeStage(analyze.title, stepList)
 }
 
+
+executeStageIfNeeded(Stage executableStage) {
+    if (executableStage.isEnabled) {
+        stage(executableStage.title) {
+            String[] executionCommandList = executableStage.executionCommands()
+            executionCommandList.each { executionCommand ->
+                run(executionCommand)
+            }
+        }
+    }
+}
+
+
 // --------------------
 // --- Set Up Stage ---
 // --------------------
@@ -73,7 +86,8 @@ class SetUpStage extends Stage {
     }
     
     String[] executionCommands() {
-        return []
+        String[] executionCommandList = ["bundle install"]
+        return executionCommandList
     }
 }
 
@@ -453,6 +467,8 @@ abstract class Stage {
         this.title = title
     }
     
+    abstract String[] executionCommands()
+
 
     String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
