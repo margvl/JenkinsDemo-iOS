@@ -27,7 +27,8 @@
         "analyze": {
             "title": "Analyze",
             "swiftLint": {
-                "isEnabled": false
+                "isEnabled": false,
+                "configFile": null
             },
             "cloc": {
                 "isEnabled": false

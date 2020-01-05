@@ -229,18 +229,17 @@ TestStage getTestStage(Map environment, Map test) {
 // --- Analyze Stage ---
 // ---------------------
 class AnalyzeStage extends Stage {
-    StageStep[] stepList
+    StageStep swiftLintStep
+    StageStep clocStep
     
-    AnalyzeStage(String title, StageStep[] steps) {
-        super(false, title)
-        this.stepList = steps
-        
-        for(step in steps) {
-            if (step.isEnabled) {
-                isEnabled = step.isEnabled
-                break
-            }
-        }
+    AnalyzeStage(
+            String title,
+            StageStep swiftLintStep,
+            StageStep clocStep) {
+        Boolean isEnabled = swiftLintStep.isEnabed || clocStep.isEnabled,
+        super(isEnabled, title)
+        this.swiftLintStep = swiftLintStep
+        this.clocStep = clocStep
     }
     
     String[] executionCommands() {
@@ -250,9 +249,23 @@ class AnalyzeStage extends Stage {
 
 class SwiftLintStep implements StageStep {
     Boolean isEnabled
+    String reportPath
+    String configFile
+    
+    SwiftLintStep(
+            Boolean isEnabled,
+            String reportPath,
+            String configFile) {
+            
+        this.isEnabled = isEnabled
+        this.reportPath = reportPath
+        this.configFile = configFile
+    }
     
     String executionCommand() {
-        return ""
+        return "bundle exec fastlane swiftLine" +
+                ParamBuilder.getReportPathParam(reportPath) +
+                ParamBuilder.getConfigFileParam(configFile)
     }
 }
 
@@ -264,8 +277,18 @@ class ClocStep implements StageStep {
     }
 }
 
-AnalyzeStage getAnalyzeStage(Map analyze) {
-    StageStep[] stepList = []
+AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
+    Map swiftLint = analyze.swiftLint
+    SwiftLintStep swiftLint = new SwiftLintStep(
+            swiftLint.isEnabled,
+            environment.reportPath + "/swiftlint",
+            swiftLint.configFile)
+            
+    Map cloc = analyze.cloc
+    ClocStep cloc = new ClocStep(
+            cloc.isEnabled)
+    
+    StageStep[] stepList = [swiftLint, cloc]
     return new AnalyzeStage(analyze.title, stepList)
 }
 

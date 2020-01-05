@@ -31,6 +31,17 @@ lane :coverage do |options|
     )
 end
 
+desc "Run SwiftLint"
+lane :swiftLint do
+    swiftlint(
+        mode: :lint,
+        output_file: "#{options[:reportPath]}/result.xml",
+        reporter: "checkstyle",
+        config_file: options[:configFile],
+        ignore_exit_status: true
+    )
+end
+
 desc "Run building process"
 lane :build do |options|
     provisioningProfilesString = options[:provisioningProfiles]
