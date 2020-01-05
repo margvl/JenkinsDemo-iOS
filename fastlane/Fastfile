@@ -2,7 +2,6 @@ fastlane_version "2.66.2"
 
 desc "Runs all the tests"
 lane :test do |options|
-
     devicesString = options[:devices]
     deviceList = devicesString.split(",")
 
@@ -32,19 +31,8 @@ lane :coverage do |options|
     )
 end
 
-desc "Run test coverage report generation"
-lane :coverageReport do |options|
-    xcov(
-        proj: options[:projectFilename],
-        workspace: options[:workspaceFilename],
-        scheme: options[:scheme],
-        output_directory: options[:reportPath],
-    )
-end
-
 desc "Run building process"
 lane :build do |options|
-
     provisioningProfilesString = options[:provisioningProfiles]
     profileValuePairStringList = provisioningProfilesString.split(",")
     provisioningProfiles = {}

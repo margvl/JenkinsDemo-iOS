@@ -46,6 +46,8 @@ void loadUp(String filename) {
 void executeSetUpStage() {
     stage(setUpStage.title) {
         run(setUpStage.dependenciesInstallationCommand())
+        // TODO: Update cocoapods if needed
+        // TODO: Update carthage if needed
     }
 }
 
@@ -53,7 +55,7 @@ void executeTestStageIfNeeded() {
     if (testStage.isEnabled) {
         stage(testStage.title) {
             run(testStage.executionCommand())
-            //junit testStage.reportPath + "/*.junit"
+            junit testStage.reportPath + "/*.junit"
             
             executeTestCoverageStepIfNeeded()
         }
@@ -74,11 +76,13 @@ void executeTestCoverageStepIfNeeded() {
 }
 
 void executeAnalyzeStageIfNeeded() {
-
+    
 }
-/*
+
 void executeSwiftLintStepIfNeeded() {
-if (isSwiftLintStageEnabled) {
+    TestCoverageStep coverageStep = analyze.coverageStep
+    if (isSwiftLintStageEnabled) {
+        run(coverageStep.executionCommand())
         shWithColor "mkdir -p ${reportsPath}/swiftlint"
         shWithColor 'bundle exec fastlane lint'
         step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
@@ -87,9 +91,9 @@ if (isSwiftLintStageEnabled) {
               healthy: '',
               pattern: "${reportsPath}/swiftlint/result.xml",
               unHealthy: ''])
+    }
 }
-}
-*/
+
 void executeBuildStageIfNeeded() {
     if (buildStage.isEnabled) {
         stage(buildStage.title) {
@@ -228,8 +232,15 @@ class AnalyzeStage extends Stage {
     StageStep[] stepList
     
     AnalyzeStage(String title, StageStep[] steps) {
-        // TODO: Decide `enabled` value dependend on enabled steps
-        super(true, title)
+        Boolean isEnabled = false
+        steps.each { step ->
+            if (step.isEnabled) {
+                isEnabled = step.isEnabled
+                break
+            }
+        }
+        
+        super(isEnabled, title)
         this.stepList = steps
     }
     
