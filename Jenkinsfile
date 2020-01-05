@@ -196,7 +196,7 @@ class TestStage extends Stage {
                 ParamBuilder.getProjectFilenameParam(projectFilename) +
                 ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
-                ParamBuilder.getDevicesParam(devices.join(',')) +
+                ParamBuilder.getDevicesParam(deviceList.join(',')) +
                 ParamBuilder.getReportPathParam(reportPath)
     }
 }
