@@ -32,6 +32,17 @@ lane :coverage do |options|
     )
 end
 
+desc "Run test coverage report generation"
+lane :coverageReport do |options|
+    xcov(
+        proj: options[:projectFilename],
+        workspace: options[:workspaceFilename],
+        scheme: options[:scheme],
+        output_directory: options[:reportPath],
+    )
+end
+
+desc "Run building process"
 lane :build do |options|
 
     provisioningProfilesString = options[:provisioningProfiles]

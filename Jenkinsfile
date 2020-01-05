@@ -53,7 +53,7 @@ void executeTestStageIfNeeded() {
     if (testStage.isEnabled) {
         stage(testStage.title) {
             run(testStage.executionCommand())
-            junit testStage.reportPath + "/*.junit"
+            //junit testStage.reportPath + "/*.junit"
             
             executeTestCoverageStepIfNeeded()
         }
@@ -76,7 +76,20 @@ void executeTestCoverageStepIfNeeded() {
 void executeAnalyzeStageIfNeeded() {
 
 }
-
+/*
+void executeSwiftLintStepIfNeeded() {
+if (isSwiftLintStageEnabled) {
+        shWithColor "mkdir -p ${reportsPath}/swiftlint"
+        shWithColor 'bundle exec fastlane lint'
+        step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
+              canComputeNew: false,
+              defaultEncoding: '',
+              healthy: '',
+              pattern: "${reportsPath}/swiftlint/result.xml",
+              unHealthy: ''])
+}
+}
+*/
 void executeBuildStageIfNeeded() {
     if (buildStage.isEnabled) {
         stage(buildStage.title) {
