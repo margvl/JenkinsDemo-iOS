@@ -21,9 +21,9 @@ node {
 }
 
 
-
-
 void loadUp(String filename) {
+    checkout scm
+
     def config = readJSON file: filename
     def environment = config.environment
     def setUp = config.stages.setUp
@@ -61,7 +61,6 @@ void loadUp(String filename) {
 // --------------------
 void executeSetUpStage() {
     stage('Set up') {
-        checkout scm
         run('bundle install')
     }
 }
