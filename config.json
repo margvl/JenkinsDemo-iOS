@@ -34,7 +34,7 @@
             "cloc": {
                 "isEnabled": false
             }
-        }
+        },
         "build": {
             "isEnabled": true,
             "title": "Build",
@@ -52,7 +52,7 @@
                     ]
                 }
             ]
-        }
+        },
         "distribution": {
             "isEnabled": true,
             "title": "Distribution"
