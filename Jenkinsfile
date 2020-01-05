@@ -85,7 +85,7 @@ void executeAnalyzeStageIfNeeded() {
 }
 
 void executeSwiftLintStepIfNeeded() {
-    SwiftLintStep swifLintStep = analyzeStage.swifLintStep
+    SwiftLintStep swifLintStep = analyzeStage.swiftLintStep
     if (swifLintStep.isEnabled) {
         run(swifLintStep.executionCommand())
         step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
