@@ -414,7 +414,7 @@ class NameBuilder {
     }
     
     static String getOutputName(projectName, buildId) {
-        return projectName + "-" + buildId + ".ipa",
+        return projectName + "-" + buildId + ".ipa"
     }
 }
 
