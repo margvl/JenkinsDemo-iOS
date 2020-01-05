@@ -313,7 +313,7 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
             environment.reportPath + "/cloc")
     
     return new AnalyzeStage(
-            swiftLintStep.isEnabed || clocStep.isEnabled,
+            swiftLintStep.isEnabled || clocStep.isEnabled,
             analyze.title,
             swiftLintStep,
             clocStep)
