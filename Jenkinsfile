@@ -1,10 +1,4 @@
 node {
-    SetUpStage setUpStage = null
-    TestStage testStage = null
-    AnalyzeStage analyzeStage = null
-    BuildStage buildStage = null
-    //DistributionStage distributionStage = null
-
     ansiColor('xterm') {
         properties([
                 buildDiscarder(logRotator(numToKeepStr: '15')),
@@ -19,6 +13,13 @@ node {
         }
     }
 }
+
+
+SetUpStage setUpStage = null
+TestStage testStage = null
+AnalyzeStage analyzeStage = null
+BuildStage buildStage = null
+//DistributionStage distributionStage = null
 
 
 void loadUp(String filename) {
