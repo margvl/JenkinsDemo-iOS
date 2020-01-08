@@ -170,7 +170,7 @@ class CocoaPodsStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane pods" +
+        return "bundle exec fastlane CocoaPods" +
                 ParamBuilder.getPodFileParam(podFile)
     }
 }
@@ -185,7 +185,7 @@ class CarthageStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane carth" +
+        return "bundle exec fastlane Carthage" +
                 ParamBuilder.getPlatformParam(platform)
     }
 }
