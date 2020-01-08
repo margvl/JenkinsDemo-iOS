@@ -99,7 +99,6 @@ void executeAnalyzeStageIfNeeded() {
         stage(analyzeStage.title) {
             executeSwiftLintStepIfNeeded()
             executeClocStepIfNeeded()
-            recordIssues(tools: [cpd(), findBugs(useRankAsPriority: true)])
         }
     }
 }
@@ -631,7 +630,7 @@ class ParamBuilder {
 }
 
 void makeDirectory(String path) {
-    run("mkdir -p ${path})
+    run("mkdir -p ${path}")
 }
 
 void run(String command) {
