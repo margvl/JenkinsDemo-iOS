@@ -164,7 +164,7 @@ class CocoaPodsStep implements StageStep {
     Boolean isEnabled
     String podFile
     
-    CocoapodsStep(Boolean isEnabled, String podFile) {
+    CocoaPodsStep(Boolean isEnabled, String podFile) {
         this.isEnabled = isEnabled
         this.podFile = podFile
     }
