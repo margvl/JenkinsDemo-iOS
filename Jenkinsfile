@@ -99,6 +99,7 @@ void executeAnalyzeStageIfNeeded() {
         stage(analyzeStage.title) {
             executeSwiftLintStepIfNeeded()
             executeClocStepIfNeeded()
+            recordIssues(tools: [cpd(), findBugs(useRankAsPriority: true)])
         }
     }
 }
