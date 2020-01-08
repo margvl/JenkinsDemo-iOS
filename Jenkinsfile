@@ -108,12 +108,7 @@ void executeSwiftLintStepIfNeeded() {
     SwiftLintStep swifLintStep = analyzeStage.swiftLintStep
     if (swifLintStep.isEnabled) {
         run(swifLintStep.executionCommand())
-        step([$class: 'hudson.plugins.checkstyle.CheckStylePublisher',
-              canComputeNew: false,
-              defaultEncoding: '',
-              healthy: '',
-              pattern: "${swifLintStep.reportPath}/result.xml",
-              unHealthy: ''])
+        recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/result.xml")])
     }
 }
 
