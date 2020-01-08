@@ -1,6 +1,6 @@
 fastlane_version "2.66.2"
 
-desc "Install dependencies via cocoapods"
+desc "Install dependencies via cocoaPods"
 lane :Cocoapods do |options|
     cocoapods(
         podfile: options[:podFile]

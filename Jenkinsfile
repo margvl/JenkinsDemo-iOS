@@ -57,9 +57,9 @@ void executeSetUpStage() {
 }
 
 void executeCocoapodsStepIfNeeded() {
-    CocoapodsStep cocoapodsStep = setUpStage.cocoapodsStep
-    if (cocoapodsStep.isEnabled) {
-        run(cocoapodsStep.executionCommand())
+    CocoapodsStep cocoaPodsStep = setUpStage.cocoaPodsStep
+    if (cocoaPodsStep.isEnabled) {
+        run(cocoaPodsStep.executionCommand())
     }
 }
 
@@ -143,15 +143,15 @@ void executeDistributionStageIfNeeded() {
 // --- Set Up Stage ---
 // --------------------
 class SetUpStage extends Stage {
-    CocoapodsStep cocoapodsStep
+    CocoapodsStep cocoaPodsStep
     CarthageStep carthageStep
 
     SetUpStage(
             String title,
-            CocoapodsStep cocoapodsStep,
+            CocoapodsStep cocoaPodsStep,
             CarthageStep carthageStep) {
         super(true, title)
-        this.cocoapodsStep = cocoapodsStep
+        this.cocoaPodsStep = cocoaPodsStep
         this.carthageStep = carthageStep
     }
     
@@ -191,17 +191,17 @@ class CarthageStep implements StageStep {
 }
 
 SetUpStage getSetUpStage(Map setUp) {
-    Map cocoapods = setUp.cocoapods
-    CocoapodsStep cocoapodsStep = new CocoapodsStep(
-            cocoapods.isEnabled,
-            cocoapods.podFile)
+    Map cocoaPods = setUp.cocoaPods
+    CocoapodsStep cocoaPodsStep = new CocoapodsStep(
+            cocoaPods.isEnabled,
+            cocoaPods.podFile)
             
     Map carthage = setUp.carthage
     CarthageStep carthageStep = new CarthageStep(
             carthage.isEnabled,
             carthage.platform)
 
-    return new SetUpStage(setUp.title, cocoapodsStep, carthageStep)
+    return new SetUpStage(setUp.title, cocoaPodsStep, carthageStep)
 }
 
 // ------------------
