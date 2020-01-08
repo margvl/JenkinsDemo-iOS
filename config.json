@@ -31,6 +31,9 @@
                 "isEnabled": true,
                 "configFile": null
             },
+            "copyPasteDetection": {
+                "isEnabled": true
+            },
             "cloc": {
                 "isEnabled": true,
                 "excludeDirectories": "Resources"
