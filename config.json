@@ -33,7 +33,7 @@
             },
             "cloc": {
                 "isEnabled": true,
-                "excludeDirectories": "JenkinsDemo/Resources"
+                "excludeDirectories": "Resources"
             }
         },
         "build": {

@@ -346,11 +346,13 @@ class SwiftLintStep implements StageStep {
 class ClocStep implements StageStep {
     Boolean isEnabled
     String sourcePath
+    String excludeDirectories
     String reportPath
 
     ClocStep(
             Boolean isEnabled,
             String sourcePath,
+            String excludeDirectories,
             String reportPath) {
     
         this.isEnabled = isEnabled
@@ -361,6 +363,7 @@ class ClocStep implements StageStep {
     String executionCommand() {
         return "bundle exec fastlane count" +
                 ParamBuilder.getSourcePathParam(sourcePath) +
+                ParamBuilder.getExcludeDirectoriesParam(excludeDirectories) +
                 ParamBuilder.getReportPathParam(reportPath)
     }
 }
@@ -376,6 +379,7 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
     ClocStep clocStep = new ClocStep(
             cloc.isEnabled,
             environment.sourcePath,
+            cloc.excludeDirectories,
             environment.reportPath + "/cloc")
     
     return new AnalyzeStage(
