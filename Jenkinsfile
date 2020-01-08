@@ -160,7 +160,7 @@ class SetUpStage extends Stage {
     }
 }
 
-class CocoapodsStep implements StageStep {
+class CocoaPodsStep implements StageStep {
     Boolean isEnabled
     String podFile
     
@@ -170,7 +170,7 @@ class CocoapodsStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane Cocoapods" +
+        return "bundle exec fastlane pods" +
                 ParamBuilder.getPodFileParam(podFile)
     }
 }
@@ -185,14 +185,14 @@ class CarthageStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane Carthage" +
+        return "bundle exec fastlane carth" +
                 ParamBuilder.getPlatformParam(platform)
     }
 }
 
 SetUpStage getSetUpStage(Map setUp) {
     Map cocoaPods = setUp.cocoaPods
-    CocoapodsStep cocoaPodsStep = new CocoapodsStep(
+    CocoaPodsStep cocoaPodsStep = new CocoaPodsStep(
             cocoaPods.isEnabled,
             cocoaPods.podFile)
             

@@ -1,14 +1,14 @@
 fastlane_version "2.66.2"
 
 desc "Install dependencies via cocoaPods"
-lane :Cocoapods do |options|
+lane :pods do |options|
     cocoapods(
         podfile: options[:podFile]
     )
 end
 
 desc "Install dependencies via carthage"
-lane :Carthage do |options|
+lane :carth do |options|
     carthage(
         command: "bootstrap",
         use_binaries: true,
