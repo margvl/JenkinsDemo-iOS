@@ -1,9 +1,7 @@
 node {
     ansiColor('xterm') {
-        properties([
-                buildDiscarder(logRotator(numToKeepStr: '15')),
-                disableConcurrentBuilds()])
-    
+        applyJenkinsOptions()
+        checkoutContent()
         loadUp('config.json')
 
         catchError {
@@ -23,10 +21,17 @@ AnalyzeStage analyzeStage = null
 BuildStage buildStage = null
 DistributionStage distributionStage = null
 
+void applyJenkinsOptions() {
+    properties([
+            buildDiscarder(logRotator(numToKeepStr: '15')),
+            disableConcurrentBuilds()])
+}
+
+void checkoutContent() {
+    checkout scm
+}
 
 void loadUp(String filename) {
-    checkout scm
-
     Map config = readJSON file: filename
     Map environment = config.environment
     Map stages = config.stages
@@ -124,8 +129,16 @@ void executeDistributionStageIfNeeded() {
 // --- Set Up Stage ---
 // --------------------
 class SetUpStage extends Stage {
-    SetUpStage(String title) {
+    CocoapodsStep cocoapodsStep
+    CarthageStep carthageStep
+
+    SetUpStage(
+            String title,
+            CocoapodsStep cocoapodsStep,
+            CarthageStep carthageStep) {
         super(true, title)
+        this.cocoapodsStep = cocoapodsStep
+        this.carthageStep = carthageStep
     }
     
     String dependenciesInstallationCommand() {
@@ -133,7 +146,48 @@ class SetUpStage extends Stage {
     }
 }
 
+class CocoapodsStep implements StageStep {
+    Boolean isEnabled
+    String podFile
+    
+    CocoapodsStep(Boolean isEnabled, String podFile) {
+        this.isEnabled = isEnabled
+        this.podFile = podFile
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane Cocoapods" +
+                ParamBuilder.getPodFileParam(podFile)
+    }
+}
+
+class CarthageStep implements StageStep {
+    Boolean isEnabled
+    String platform
+
+    CarthageStep(Boolean isEnabled, String platform) {
+        this.isEnabled = isEnabled
+        this.platform = platform
+    }
+    
+    String executionCommand() {
+        return "bundle exec fastlane Carthage" +
+                ParamBuilder.getPlatformParam(platform)
+    }
+}
+
 SetUpStage getSetUpStage(Map setUp) {
+    Map cocoapods = setUp.cocoapods
+    CocoapodsStep cocoapodsStep = new CocoapodsStep(
+            cocoapods.isEnabled,
+            cocoapods.podFile)
+            
+    Map cloc = analyze.cloc
+    ClocStep clocStep = new ClocStep(
+            cloc.isEnabled,
+            environment.sourcePath,
+            environment.reportPath + "/cloc")
+
     return new SetUpStage(setUp.title)
 }
 
@@ -536,6 +590,10 @@ class ParamBuilder {
         return " scheme:" + "\"" + scheme + "\""
     }
 
+    static String getPlatformParam(String platform) {
+        return " platform:" + "\"" + platform + "\""
+    }
+
     static String getDevicesParam(String devices) {
         return " devices:" + "\"" + devices + "\""
     }
@@ -546,6 +604,10 @@ class ParamBuilder {
     
     static String getExcludeDirectoriesParam(String excludeDirectories) {
         return " excludeDirectories:" + "\"" + excludeDirectories + "\""
+    }
+    
+    static String getPodFileParam(String podFile) {
+        return " podFile:" + "\"" + podFile + "\""
     }
 }
 

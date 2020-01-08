@@ -1,7 +1,7 @@
 {
     "environment": {
         "projectName": "JenkinsDemo",
-        "workspaceName": null,
+        "workspaceName": "JenkinsDemo",
         "sourcePath": "./JenkinsDemo/",
         "reportPath": "build/report",
         "outputPath": "build/output"
@@ -10,7 +10,8 @@
         "setUp": {
             "title": "Set Up",
             "cocoaPods": {
-                "isEnabled": false
+                "isEnabled": true,
+                "podFile": "Podfile"
             },
             "carthage": {
                 "isEnabled": false,
@@ -32,7 +33,7 @@
             },
             "cloc": {
                 "isEnabled": true,
-                "excludeDirectories": "build"
+                "excludeDirectories": "Resources"
             }
         },
         "build": {
