@@ -170,7 +170,7 @@ class CocoaPodsStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane CocoaPods" +
+        return "bundle exec fastlane pods" +
                 ParamBuilder.getPodFileParam(podFile)
     }
 }
@@ -185,7 +185,7 @@ class CarthageStep implements StageStep {
     }
     
     String executionCommand() {
-        return "bundle exec fastlane Carthage" +
+        return "bundle exec fastlane carth" +
                 ParamBuilder.getPlatformParam(platform)
     }
 }
@@ -236,7 +236,7 @@ class TestStage extends Stage {
     
     String executionCommand() {
         return "bundle exec fastlane test" +
-                ParamBuilder.getProjectFilenameParam(projectFilename) +
+                ParamBuilder.getProjectFilenameParam(projectFilename, workspaceFilename) +
                 ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
                 ParamBuilder.getDevicesParam(deviceList.join(',')) +
@@ -565,6 +565,10 @@ class NameBuilder {
 class ParamBuilder {
     static String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
+    }
+    
+    static String getProjectFilenameParam(String projectFilename, String workspaceFilename) {
+        return (workspaceFilename == null) ? (" projectFilename:" + projectFilename) : ""
     }
 
     static String getWorkspaceFilenameParam(String workspaceFilename) {
