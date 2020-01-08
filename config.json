@@ -33,7 +33,7 @@
             },
             "cloc": {
                 "isEnabled": true,
-                "excludeDirectories": "Resources"
+                "excludeDirectories": "Resources/"
             }
         },
         "build": {
