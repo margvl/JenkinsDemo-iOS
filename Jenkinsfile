@@ -357,6 +357,7 @@ class ClocStep implements StageStep {
     
         this.isEnabled = isEnabled
         this.sourcePath = sourcePath
+        this.excludeDirectories = excludeDirectories
         this.reportPath = reportPath
     }
 
