@@ -236,7 +236,7 @@ class TestStage extends Stage {
     
     String executionCommand() {
         return "bundle exec fastlane test" +
-                ParamBuilder.getProjectFilenameOrkWorkspaceFilenameParam(projectFilename, workspaceFilename) +
+                ParamBuilder.getProjectFilenameOrWorkspaceFilenameParam(projectFilename, workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
                 ParamBuilder.getDevicesParam(deviceList.join(',')) +
                 ParamBuilder.getReportPathParam(reportPath)
