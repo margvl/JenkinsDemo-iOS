@@ -6,6 +6,7 @@ target 'JenkinsDemo' do
   use_frameworks!
 
   # Pods for JenkinsDemo
+  pod 'SDWebImage', '~> 5.0'
 
   target 'JenkinsDemoTests' do
     inherit! :search_paths
