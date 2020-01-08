@@ -15,16 +15,41 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-### coverage
+### pods
 ```
-fastlane coverage
+fastlane pods
 ```
-Run test coverage
+Install dependencies via cocoaPods
+### carth
+```
+fastlane carth
+```
+Install dependencies via carthage
 ### test
 ```
 fastlane test
 ```
 Runs all the tests
+### coverage
+```
+fastlane coverage
+```
+Run test coverage
+### lint
+```
+fastlane lint
+```
+Run SwiftLint analyze tool
+### count
+```
+fastlane count
+```
+Run Cloc analyze tool
+### build
+```
+fastlane build
+```
+Run building process
 
 ----
 

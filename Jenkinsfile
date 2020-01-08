@@ -98,6 +98,8 @@ void executeAnalyzeStageIfNeeded() {
     if (analyzeStage.isEnabled) {
         stage(analyzeStage.title) {
             executeSwiftLintStepIfNeeded()
+            scanForIssues sourceDirectory: 'JenkinsDemo', tool: cpd(pattern: 'build/report/cpd/result.xml')
+            recordIssues(tools: [cpd(pattern: 'build/report/cpd/result.xml')])
             executeClocStepIfNeeded()
         }
     }
