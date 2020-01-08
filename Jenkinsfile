@@ -107,6 +107,7 @@ void executeAnalyzeStageIfNeeded() {
 void executeSwiftLintStepIfNeeded() {
     SwiftLintStep swifLintStep = analyzeStage.swiftLintStep
     if (swifLintStep.isEnabled) {
+        makeDirectory(swifLintStep.reportPath)
         run(swifLintStep.executionCommand())
         recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/result.xml")])
     }
@@ -627,6 +628,10 @@ class ParamBuilder {
     static String getPodFileParam(String podFile) {
         return " podFile:" + "\"" + podFile + "\""
     }
+}
+
+void makeDirectory(String path) {
+    run("mkdir -p ${path})
 }
 
 void run(String command) {
