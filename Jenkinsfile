@@ -57,7 +57,7 @@ void executeSetUpStage() {
 }
 
 void executeCocoapodsStepIfNeeded() {
-    CocoapodsStep cocoaPodsStep = setUpStage.cocoaPodsStep
+    CocoaPodsStep cocoaPodsStep = setUpStage.cocoaPodsStep
     if (cocoaPodsStep.isEnabled) {
         run(cocoaPodsStep.executionCommand())
     }
@@ -143,12 +143,12 @@ void executeDistributionStageIfNeeded() {
 // --- Set Up Stage ---
 // --------------------
 class SetUpStage extends Stage {
-    CocoapodsStep cocoaPodsStep
+    CocoaPodsStep cocoaPodsStep
     CarthageStep carthageStep
 
     SetUpStage(
             String title,
-            CocoapodsStep cocoaPodsStep,
+            CocoaPodsStep cocoaPodsStep,
             CarthageStep carthageStep) {
         super(true, title)
         this.cocoaPodsStep = cocoaPodsStep
