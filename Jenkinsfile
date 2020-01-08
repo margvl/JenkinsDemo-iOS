@@ -236,8 +236,7 @@ class TestStage extends Stage {
     
     String executionCommand() {
         return "bundle exec fastlane test" +
-                ParamBuilder.getProjectFilenameParam(projectFilename, workspaceFilename) +
-                ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
+                ParamBuilder.getProjectFilenameOrkWorkspaceFilenameParam(projectFilename, workspaceFilename) +
                 ParamBuilder.getSchemeParam(scheme) +
                 ParamBuilder.getDevicesParam(deviceList.join(',')) +
                 ParamBuilder.getReportPathParam(reportPath)
@@ -414,8 +413,7 @@ class BuildStage extends Stage {
         String[] executionCommandList = []
         itemList.each { item ->
             String executionCommand = "bundle exec fastlane build" +
-                    ParamBuilder.getProjectFilenameParam(projectFilename) +
-                    ParamBuilder.getWorkspaceFilenameParam(workspaceFilename) +
+                    ParamBuilder.getProjectFilenameOrWorkspaceFilenameParam(projectFilename, workspaceFilename) +
                     ParamBuilder.getConfigurationParam(item.configuration) +
                     ParamBuilder.getSchemeParam(item.scheme) +
                     ParamBuilder.getOutputPathParam(outputPath) +
@@ -566,13 +564,15 @@ class ParamBuilder {
     static String getProjectFilenameParam(String projectFilename) {
         return " projectFilename:" + projectFilename
     }
-    
-    static String getProjectFilenameParam(String projectFilename, String workspaceFilename) {
-        return (workspaceFilename == null) ? (" projectFilename:" + projectFilename) : ""
-    }
 
     static String getWorkspaceFilenameParam(String workspaceFilename) {
         return (workspaceFilename == null) ? "" : (" workspaceFilename:" + workspaceFilename)
+    }
+    
+    static String getProjectFilenameOrWorkspaceFilenameParam(String projectFilename, String workspaceFilename) {
+        return (workspaceFilename == null) ?
+            (" projectFilename:" + projectFilename) :
+            (" workspaceFilename:" + workspaceFilename)
     }
 
     static String getSourcePathParam(String sourcePath) {

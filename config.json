@@ -10,7 +10,7 @@
         "setUp": {
             "title": "Set Up",
             "cocoaPods": {
-                "isEnabled": true,
+                "isEnabled": false,
                 "podFile": "Podfile"
             },
             "carthage": {
