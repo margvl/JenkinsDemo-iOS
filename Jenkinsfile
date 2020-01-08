@@ -51,8 +51,22 @@ void loadUp(String filename) {
 void executeSetUpStage() {
     stage(setUpStage.title) {
         run(setUpStage.dependenciesInstallationCommand())
-        // TODO: Update cocoapods if needed
-        // TODO: Update carthage if needed
+        executeCocoapodsStepIfNeeded()
+        executeCarthageStepIfNeeded()
+    }
+}
+
+void executeCocoapodsStepIfNeeded() {
+    CocoapodsStep cocoapodsStep = setUpStage.cocoapodsStep
+    if (cocoapodsStep.isEnabled) {
+        run(cocoapodsStep.executionCommand())
+    }
+}
+
+void executeCarthageStepIfNeeded() {
+    CarthageStep carthageStep = setUpStage.carthageStep
+    if (carthageStep.isEnabled) {
+        run(carthageStep.executionCommand())
     }
 }
 
