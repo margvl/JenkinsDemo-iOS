@@ -182,13 +182,12 @@ SetUpStage getSetUpStage(Map setUp) {
             cocoapods.isEnabled,
             cocoapods.podFile)
             
-    Map cloc = analyze.cloc
-    ClocStep clocStep = new ClocStep(
-            cloc.isEnabled,
-            environment.sourcePath,
-            environment.reportPath + "/cloc")
+    Map carthage = setUp.carthage
+    CarthageStep carthageStep = new CarthageStep(
+            carthage.isEnabled,
+            carthage.platform)
 
-    return new SetUpStage(setUp.title)
+    return new SetUpStage(setUp.title, cocoapodsStep, carthageStep)
 }
 
 // ------------------
