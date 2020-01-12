@@ -75,7 +75,6 @@ void executeTestStageIfNeeded() {
         stage(testStage.title) {
             run(testStage.executionCommand())
             junit testStage.reportPath + "/*.junit"
-            
             executeTestCoverageStepIfNeeded()
         }
     }
@@ -339,7 +338,7 @@ class SwiftLintStep implements StageStep {
             Boolean isEnabled,
             String configFile,
             String reportPath) {
-            
+
         this.isEnabled = isEnabled
         this.configFile = configFile
         this.reportPath = reportPath
@@ -414,7 +413,7 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
     CPDStep cpdStep = new CPDStep(
             copyPasteDetection.isEnabled,
             environment.sourcePath,
-            environment.resourcePath + "/cpd")
+            environment.reportPath + "/cpd")
             
     Map cloc = analyze.cloc
     ClocStep clocStep = new ClocStep(
