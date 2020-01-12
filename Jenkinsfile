@@ -108,7 +108,7 @@ void executeSwiftLintStepIfNeeded() {
     if (swifLintStep.isEnabled) {
         makeDirectory(swifLintStep.reportPath)
         run(swifLintStep.executionCommand())
-        recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/result.xml")])
+        recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/*.xml")])
     }
 }
 
@@ -117,7 +117,7 @@ void executeCPDStepIfNeeded() {
     if (cpdStep.isEnabled) {
         makeDirectory(cpdStep.reportPath)
         run(cpdStep.executionCommand())
-        recordIssues(tools: [cpd(name: 'Copy paste detection', pattern: "${cpdStep.reportPath}/result.xml")])
+        recordIssues(tools: [cpd(name: 'Copy paste detection', pattern: "${cpdStep.reportPath}/*.xml")])
     }
 }
 
@@ -125,7 +125,7 @@ void executeClocStepIfNeeded() {
     ClocStep clocStep = analyzeStage.clocStep
     if (clocStep.isEnabled) {
         run(clocStep.executionCommand())
-        sloccountPublish encoding: '', pattern: "${clocStep.reportPath}/cloc.xml"
+        sloccountPublish encoding: '', pattern: "${clocStep.reportPath}/*.xml"
     }
 }
 
@@ -372,7 +372,7 @@ class CPDStep implements StageStep {
                 " --language swift" +
                 " --files \"${sourcePath}\"" +
                 " --format xml" +
-                " > \"${reportPath}\""
+                " > \"${reportPath}/result.xml\""
     }
 }
 

@@ -1,14 +1,4 @@
-# frozen_string_literal: true
-
 fastlane_version '2.66.2'
-
-desc 'Hello'
-lane :ana do |_options|
-  code_static_analyzer(
-    analyzers: 'cpd',
-    xcode_project_name: 'JenkinsDemo'
-  )
-end
 
 desc 'Install dependencies via cocoaPods'
 lane :pods do |options|
