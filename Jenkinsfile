@@ -370,6 +370,7 @@ class CPDStep implements StageStep {
         return "pmd cpd" +
                 " --minimum-tokens 30" +
                 " --language swift" +
+                " --failOnViolation false" +
                 " --files \"${sourcePath}\"" +
                 " --format xml" +
                 " > \"${reportPath}/result.xml\""
