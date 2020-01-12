@@ -116,6 +116,7 @@ void executeSwiftLintStepIfNeeded() {
 void executeCPDStepIfNeeded() {
     CPDStep cpdStep = analyzeStage.cpdStep
     if (cpdStep.isEnabled) {
+        makeDirectory(cpdStep.reportPath)
         run(cpdStep.executionCommand())
         recordIssues(tools: [cpd(name: 'Copy paste detection', pattern: "${cpdStep.reportPath}/result.xml")])
     }
