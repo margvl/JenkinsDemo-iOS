@@ -410,7 +410,7 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
             environment.reportPath + "/swiftlint")
             
     Map copyPasteDetection = analyze.copyPasteDetection
-    CPDStep = cpdStep = new CPDStep(
+    CPDStep cpdStep = new CPDStep(
             copyPasteDetection.isEnabled,
             environment.sourcePath,
             environment.resourcePath + "/cpd")
