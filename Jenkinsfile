@@ -99,6 +99,7 @@ void executeAnalyzeStageIfNeeded() {
             executeSwiftLintStepIfNeeded()
             executeCPDStepIfNeeded()
             executeClocStepIfNeeded()
+            recordIssues(tools: [clang(), codeAnalysis()])
         }
     }
 }
@@ -117,7 +118,7 @@ void executeCPDStepIfNeeded() {
     if (cpdStep.isEnabled) {
         makeDirectory(cpdStep.reportPath)
         run(cpdStep.executionCommand())
-        recordIssues(tools: [cpd(name: 'Copy paste detection', pattern: "${cpdStep.reportPath}/*.xml")])
+        recordIssues(tools: [cpd(name: 'CPD', pattern: "${cpdStep.reportPath}/*.xml")])
     }
 }
 
