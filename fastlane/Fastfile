@@ -1,96 +1,106 @@
-fastlane_version "2.66.2"
+# frozen_string_literal: true
 
-desc "Install dependencies via cocoaPods"
+fastlane_version '2.66.2'
+
+desc 'Hello'
+lane :ana do |_options|
+  code_static_analyzer(
+    analyzers: 'cpd',
+    xcode_project_name: 'JenkinsDemo'
+  )
+end
+
+desc 'Install dependencies via cocoaPods'
 lane :pods do |options|
-    cocoapods(
-        podfile: options[:podFile]
-    )
+  cocoapods(
+    podfile: options[:podFile]
+  )
 end
 
-desc "Install dependencies via carthage"
+desc 'Install dependencies via carthage'
 lane :carth do |options|
-    carthage(
-        command: "bootstrap",
-        use_binaries: true,
-        platform: options[:platform]
-    )
+  carthage(
+    command: 'bootstrap',
+    use_binaries: true,
+    platform: options[:platform]
+  )
 end
 
-desc "Runs all the tests"
+desc 'Runs all the tests'
 lane :test do |options|
-    devicesString = options[:devices]
-    deviceList = devicesString.split(",")
+  devicesString = options[:devices]
+  deviceList = devicesString.split(',')
 
-    scan(
-        project: options[:projectFilename],
-        workspace: options[:workspaceFilename],
-        scheme: options[:scheme],
-        devices: deviceList,
-        clean: true,
-        prelaunch_simulator: true,
-        output_directory: options[:reportPath],
-        output_types: "html,junit"
-    )
+  scan(
+    project: options[:projectFilename],
+    workspace: options[:workspaceFilename],
+    scheme: options[:scheme],
+    devices: deviceList,
+    clean: true,
+    prelaunch_simulator: true,
+    output_directory: options[:reportPath],
+    output_types: 'html,junit'
+  )
 end
 
-desc "Run test coverage"
+desc 'Run test coverage'
 lane :coverage do |options|
-    slather(
-        proj: options[:projectFilename],
-        workspace: options[:workspaceFilename],
-        scheme: options[:scheme],
-        input_format: "auto",
-        source_directory: options[:sourcePath],
-        output_directory: options[:reportPath],
-        html: true,
-        jenkins: true
-    )
+  slather(
+    proj: options[:projectFilename],
+    workspace: options[:workspaceFilename],
+    scheme: options[:scheme],
+    input_format: 'auto',
+    source_directory: options[:sourcePath],
+    output_directory: options[:reportPath],
+    html: true,
+    jenkins: true
+  )
 end
 
-desc "Run SwiftLint analyze tool"
+desc 'Run SwiftLint analyze tool'
 lane :lint do |options|
-    swiftlint(
-        mode: :lint,
-        output_file: "#{options[:reportPath]}/result.xml",
-        reporter: "checkstyle",
-        config_file: options[:configFile],
-        ignore_exit_status: true
-    )
+  swiftlint(
+    mode: :lint,
+    output_file: "#{options[:reportPath]}/result.xml",
+    reporter: 'checkstyle',
+    config_file: options[:configFile],
+    ignore_exit_status: true
+  )
 end
 
-desc "Run Cloc analyze tool"
+desc 'Run Cloc analyze tool'
 lane :count do |options|
-    cloc(
-       exclude_dir: options[:excludeDirectories],
-       output_directory: options[:reportPath],
-       source_directory: options[:sourcePath]
-    )
+  cloc(
+    exclude_dir: options[:excludeDirectories],
+    output_directory: options[:reportPath],
+    source_directory: options[:sourcePath]
+  )
 end
 
-desc "Run building process"
+desc 'Run building process'
 lane :build do |options|
-    provisioningProfilesString = options[:provisioningProfiles]
-    profileValuePairStringList = provisioningProfilesString.split(",")
-    provisioningProfiles = {}
-    profileValuePairStringList.each do |profilePairString|
-        profileValueList = profilePairString.split("=>")
-        provisioningProfiles[profileValueList.first] = profileValueList.last
-    end
+  provisioningProfilesString = options[:provisioningProfiles]
+  profileValuePairStringList = provisioningProfilesString.split(',')
+  provisioningProfiles = {}
+  profileValuePairStringList.each do |profilePairString|
+    profileValueList = profilePairString.split('=>')
+    provisioningProfiles[profileValueList.first] = profileValueList.last
+  end
 
-    gym(
-        project: options[:projectFilename],
-        workspace: options[:workspaceFilename],
-        configuration: options[:configuration],
-        scheme: options[:scheme],
-        clean: true,
-        output_directory: options[:outputPath],
-        output_name: options[:outputName],
-        skip_profile_detection: true,
-        export_xcargs: "-allowProvisioningUpdates",
-        export_method: options[:exportMethod],
-        export_options: {
-            signingStyle: "manual",
-            provisioningProfiles: provisioningProfiles
-        }
-    )
+  gym(
+    project: options[:projectFilename],
+    workspace: options[:workspaceFilename],
+    configuration: options[:configuration],
+    scheme: options[:scheme],
+    clean: true,
+    output_directory: options[:outputPath],
+    output_name: options[:outputName],
+    skip_profile_detection: true,
+    export_xcargs: '-allowProvisioningUpdates',
+    export_method: options[:exportMethod],
+    export_options: {
+      signingStyle: 'manual',
+      provisioningProfiles: provisioningProfiles
+    }
+  )
 end

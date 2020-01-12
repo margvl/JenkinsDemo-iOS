@@ -98,8 +98,7 @@ void executeAnalyzeStageIfNeeded() {
     if (analyzeStage.isEnabled) {
         stage(analyzeStage.title) {
             executeSwiftLintStepIfNeeded()
-            scanForIssues sourceDirectory: 'JenkinsDemo', tool: cpd(pattern: 'build/report/cpd/result.xml')
-            recordIssues(tools: [cpd(pattern: 'build/report/cpd/result.xml')])
+            executeCPDStepIfNeeded()
             executeClocStepIfNeeded()
         }
     }
@@ -111,6 +110,14 @@ void executeSwiftLintStepIfNeeded() {
         makeDirectory(swifLintStep.reportPath)
         run(swifLintStep.executionCommand())
         recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/result.xml")])
+    }
+}
+
+void executeCPDStepIfNeeded() {
+    CPDStep cpdStep = analyzeStage.cpdStep
+    if (cpdStep.isEnabled) {
+        run(cpdStep.executionCommand())
+        recordIssues(tools: [cpd(name: 'Copy paste detection', pattern: "${cpdStep.reportPath}/result.xml")])
     }
 }
 
@@ -305,16 +312,19 @@ TestStage getTestStage(Map environment, Map test) {
 // ---------------------
 class AnalyzeStage extends Stage {
     StageStep swiftLintStep
+    StageStep cpdStep
     StageStep clocStep
     
     AnalyzeStage(
             Boolean isEnabled,
             String title,
             StageStep swiftLintStep,
+            StageStep cpdStep,
             StageStep clocStep) {
             
         super(isEnabled, title)
         this.swiftLintStep = swiftLintStep
+        this.cpdStep = cpdStep
         this.clocStep = clocStep
     }
 }
@@ -338,6 +348,31 @@ class SwiftLintStep implements StageStep {
         return "bundle exec fastlane lint" +
                 ParamBuilder.getReportPathParam(reportPath) +
                 ParamBuilder.getConfigFileParam(configFile)
+    }
+}
+
+class CPDStep implements StageStep {
+    Boolean isEnabled
+    String sourcePath
+    String reportPath
+
+    CPDStep(
+            Boolean isEnabled,
+            String sourcePath,
+            String reportPath) {
+
+        this.isEnabled = isEnabled
+        this.sourcePath = sourcePath
+        this.reportPath = reportPath
+    }
+
+    String executionCommand() {
+        return "pmd cpd" +
+                " --minimum-tokens 30" +
+                " --language swift" +
+                " --files \"${sourcePath}\"" +
+                " --format xml" +
+                " > \"${reportPath}\""
     }
 }
 
@@ -374,6 +409,12 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
             NameBuilder.getConfigFile(swiftLint.configFile),
             environment.reportPath + "/swiftlint")
             
+    Map copyPasteDetection = analyze.copyPasteDetection
+    CPDStep = cpdStep = new CPDStep(
+            copyPasteDetection.isEnabled,
+            environment.sourcePath,
+            environment.resourcePath + "/cpd")
+            
     Map cloc = analyze.cloc
     ClocStep clocStep = new ClocStep(
             cloc.isEnabled,
@@ -382,9 +423,10 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
             environment.reportPath + "/cloc")
     
     return new AnalyzeStage(
-            swiftLintStep.isEnabled || clocStep.isEnabled,
+            swiftLintStep.isEnabled || cpdStep.isEnabled || clocStep.isEnabled,
             analyze.title,
             swiftLintStep,
+            cpdStep,
             clocStep)
 }
 

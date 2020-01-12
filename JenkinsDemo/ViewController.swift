@@ -13,6 +13,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+    
+    static func duplicateFuncValue() -> String {
+        print("We are adding more text so we could consider it as a duplicate1")
+        print("We are adding more text so we could consider it as a duplicate2")
+        print("We are adding more text so we could consider it as a duplicate3")
+        print("We are adding more text so we could consider it as a duplicate4")
+        print("We are adding more text so we could consider it as a duplicate5")
+        return "Duplicate"
+    }
 }
 
 

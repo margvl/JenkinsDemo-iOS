@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
@@ -12,7 +14,6 @@ target 'JenkinsDemo' do
     inherit! :search_paths
     # Pods for testing
   end
-
 end
 
 target 'JenkinsDemo-Staging' do
@@ -20,5 +21,4 @@ target 'JenkinsDemo-Staging' do
   use_frameworks!
 
   # Pods for JenkinsDemo-Staging
-
 end

@@ -14,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        let unusedVariable = 2
         // Override point for customization after application launch.
         return true
     }
@@ -32,6 +34,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    static func duplicateFuncValue() -> String {
+        print("We are adding more text so we could consider it as a duplicate1")
+        print("We are adding more text so we could consider it as a duplicate2")
+        print("We are adding more text so we could consider it as a duplicate3")
+        print("We are adding more text so we could consider it as a duplicate4")
+        print("We are adding more text so we could consider it as a duplicate5")
+        return "Duplicate"
+    }
 
 }
 
