@@ -109,7 +109,7 @@ void executeSwiftLintStepIfNeeded() {
     if (swifLintStep.isEnabled) {
         makeDirectory(swifLintStep.reportPath)
         run(swifLintStep.executionCommand())
-        recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/*.xml",reportEncoding: 'UTF-8'))])
+        recordIssues(tools: [swiftLint(name: 'SwiftLint', pattern: "${swifLintStep.reportPath}/*.xml",reportEncoding: 'UTF-8')])
     }
 }
 
