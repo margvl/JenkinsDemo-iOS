@@ -11,6 +11,8 @@ node {
             executeBuildStageIfNeeded()
             executeDistributionStageIfNeeded()
         }
+        
+        postBuildFailureMessagesIfNeeded()
     }
 }
 
@@ -118,7 +120,7 @@ void executeCPDStepIfNeeded() {
     if (cpdStep.isEnabled) {
         makeDirectory(cpdStep.reportPath)
         run(cpdStep.executionCommand())
-        recordIssues(tools: [cpd(name: 'CPD', pattern: "${cpdStep.reportPath}/*.xml")])
+        recordIssues(tools: [cpd(pattern: "${cpdStep.reportPath}/*.xml")])
     }
 }
 
@@ -681,4 +683,116 @@ void makeDirectory(String path) {
 
 void run(String command) {
     sh command
+}
+
+/*
+void notifyBuildFailuresToSlack() {
+    if (currentBuild.currentResult != "SUCCESS") {
+        String name = URLDecoder.decode(env.JOB_NAME, "UTF-8")
+        String author = sh(script: "git log -1 --format='%an <%ae>' HEAD", returnStdout: true).trim()
+        slackSend baseUrl: 'https://telesoftas.slack.com/services/hooks/jenkins-ci/',
+                  message: "Build Failed: *${name} ${env.BUILD_DISPLAY_NAME}*\n" +
+                        "Author: *${author}*\n" +
+                        "Cause: `${currentBuild.currentResult}`\n" +
+                        "Url: ${env.BUILD_URL}",
+                  channel: 'jenkins', tokenCredentialId: 'telesoftas-slack-token', color: "FF0000"
+
+        // notify fail to author by mail
+        def authorMail = sh(script: "git log -1 --format='%ae' HEAD", returnStdout: true).trim()
+        step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: authorMail, sendToIndividuals: true])
+    }
+}
+
+void aa() {
+    withCredentials([string(credentialsId: 'telesoftas-slack-access-token', variable: 'slackToken')]) {
+        def authorEmail = sh(script: "git log -1 --format='%ae' HEAD", returnStdout: true).trim()
+        def response = sh(script: "curl 'https://slack.com/api/users.lookupByEmail?token=${slackToken}&email=${authorEmail}'", returnStdout: true).trim()
+        def jsonResponse = readJSON text: response
+        if (jsonResponse["ok"]) {
+            def slackAuthor = jsonResponse["user"]["name"]
+            String name = URLDecoder.decode(env.JOB_NAME, "UTF-8")
+            slackSend baseUrl: 'https://telesoftas.slack.com/services/hooks/jenkins-ci/',
+                    message: "Build Failed: *${name} ${env.BUILD_DISPLAY_NAME}*\nUrl: ${env.BUILD_URL}",
+                    channel: "@${slackAuthor}", tokenCredentialId: 'telesoftas-slack-token', color: "FF0000"
+        }
+}
+*/
+
+void postBuildFailureMessagesIfNeeded() {
+    if (isJobResultFlagSuccessful()) {
+        return
+    }
+    
+    postSlackFailureMessage(getDefaultSlackChannelName())
+    postSlackFailureMessage(getAuthorSlackName())
+    postEmailFailureMessage()
+}
+
+void postSlackFailureMessage(String channel) {
+    String slackUrl = "https://telesoftas.slack.com/services/hooks/jenkins-ci/"
+    String buildName = getBuildName()
+    String author = getAuthor()
+    String buildUrl = getBuildUrl()
+    String accessToken = 'telesoftas-slack-access-token'
+    String colorHex = "FF0000"
+    
+    slackSend
+            baseUrl: slackUrl,
+            message: "Build Failed: *${buildName}*" +
+                    "\n" + "Author: *${author}*" +
+                    "\n" + "Cause: `Failure`"
+                    "\n" + "Url: ${buildUrl}",
+            channel: channel,
+            tokenCredentialId: accessToken,
+            color: colorHex
+}
+
+void postEmailFailureMessage() {
+    String authorEmail = getAuthorEmail()
+    step([$class: 'Mailer',
+            notifyEveryUnstableBuild: true,
+            recipients: authorEmail,
+            sendToIndividuals: true])
+}
+
+Boolean isJobResultFlagSuccessful() {
+    return currentBuild.currentResult == "SUCCESS"
+}
+
+String getBuildName() {
+    String jobName = URLDecoder.decode(env.JOB_NAME, "UTF-8")
+    String buildNumber = return env.BUILD_DISPLAY_NAME
+    return jobName + " " + buildNumber
+}
+
+String getBuildUrl() {
+    return env.BUILD_URL
+}
+
+String getAuthor() {
+    String author = sh(script: "git log -1 --format='%an <%ae>' HEAD", returnStdout: true).trim()
+    return author
+}
+
+String getAuthorEmail() {
+    String authorEmail = sh(script: "git log -1 --format='%ae' HEAD", returnStdout: true).trim()
+    return authorEmail
+}
+
+String getDefaultSlackChannelName() {
+    return "jenkins"
+}
+
+String getAuthorSlackName() {
+    String authorEmail = getAuthorEmail()
+    String accessToken = 'telesoftas-slack-access-token'
+    String slackEndpoint = "https://slack.com/api/users.lookupByEmail?token=${accessToken}&email=${authorEmail}"
+    String response = sh(script: "curl ${slackEndpoint}", returnStdout: true).trim()
+    Map json = readJSON text: response
+    if (json["ok"]) {
+        String authorSlackName = json["user"]["name"]
+        return authorSlackName
+    }
+    
+    return null
 }

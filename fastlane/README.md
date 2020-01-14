@@ -15,11 +15,6 @@ Install _fastlane_ using
 or alternatively using `brew cask install fastlane`
 
 # Available Actions
-### ana
-```
-fastlane ana
-```
-Hello
 ### pods
 ```
 fastlane pods
@@ -55,6 +50,11 @@ Run Cloc analyze tool
 fastlane build
 ```
 Run building process
+### post
+```
+fastlane post
+```
+Post message to Slack
 
 ----
 
