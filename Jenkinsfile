@@ -736,10 +736,9 @@ void postSlackFailureMessage(String channel) {
     String colorHex = "FF0000"
     
     slackSend
-            baseUrl: slackUrl,
             message: "Build Failed: *${buildName}*" +
                     "\n" + "Author: *${author}*" +
-                    "\n" + "Cause: `Failure`"
+                    "\n" + "Cause: `Failure`" +
                     "\n" + "Url: ${buildUrl}",
             channel: channel,
             tokenCredentialId: accessToken,
@@ -784,7 +783,7 @@ String getDefaultSlackChannelName() {
 
 String getAuthorSlackName() {
     String authorEmail = getAuthorEmail()
-    String accessToken = 'telesoftas-slack-access-token'
+    String accessToken = 'pirates-crew-slack-token'
     String slackEndpoint = "https://slack.com/api/users.lookupByEmail?token=${accessToken}&email=${authorEmail}"
     String response = sh(script: "curl ${slackEndpoint}", returnStdout: true).trim()
     Map json = readJSON text: response
