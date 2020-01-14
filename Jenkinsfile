@@ -712,7 +712,9 @@ void aa() {
             String name = URLDecoder.decode(env.JOB_NAME, "UTF-8")
             slackSend baseUrl: 'https://telesoftas.slack.com/services/hooks/jenkins-ci/',
                     message: "Build Failed: *${name} ${env.BUILD_DISPLAY_NAME}*\nUrl: ${env.BUILD_URL}",
-                    channel: "@${slackAuthor}", tokenCredentialId: 'telesoftas-slack-token', color: "FF0000"
+                    channel: "@${slackAuthor}",
+                    tokenCredentialId: 'telesoftas-slack-token',
+                    color: "FF0000"
         }
 }
 */
@@ -742,6 +744,7 @@ void postSlackFailureMessage(String channel) {
     slackSend message: message,
             channel: channel,
             tokenCredentialId: accessToken,
+            notifyCommitters: true,
             color: colorHex
 }
 
