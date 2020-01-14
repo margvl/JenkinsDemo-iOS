@@ -789,6 +789,7 @@ String getAuthorSlackName() {
     String accessToken = 'pirates-crew-slack-token'
     String slackEndpoint = "https://slack.com/api/users.lookupByEmail?token=${accessToken}&email=${authorEmail}"
     String response = sh(script: "curl ${slackEndpoint}", returnStdout: true).trim()
+    println(response)
     Map json = readJSON text: response
     println(json)
     if (json["ok"]) {
