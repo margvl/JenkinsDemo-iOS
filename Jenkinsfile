@@ -733,7 +733,7 @@ void postSlackFailureMessage(String channel) {
     String buildName = getBuildName()
     String author = getAuthor()
     String buildUrl = getBuildUrl()
-    String accessToken = 'telesoftas-slack-access-token'
+    String accessToken = "JOP2jNqEluWJ8XMrEXuOOYOf"
     String colorHex = "FF0000"
     
     slackSend
