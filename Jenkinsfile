@@ -759,7 +759,7 @@ Boolean isJobResultFlagSuccessful() {
 
 String getBuildName() {
     String jobName = URLDecoder.decode(env.JOB_NAME, "UTF-8")
-    String buildNumber = return env.BUILD_DISPLAY_NAME
+    String buildNumber = env.BUILD_DISPLAY_NAME
     return jobName + " " + buildNumber
 }
 
