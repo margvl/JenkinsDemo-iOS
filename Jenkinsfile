@@ -101,7 +101,6 @@ void executeAnalyzeStageIfNeeded() {
             executeSwiftLintStepIfNeeded()
             executeCPDStepIfNeeded()
             executeClocStepIfNeeded()
-            recordIssues(tools: [clang(), codeAnalysis()])
         }
     }
 }
