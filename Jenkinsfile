@@ -739,8 +739,7 @@ void postSlackFailureMessage(String channel) {
     String accessToken = 'pirates-crew-slack-token'
     String colorHex = "FF0000"
     
-    slackSend
-            message: message,
+    slackSend message: message,
             channel: channel,
             tokenCredentialId: accessToken,
             color: colorHex
