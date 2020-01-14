@@ -725,7 +725,7 @@ void postBuildFailureMessagesIfNeeded() {
     }
     
     postSlackFailureMessage(getDefaultSlackChannelName())
-    postSlackFailureMessage(getAuthorSlackName())
+    //postSlackFailureMessage(getAuthorSlackName())
     postEmailFailureMessage()
 }
 
@@ -738,7 +738,7 @@ void postSlackFailureMessage(String channel) {
             "\nAuthor: *${author}*" +
             "\nCause: `Failure`" +
             "\nUrl: ${buildUrl}"
-    String accessToken = 'pirates-crew-slack-token'
+    String accessToken = 'pirates-crew-slack-bot-token'
     String colorHex = "FF0000"
     
     slackSend message: message,
