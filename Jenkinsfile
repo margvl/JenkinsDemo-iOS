@@ -738,11 +738,13 @@ void postSlackFailureMessage(String channel) {
             "\nAuthor: *${author}*" +
             "\nCause: `Failure`" +
             "\nUrl: ${buildUrl}"
+    String channel = getDefaultSlackChannelName()
     String colorHex = "FF0000"
     
     slackSend message: message,
             tokenCredentialId: 'pirates-crew-slack-bot-token',
             notifyCommitters: true,
+            channel: channel,
             color: colorHex
 }
 
