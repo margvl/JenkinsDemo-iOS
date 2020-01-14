@@ -738,7 +738,6 @@ void postSlackFailureMessage(String channel) {
             "\nAuthor: *${author}*" +
             "\nCause: `Failure`" +
             "\nUrl: ${buildUrl}"
-    String channel = getDefaultSlackChannelName()
     String colorHex = "FF0000"
     
     slackSend message: message,
