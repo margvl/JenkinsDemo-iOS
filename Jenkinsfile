@@ -743,7 +743,7 @@ void postSlackFailureMessage(String channel) {
     //withCredentials([string(credentialsId: 'pirates-crew-slack-bot-token', variable: 'accessToken')]) {
         slackSend message: message,
                 channel: channel,
-                tokenCredentialId: 'pirates-crew-slack-signing-token',
+                tokenCredentialId: 'pirates-crew-slack-bot-token',
                 notifyCommitters: true,
                 color: colorHex
     //}
