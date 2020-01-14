@@ -781,7 +781,7 @@ String getAuthorEmail() {
 }
 
 String getDefaultSlackChannelName() {
-    return "jenkins"
+    return "#jenkins"
 }
 
 String getAuthorSlackName() {
@@ -790,6 +790,7 @@ String getAuthorSlackName() {
     String slackEndpoint = "https://slack.com/api/users.lookupByEmail?token=${accessToken}&email=${authorEmail}"
     String response = sh(script: "curl ${slackEndpoint}", returnStdout: true).trim()
     Map json = readJSON text: response
+    println(json)
     if (json["ok"]) {
         String authorSlackName = json["user"]["name"]
         return authorSlackName
