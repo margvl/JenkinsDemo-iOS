@@ -732,14 +732,14 @@ void postSlackFailureMessage(String channel) {
     String buildName = getBuildName()
     String author = getAuthor()
     String buildUrl = getBuildUrl()
-    String accessToken = "JOP2jNqEluWJ8XMrEXuOOYOf"
+    String accessToken = 'pirates-crew-slack-token'
     String colorHex = "FF0000"
     
     slackSend
             message: "Build Failed: *${buildName}*" +
-                    "\n" + "Author: *${author}*" +
-                    "\n" + "Cause: `Failure`" +
-                    "\n" + "Url: ${buildUrl}",
+                    "\nAuthor: *${author}*" +
+                    "\nCause: `Failure`" +
+                    "\nUrl: ${buildUrl}",
             channel: channel,
             tokenCredentialId: accessToken,
             color: colorHex
