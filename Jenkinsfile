@@ -740,12 +740,10 @@ void postSlackFailureMessage(String channel) {
             "\nUrl: ${buildUrl}"
     String colorHex = "FF0000"
     
-    withCredentials([string(credentialsId: 'pirates-crew-slack-bot-token', variable: 'accessToken')]) {
-        slackSend message: message,
-                tokenCredentialId: accessToken,
-                notifyCommitters: true,
-                color: colorHex
-    }
+    slackSend message: message,
+            tokenCredentialId: 'pirates-crew-slack-bot-token',
+            notifyCommitters: true,
+            color: colorHex
 }
 
 void postEmailFailureMessage() {
