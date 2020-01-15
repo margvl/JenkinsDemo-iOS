@@ -738,7 +738,7 @@ class ParamBuilder {
     }
 }
 
-String[] getStringListFromJSONArray(JSONArray array) {
+String[] getStringListFromJSONArray(array) {
     String[] stringList = []
     array.each { value ->
         stringList += value
