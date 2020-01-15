@@ -608,12 +608,11 @@ class FirebaseDistributionStep implements StageStep {
     String buildPath
 
     FirebaseDistributionStep(
-            Boolean isEnabled,
             String firebaseAppId,
             String testersGroupId,
             String buildPath) {
 
-        this.isEnabled = isEnabled
+        this.isEnabled = firebaseAppId?.trim()
         this.firebaseAppId = firebaseAppId
         this.testersGroupId = testersGroupId
         this.buildPath = buildPath
@@ -633,18 +632,17 @@ DistributionStage getDistributionStage(Map distribution, BuildStage buildStage) 
     println("firebaseDistribution: " + firebaseDistribution)
     println("buildStage: " + buildStage)
     println("buildStage.outputPath: " + buildStage.outputPath)
-    println("buildStage.buildPath(firebaseDistribution.buildId):" + buildStage.buildPath(firebaseDistribution.buildId))
+    println("buildStage.buildPath(firebaseDistribution.buildId): " + buildStage.buildPath(firebaseDistribution.buildId))
     println("buildStage.itemList: " + buildStage.itemList)
     println("buildStage.itemList[0].id: " + buildStage.itemList[0].id)
     println("firebaseDistribution.buildId: " + firebaseDistribution.buildId)
     FirebaseDistributionStep firebaseDistributionStep = new FirebaseDistributionStep(
-            true,
             firebaseDistribution.appId,
             firebaseDistribution.testersGroupId,
             buildStage.buildPath(firebaseDistribution.buildId))
 
     return new DistributionStage(
-            distribution.isEnabled,
+            firebaseDistributionStep.isEnabled,
             distribution.title,
             firebaseDistributionStep)
 }
