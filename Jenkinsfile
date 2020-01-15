@@ -153,7 +153,9 @@ void executeDistributionStageIfNeeded() {
 void executeFirebaseDistributionStepIfNeeded() {
     FirebaseDistributionStep firebaseDistributionStep = distributionStage.firebaseDistributionStep
     if (firebaseDistributionStep.isEnabled) {
-        run(firebaseDistributionStep.executionCommand())
+        withCredentials([file(credentialsId: 'GOOGLE_APPLICATION_CREDENTIALS', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
+            run(firebaseDistributionStep.executionCommand())
+        }
     }
 }
 
