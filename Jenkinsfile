@@ -487,7 +487,7 @@ class BuildStage extends Stage {
     String buildPath(String buildId) {
         String buildPath = null
         itemList.each { item ->
-            if (item.id == buildId) {
+            if (buildId.equals(item.id)) {
                 buildPath = outputPath + "/" + item.name
             }
         }
