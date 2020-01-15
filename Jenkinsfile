@@ -485,19 +485,13 @@ class BuildStage extends Stage {
     }
     
     String buildPath(String buildId) {
-        BuildItem wantedItem = itemList.find { item -> buildId.equals(item.id) }
-        if (wantedItem) {
-            String path = outputPath + "/" + wantedItem.name
-        }
-        return null
-        /*
+        String path = ""
         itemList.each { item ->
             if (buildId.equals(item.id)) {
-                path =
+                path = outputPath + "/" + item.name
             }
         }
         return path
-        */
     }
 }
 
