@@ -59,7 +59,12 @@
         },
         "distribution": {
             "isEnabled": true,
-            "title": "Distribution"
+            "title": "Distribution",
+            "firebase": {
+                "appId": "1:312875670966:ios:1e8be4cf32a5d786f17517",
+                "testersGroupId": "internal-testers"
+                "buildId:": "0",
+            }
         }
     }
 }

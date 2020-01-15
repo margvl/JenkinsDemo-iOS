@@ -143,7 +143,18 @@ void executeBuildStageIfNeeded() {
 }
 
 void executeDistributionStageIfNeeded() {
+    if (distributionStage.isEnabled) {
+        stage(distributionStage.title) {
+            executeFirebaseDistributionStepIfNeeded()
+        }
+    }
+}
 
+void executeFirebaseDistributionStepIfNeeded() {
+    FirebaseDistributionStep firebaseDistributionStep = distributionStage.firebaseDistributionStep
+    if (firebaseDistributionStep.isEnabled) {
+        run(firebaseDistributionStep.executionCommand())
+    }
 }
 
 // --------------------
@@ -472,6 +483,16 @@ class BuildStage extends Stage {
         }
         return executionCommandList
     }
+    
+    String buildPath(String buildId) {
+        String buildPath = null
+        itemList.each { item ->
+            if (item.id == buildId) {
+                buildPath = outputPath + "/" + item.name
+            }
+        }
+        return buildPath
+    }
 }
 
 class BuildItem {
@@ -562,13 +583,57 @@ BuildStage getBuildStage(Map environment, Map build) {
 // --- Distribution Stage ---
 // --------------------------
 class DistributionStage extends Stage {
-    DistributionStage(Boolean isEnabled, String title) {
+    StageStep firebaseDistributionStep
+    
+    DistributionStage(
+            Boolean isEnabled,
+            String title,
+            FirebaseDistributionStep firebaseDistributionStep) {
+            
         super(isEnabled, title)
+        this.firebaseDistributionStep = firebaseDistributionStep
     }
 }
 
-DistributionStage getDistributionStage(Map distribution) {
-    return new DistributionStage(distribution.isEnabled, distribution.title)
+class FirebaseDistributionStep implements StageStep {
+    Boolean isEnabled
+    String firebaseAppId
+    String testersGroupId
+    String buildPath
+
+    FirebaseDistributionStep(
+            Boolean isEnabled,
+            String firebaseAppId,
+            String testersGroupId,
+            String buildPath) {
+
+        this.isEnabled = isEnabled
+        this.firebaseAppId = firebaseAppId
+        this.testersGroupId = testersGroupId
+        this.buildPath = buildPath
+    }
+
+    String executionCommand() {
+        return "firebase" +
+                " appdistribution:distribute \"${buildPath}\"" +
+                " --groups ${testersGroupId}" +
+                " --release-notes \"\"" +
+                " --app ${firebaseAppId}"
+    }
+}
+
+DistributionStage getDistributionStage(Map distribution, BuildStage buildStage) {
+    Map firebaseDistribution = distribution.firebase
+    FirebaseDistributionStep firebaseDistributionStep = new FirebaseDistributionStep(
+            true,
+            firebaseDistribution.appId,
+            firebaseDistribution.testersGroupId,
+            buildStage.buildPath(firebaseDistribution.buildId))
+
+    return new DistributionStage(
+            distribution.isEnabled,
+            distribution.title,
+            firebaseDistributionStep)
 }
 
 
@@ -684,40 +749,6 @@ void run(String command) {
     sh command
 }
 
-/*
-void notifyBuildFailuresToSlack() {
-    if (currentBuild.currentResult != "SUCCESS") {
-        String name = URLDecoder.decode(env.JOB_NAME, "UTF-8")
-        String author = sh(script: "git log -1 --format='%an <%ae>' HEAD", returnStdout: true).trim()
-        slackSend baseUrl: 'https://telesoftas.slack.com/services/hooks/jenkins-ci/',
-                  message: "Build Failed: *${name} ${env.BUILD_DISPLAY_NAME}*\n" +
-                        "Author: *${author}*\n" +
-                        "Cause: `${currentBuild.currentResult}`\n" +
-                        "Url: ${env.BUILD_URL}",
-                  channel: 'jenkins', tokenCredentialId: 'telesoftas-slack-token', color: "FF0000"
-
-        // notify fail to author by mail
-        def authorMail = sh(script: "git log -1 --format='%ae' HEAD", returnStdout: true).trim()
-        step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: authorMail, sendToIndividuals: true])
-    }
-}
-
-void aa() {
-    withCredentials([string(credentialsId: 'telesoftas-slack-access-token', variable: 'slackToken')]) {
-        def authorEmail = sh(script: "git log -1 --format='%ae' HEAD", returnStdout: true).trim()
-        def response = sh(script: "curl 'https://slack.com/api/users.lookupByEmail?token=${slackToken}&email=${authorEmail}'", returnStdout: true).trim()
-        def jsonResponse = readJSON text: response
-        if (jsonResponse["ok"]) {
-            def slackAuthor = jsonResponse["user"]["name"]
-            String name = URLDecoder.decode(env.JOB_NAME, "UTF-8")
-            slackSend baseUrl: 'https://telesoftas.slack.com/services/hooks/jenkins-ci/',
-                    message: "Build Failed: *${name} ${env.BUILD_DISPLAY_NAME}*\nUrl: ${env.BUILD_URL}",
-                    channel: "@${slackAuthor}",
-                    tokenCredentialId: 'telesoftas-slack-token',
-                    color: "FF0000"
-        }
-}
-*/
 
 void postBuildFailureMessagesIfNeeded() {
     if (isJobResultFlagSuccessful()) {
@@ -725,7 +756,6 @@ void postBuildFailureMessagesIfNeeded() {
     }
     
     postSlackFailureMessage(getDefaultSlackChannelName())
-    //postSlackFailureMessage(getAuthorSlackName())
     postEmailFailureMessage()
 }
 
@@ -740,12 +770,11 @@ void postSlackFailureMessage(String channel) {
             "\nUrl: ${buildUrl}"
     String colorHex = "FF0000"
     
-    //'pirates-crew-slack-bot-token',
-
-    slackSend message: message, notifyCommitters: true
-            //tokenCredentialId: 'pirates-crew-slack-bot-token',
-            //channel: "",
-            //color: colorHex
+    slackSend message: message,
+            notifyCommitters: true
+            tokenCredentialId: 'pirates-crew-slack-bot-token',
+            channel: "",
+            color: colorHex
 }
 
 void postEmailFailureMessage() {
