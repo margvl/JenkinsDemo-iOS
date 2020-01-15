@@ -742,9 +742,8 @@ void postSlackFailureMessage(String channel) {
     
     //'pirates-crew-slack-bot-token',
 
-    slackSend message: message,
+    slackSend message: message, notifyCommitters: true
             //tokenCredentialId: 'pirates-crew-slack-bot-token',
-            notifyCommitters: true,
             //channel: "",
             //color: colorHex
 }
