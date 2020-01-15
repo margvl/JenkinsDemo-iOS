@@ -485,9 +485,6 @@ class BuildStage extends Stage {
     }
     
     String buildPath(String buildId) {
-        println(itemList)
-        println(itemList[0].id)
-        println(buildId)
         BuildItem item = itemList.find { it.id == buildId }
         if (item) {
             String path = outputPath + "/" + item.name
@@ -636,6 +633,9 @@ DistributionStage getDistributionStage(Map distribution, BuildStage buildStage) 
     println(buildStage)
     println(buildStage.outputPath)
     println(buildStage.buildPath(firebaseDistribution.buildId))
+    println(buildStage.itemList)
+    println(buildStage.itemList[0].id)
+    println(firebaseDistribution.buildId)
     FirebaseDistributionStep firebaseDistributionStep = new FirebaseDistributionStep(
             true,
             firebaseDistribution.appId,
