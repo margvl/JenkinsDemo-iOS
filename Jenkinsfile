@@ -569,7 +569,7 @@ BuildStage getBuildStage(Map environment, Map build) {
     }
 
     return new BuildStage(
-            build.isEnabled,
+            !buildItemList.isEmpty(),
             build.title,
             NameBuilder.getProjectFilename(environment.projectName),
             NameBuilder.getWorkspaceFilename(environment.workspaceName),

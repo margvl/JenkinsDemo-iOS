@@ -40,7 +40,6 @@
             }
         },
         "build": {
-            "isEnabled": true,
             "title": "Build",
             "items": [
                 {
