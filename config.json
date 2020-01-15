@@ -34,9 +34,9 @@
             "copyPasteDetection": {
                 "isEnabled": true
             },
-            "cloc": {
+            "linesCount": {
                 "isEnabled": true,
-                "excludeDirectories": "Resources"
+                "excludeDirectories": ["Resources"]
             }
         },
         "build": {
@@ -61,7 +61,7 @@
             "title": "Distribution",
             "firebase": {
                 "appId": "1:312875670966:ios:1e8be4cf32a5d786f17517",
-                "testersGroupId": "internal-testers",
+                "testersGroupIds": ["internal-testers"],
                 "buildId": "0"
             }
         }

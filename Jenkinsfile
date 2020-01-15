@@ -316,7 +316,7 @@ TestStage getTestStage(Map environment, Map test) {
             NameBuilder.getProjectFilename(environment.projectName),
             NameBuilder.getWorkspaceFilename(environment.workspaceName),
             test.scheme,
-            deviceList,
+            getStringListFromJSONArray(test.devices),
             environment.reportPath + "/scan",
             testCoverage)
     return testStage
@@ -395,25 +395,25 @@ class CPDStep implements StageStep {
 class ClocStep implements StageStep {
     Boolean isEnabled
     String sourcePath
-    String excludeDirectories
+    String[] excludeDirectoryList
     String reportPath
 
     ClocStep(
             Boolean isEnabled,
             String sourcePath,
-            String excludeDirectories,
+            String[] excludeDirectories,
             String reportPath) {
     
         this.isEnabled = isEnabled
         this.sourcePath = sourcePath
-        this.excludeDirectories = excludeDirectories
+        this.excludeDirectoryList = excludeDirectories
         this.reportPath = reportPath
     }
 
     String executionCommand() {
         return "bundle exec fastlane count" +
                 ParamBuilder.getSourcePathParam(sourcePath) +
-                ParamBuilder.getExcludeDirectoriesParam(excludeDirectories) +
+                ParamBuilder.getExcludeDirectoriesParam(excludeDirectoryList.join(',')) +
                 ParamBuilder.getReportPathParam(reportPath)
     }
 }
@@ -431,11 +431,11 @@ AnalyzeStage getAnalyzeStage(Map environment, Map analyze) {
             environment.sourcePath,
             environment.reportPath + "/cpd")
             
-    Map cloc = analyze.cloc
+    Map linesCount = analyze.linesCount
     ClocStep clocStep = new ClocStep(
-            cloc.isEnabled,
+            linesCount.isEnabled,
             environment.sourcePath,
-            cloc.excludeDirectories,
+            getStringListFromJSONArray(linesCount.excludeDirectories),
             environment.reportPath + "/cloc")
     
     return new AnalyzeStage(
@@ -600,17 +600,17 @@ class DistributionStage extends Stage {
 class FirebaseDistributionStep implements StageStep {
     Boolean isEnabled
     String firebaseAppId
-    String testersGroupId
+    String[] testersGroupIdList
     String buildPath
 
     FirebaseDistributionStep(
             String firebaseAppId,
-            String testersGroupId,
+            String[] testersGroupIds,
             String buildPath) {
 
         this.isEnabled = firebaseAppId?.trim()
         this.firebaseAppId = firebaseAppId
-        this.testersGroupId = testersGroupId
+        this.testersGroupIdList = testersGroupIds
         this.buildPath = buildPath
     }
 
@@ -625,16 +625,9 @@ class FirebaseDistributionStep implements StageStep {
 
 DistributionStage getDistributionStage(Map distribution, BuildStage buildStage) {
     Map firebaseDistribution = distribution.firebase
-    println("firebaseDistribution: " + firebaseDistribution)
-    println("buildStage: " + buildStage)
-    println("buildStage.outputPath: " + buildStage.outputPath)
-    println("buildStage.buildPath(firebaseDistribution.buildId): " + buildStage.buildPath(firebaseDistribution.buildId))
-    println("buildStage.itemList: " + buildStage.itemList)
-    println("buildStage.itemList[0].id: " + buildStage.itemList[0].id)
-    println("firebaseDistribution.buildId: " + firebaseDistribution.buildId)
     FirebaseDistributionStep firebaseDistributionStep = new FirebaseDistributionStep(
             firebaseDistribution.appId,
-            firebaseDistribution.testersGroupId,
+            getStringListFromJSONArray(firebaseDistribution.testersGroupIds),
             buildStage.buildPath(firebaseDistribution.buildId))
 
     return new DistributionStage(
@@ -746,6 +739,14 @@ class ParamBuilder {
     static String getPodFileParam(String podFile) {
         return " podFile:" + "\"" + podFile + "\""
     }
+}
+
+String[] getStringListFromJSONArray(JSONArray array) {
+    String[] stringList = []
+    array.each { value ->
+        stringList += value
+    }
+    return stringList
 }
 
 void makeDirectory(String path) {
