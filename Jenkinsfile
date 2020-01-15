@@ -630,13 +630,13 @@ class FirebaseDistributionStep implements StageStep {
 
 DistributionStage getDistributionStage(Map distribution, BuildStage buildStage) {
     Map firebaseDistribution = distribution.firebase
-    println(firebaseDistribution)
-    println(buildStage)
-    println(buildStage.outputPath)
-    println(buildStage.buildPath(firebaseDistribution.buildId))
-    println(buildStage.itemList)
-    println(buildStage.itemList[0].id)
-    println(firebaseDistribution.buildId)
+    println("firebaseDistribution: " + firebaseDistribution)
+    println("buildStage: " + buildStage)
+    println("buildStage.outputPath: " + buildStage.outputPath)
+    println("buildStage.buildPath(firebaseDistribution.buildId):" + buildStage.buildPath(firebaseDistribution.buildId))
+    println("buildStage.itemList: " + buildStage.itemList)
+    println("buildStage.itemList[0].id: " + buildStage.itemList[0].id)
+    println("firebaseDistribution.buildId: " + firebaseDistribution.buildId)
     FirebaseDistributionStep firebaseDistributionStep = new FirebaseDistributionStep(
             true,
             firebaseDistribution.appId,
