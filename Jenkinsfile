@@ -614,7 +614,7 @@ class FirebaseDistributionStep implements StageStep {
     String executionCommand() {
         return "firebase" +
                 " appdistribution:distribute \"${buildPath}\"" +
-                " --groups ${testersGroupId}" +
+                " --groups ${testersGroupIdList.join(',')}" +
                 " --release-notes \"\"" +
                 " --app ${firebaseAppId}"
     }
