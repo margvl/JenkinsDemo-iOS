@@ -305,11 +305,8 @@ TestStage getTestStage(Map environment, Map test) {
             test.scheme,
             environment.sourcePath,
             environment.reportPath + "/slather")
-            
-    String[] deviceList = []
-    test.devices.each { device ->
-        deviceList += device
-    }
+    
+    println("DEVICES: " + test.devices.getClass())
     TestStage testStage = new TestStage(
             test.isEnabled,
             test.title,
