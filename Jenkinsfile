@@ -306,7 +306,6 @@ TestStage getTestStage(Map environment, Map test) {
             environment.sourcePath,
             environment.reportPath + "/slather")
     
-    println("DEVICES: " + test.devices.getClass())
     TestStage testStage = new TestStage(
             test.isEnabled,
             test.title,
@@ -569,7 +568,7 @@ BuildStage getBuildStage(Map environment, Map build) {
     }
 
     return new BuildStage(
-            buildItemList.count > 0,
+            buildItemList.empty,
             build.title,
             NameBuilder.getProjectFilename(environment.projectName),
             NameBuilder.getWorkspaceFilename(environment.workspaceName),
