@@ -750,6 +750,11 @@ void run(String command) {
 }
 
 
+
+
+
+
+
 void postBuildFailureMessagesIfNeeded() {
     if (isJobResultFlagSuccessful()) {
         return
@@ -771,7 +776,7 @@ void postSlackFailureMessage(String channel) {
     String colorHex = "FF0000"
     
     slackSend message: message,
-            notifyCommitters: true
+            notifyCommitters: true,
             tokenCredentialId: 'pirates-crew-slack-bot-token',
             channel: "",
             color: colorHex
