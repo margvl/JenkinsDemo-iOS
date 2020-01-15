@@ -740,7 +740,7 @@ void postSlackFailureMessage(String channel) {
             "\nUrl: ${buildUrl}"
     String colorHex = "FF0000"
     
-    //'pirates-crew-slack-bot-token',
+    //'pirates-crew-slack-bot-token', 
 
     slackSend message: message,
             tokenCredentialId: 'pirates-crew-slack-bot-token',
