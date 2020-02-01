@@ -53,7 +53,7 @@ void loadUp(String filename) {
 void executeSetUpStage() {
     stage(setUpStage.title) {
         run(setUpStage.dependenciesInstallationCommand())
-        sh script: 'LC_ALL=en_US.UTF-8'
+        runScript('LC_ALL=en_US.UTF-8')
         executeCocoapodsStepIfNeeded()
         executeCarthageStepIfNeeded()
     }
@@ -757,6 +757,10 @@ void makeDirectory(String path) {
 
 void run(String command) {
     sh command
+}
+
+String runScript(String script) {
+    return sh(script: script, returnStdout: true).trim()
 }
 
 
