@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -51,7 +51,7 @@
 		14DC8BAC23A97AE20078ED7E /* JenkinsDemo-Staging-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "JenkinsDemo-Staging-Info.plist"; path = "/Users/maga/Desktop/Projects/Personal/JenkinsDemo/JenkinsDemo-Staging-Info.plist"; sourceTree = "<absolute>"; };
 		14FE1F6723AD413B00C0A7C3 /* Gemfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile.lock; sourceTree = "<group>"; };
 		14FE1F6823AD413B00C0A7C3 /* Jenkinsfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Jenkinsfile; sourceTree = "<group>"; };
-		14FE1F6923AD413B00C0A7C3 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		14FE1F6923AD413B00C0A7C3 /* jenkins-native-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "jenkins-native-config.json"; sourceTree = "<group>"; };
 		14FE1F6B23AD413B00C0A7C3 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
 		14FE1F6C23AD413B00C0A7C3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		14FE1F6D23AD413B00C0A7C3 /* report.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = report.xml; sourceTree = "<group>"; };
@@ -105,7 +105,6 @@
 				57E09594A87F1F8C6D1CEB9C /* Pods-JenkinsDemoTests.debug.xcconfig */,
 				47E5CD348356F972E7DCBD1F /* Pods-JenkinsDemoTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -166,7 +165,7 @@
 		14FE1F6623AD410C00C0A7C3 /* CI */ = {
 			isa = PBXGroup;
 			children = (
-				14FE1F6923AD413B00C0A7C3 /* config.json */,
+				14FE1F6923AD413B00C0A7C3 /* jenkins-native-config.json */,
 				14FE1F6A23AD413B00C0A7C3 /* fastlane */,
 				14FE1F6E23AD413B00C0A7C3 /* Gemfile */,
 				14FE1F6723AD413B00C0A7C3 /* Gemfile.lock */,
@@ -589,17 +588,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo/Resources/JenkinsDemo-Info.plist";
+				INFOPLIST_FILE = "JenkinsDemo/Resources/JenkinsDemo-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telesoftas.jenkins.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Development;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -610,17 +612,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo/Resources/JenkinsDemo-Info.plist";
+				INFOPLIST_FILE = "JenkinsDemo/Resources/JenkinsDemo-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telesoftas.jenkins.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Generic Adhoc";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -677,17 +682,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo-Staging-Info.plist";
+				INFOPLIST_FILE = "JenkinsDemo-Staging-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telesoftas.jenkins.demo.staging;
 				PRODUCT_NAME = "JenkinsDemo-Staging";
 				PROVISIONING_PROFILE_SPECIFIER = Development;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -698,17 +706,20 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 28WL2MUN55;
-				INFOPLIST_FILE = "$(SRCROOT)/JenkinsDemo-Staging-Info.plist";
+				INFOPLIST_FILE = "JenkinsDemo-Staging-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telesoftas.jenkins.demo.staging;
 				PRODUCT_NAME = "JenkinsDemo-Staging";
 				PROVISIONING_PROFILE_SPECIFIER = "Generic Adhoc";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

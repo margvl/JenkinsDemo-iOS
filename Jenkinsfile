@@ -2,7 +2,7 @@ node {
     ansiColor('xterm') {
         applyJenkinsOptions()
         checkoutContent()
-        loadUp('config.json')
+        loadUp('jenkins-native-config.json')
 
         catchError {
             executeSetUpStage()
@@ -134,6 +134,7 @@ void executeClocStepIfNeeded() {
 void executeBuildStageIfNeeded() {
     if (buildStage.isEnabled) {
         stage(buildStage.title) {
+            increaseBuildVersion()
             String[] executionCommandList = buildStage.executionCommands()
             executionCommandList.each { executionCommand ->
                 run(executionCommand)
@@ -613,7 +614,7 @@ class FirebaseDistributionStep implements StageStep {
     String executionCommand() {
         return "firebase" +
                 " appdistribution:distribute \"${buildPath}\"" +
-                " --groups ${testersGroupIdList.join(',')}" +
+                " --groups \"${testersGroupIdList.join(',')}\"" +
                 " --release-notes \"\"" +
                 " --app ${firebaseAppId}"
     }
@@ -743,6 +744,10 @@ String[] getStringListFromJSONArray(array) {
         stringList += value
     }
     return stringList
+}
+
+void increaseBuildVersion() {
+    run("fastlane run increment_build_number")
 }
 
 void makeDirectory(String path) {
