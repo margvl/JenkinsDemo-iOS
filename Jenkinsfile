@@ -53,6 +53,7 @@ void loadUp(String filename) {
 void executeSetUpStage() {
     stage(setUpStage.title) {
         run(setUpStage.dependenciesInstallationCommand())
+        sh script: 'LC_ALL=en_US.UTF-8'
         executeCocoapodsStepIfNeeded()
         executeCarthageStepIfNeeded()
     }

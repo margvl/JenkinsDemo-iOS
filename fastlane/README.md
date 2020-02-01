@@ -50,11 +50,6 @@ Run Cloc analyze tool
 fastlane build
 ```
 Run building process
-### post
-```
-fastlane post
-```
-Post message to Slack
 
 ----
 
